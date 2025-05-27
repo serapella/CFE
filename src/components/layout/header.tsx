@@ -38,7 +38,7 @@ export function Header() {
     }`}>
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2" legacyBehavior>
             <BarChart2 className="h-6 w-6 text-primary" />
             <span className="font-bold text-xl">BODYMATTERS</span>
           </Link>
@@ -151,7 +151,7 @@ export function Header() {
             <Search className="h-5 w-5" />
           </Button>
           
-          <Link href="/shopping-list">
+          <Link href="/shopping-list" legacyBehavior>
             <Button variant="ghost" size="icon" className="hidden md:flex">
               <ShoppingCart className="h-5 w-5" />
             </Button>
@@ -162,10 +162,10 @@ export function Header() {
           </div>
           
           <div className="hidden md:flex gap-2">
-            <Link href="/login">
+            <Link href="/login" legacyBehavior>
               <Button variant="outline">Log in</Button>
             </Link>
-            <Link href="/register">
+            <Link href="/register" legacyBehavior>
               <Button>Sign up</Button>
             </Link>
           </div>
@@ -178,7 +178,7 @@ export function Header() {
             </SheetTrigger>
             <SheetContent side="right">
               <div className="flex flex-col gap-6 py-6">
-                <Link href="/" className="flex items-center gap-2">
+                <Link href="/" className="flex items-center gap-2" legacyBehavior>
                   <BarChart2 className="h-6 w-6 text-primary" />
                   <span className="font-bold text-xl">BODYMATTERS</span>
                 </Link>
@@ -192,10 +192,10 @@ export function Header() {
                 </div>
                 
                 <div className="flex flex-col gap-2 mt-auto">
-                  <Link href="/login">
+                  <Link href="/login" legacyBehavior>
                     <Button variant="outline" className="w-full">Log in</Button>
                   </Link>
-                  <Link href="/register">
+                  <Link href="/register" legacyBehavior>
                     <Button className="w-full">Sign up</Button>
                   </Link>
                   

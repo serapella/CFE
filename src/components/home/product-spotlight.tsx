@@ -93,7 +93,7 @@ export function ProductSpotlight() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="mt-4 md:mt-0"
           >
-            <Link href="/products">
+            <Link href="/products" legacyBehavior>
               <Button variant="outline" className="gap-2">
                 Browse all products <ChevronRight className="h-4 w-4" />
               </Button>
@@ -178,12 +178,15 @@ export function ProductSpotlight() {
                   )}
                   
                   <div className="flex gap-2">
-                    <Link href={`/products/${product.id}`} className="flex-1">
+                    <Link href={`/products/${product.id}`} className="flex-1" legacyBehavior>
                       <Button variant="outline" className="w-full" size="sm">
                         <Search className="h-3.5 w-3.5 mr-1" /> Details
                       </Button>
                     </Link>
-                    <Link href={`/products/alternatives/${product.id}`} className="flex-1">
+                    <Link
+                      href={`/products/alternatives/${product.id}`}
+                      className="flex-1"
+                      legacyBehavior>
                       <Button variant="secondary" className="w-full" size="sm">
                         Alternatives
                       </Button>

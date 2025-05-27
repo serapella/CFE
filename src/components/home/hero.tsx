@@ -14,7 +14,6 @@ export function Hero() {
   return (
     <section className="relative py-20 md:py-28">
       <div className="absolute inset-0 bg-gradient-to-b from-background to-background/50 dark:from-background dark:to-background/80 z-10"></div>
-      
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute inset-0 opacity-30 dark:opacity-10">
           <Image 
@@ -26,7 +25,6 @@ export function Hero() {
           />
         </div>
       </div>
-
       <div className="container relative z-20">
         <div className="max-w-3xl mx-auto text-center">
           <motion.div
@@ -76,12 +74,12 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="flex flex-col sm:flex-row justify-center items-center gap-4"
           >
-            <Link href="/products/scan">
+            <Link href="/products/scan" legacyBehavior>
               <Button variant="outline" size="lg">
                 <Scan className="mr-2 h-4 w-4" /> Scan product
               </Button>
             </Link>
-            <Link href="/recipes">
+            <Link href="/recipes" legacyBehavior>
               <Button variant="outline" size="lg">
                 Browse recipes
               </Button>

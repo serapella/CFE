@@ -236,7 +236,6 @@ export default function ScanPage() {
           about ingredients and health ratings
         </p>
       </div>
-
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
         <div className="lg:col-span-3">
           <Card className="overflow-hidden">
@@ -436,12 +435,15 @@ export default function ScanPage() {
                     )}
                     
                     <div className="flex gap-2 pt-2">
-                      <Link href={`/products/${scanResult.id}`} className="flex-1">
+                      <Link href={`/products/${scanResult.id}`} className="flex-1" legacyBehavior>
                         <Button variant="secondary" className="w-full">
                           <Info className="mr-2 h-4 w-4" /> View Details
                         </Button>
                       </Link>
-                      <Link href={`/products/alternatives/${scanResult.id}`} className="flex-1">
+                      <Link
+                        href={`/products/alternatives/${scanResult.id}`}
+                        className="flex-1"
+                        legacyBehavior>
                         <Button className="w-full">Find Alternatives</Button>
                       </Link>
                     </div>
@@ -548,7 +550,7 @@ export default function ScanPage() {
                     </div>
                   </div>
                   
-                  <Link href="/products/search">
+                  <Link href="/products/search" legacyBehavior>
                     <Button variant="outline" className="w-full mt-2">
                       <Search className="mr-2 h-4 w-4" /> Search Product Database
                     </Button>
