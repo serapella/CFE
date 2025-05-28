@@ -16,11 +16,11 @@ import {
   ThumbsUp,
   Upload,
   X,
+  Search,
 } from "lucide-react";
 import { motion } from "@/components/ui/motion";
 import Link from "next/link";
 import Image from "next/image";
-import { useToast } from "@/components/ui/use-toast";
 
 // Mock data for demonstration - would be replaced with API calls in production
 const mockScanResult = {
@@ -51,7 +51,6 @@ const getRatingBadgeVariant = (rating: string) => {
 };
 
 export default function ScanPage() {
-  const { toast } = useToast();
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isCameraActive, setIsCameraActive] = useState(false);
@@ -62,6 +61,7 @@ export default function ScanPage() {
   const [flashlightOn, setFlashlightOn] = useState(false);
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
   const [isMobileDevice, setIsMobileDevice] = useState(false);
+  let ScanbotSdk: any;
 
   // Check if the device is mobile
   useEffect(() => {
@@ -71,6 +71,28 @@ export default function ScanPage() {
       )
     );
   }, []);
+
+  // Initialize the Scanbot Barcode SDK
+  useEffect(() => {
+    loadSDK();
+  }, []);
+
+  async function loadSDK() {
+    // Use dynamic inline imports to load the SDK, else Next will load it into the server bundle
+    ScanbotSdk = (await import("scanbot-web-sdk/ui")).default;
+    await ScanbotSdk.initialize({
+      licenseKey: "", // Leave empty for trial mode
+      enginePath: "/wasm/",
+    });
+  }
+
+  async function startBarcodeScanner() {
+    const config = new ScanbotSdk.UI.Config.BarcodeScannerScreenConfiguration();
+    const result = await ScanbotSdk.UI.createBarcodeScanner(config);
+    if (result && result.items.length > 0) {
+      setScanResult(result.items[0].barcode.text);
+    }
+  }
 
   // Initialize camera
   const initCamera = async () => {
@@ -123,11 +145,6 @@ export default function ScanPage() {
       
       setFlashlightOn(!flashlightOn);
     } catch (error) {
-      toast({
-        title: "Flashlight not available",
-        description: "Your device doesn't support flashlight control.",
-        variant: "destructive",
-      });
       console.error("Flashlight error:", error);
     }
   };
@@ -170,11 +187,6 @@ export default function ScanPage() {
         setIsScanning(false);
         setScanResult(mockScanResult);
         stopCamera();
-        
-        toast({
-          title: "Product found!",
-          description: `Barcode ${mockScanResult.barcode} identified as ${mockScanResult.name}`,
-        });
       }, 1500);
     }, 1000);
   };
@@ -204,11 +216,6 @@ export default function ScanPage() {
             setTimeout(() => {
               setIsScanning(false);
               setScanResult(mockScanResult);
-              
-              toast({
-                title: "Product found!",
-                description: `Image processed and identified as ${mockScanResult.name}`,
-              });
             }, 2000);
           };
           img.src = reader.result as string;
@@ -435,15 +442,12 @@ export default function ScanPage() {
                     )}
                     
                     <div className="flex gap-2 pt-2">
-                      <Link href={`/products/${scanResult.id}`} className="flex-1" legacyBehavior>
+                      <Link href={`/products/${scanResult.id}`} className="flex-1">
                         <Button variant="secondary" className="w-full">
                           <Info className="mr-2 h-4 w-4" /> View Details
                         </Button>
                       </Link>
-                      <Link
-                        href={`/products/alternatives/${scanResult.id}`}
-                        className="flex-1"
-                        legacyBehavior>
+                      <Link href={`/products/alternatives/${scanResult.id}`} className="flex-1">
                         <Button className="w-full">Find Alternatives</Button>
                       </Link>
                     </div>
@@ -550,7 +554,7 @@ export default function ScanPage() {
                     </div>
                   </div>
                   
-                  <Link href="/products/search" legacyBehavior>
+                  <Link href="/products/search">
                     <Button variant="outline" className="w-full mt-2">
                       <Search className="mr-2 h-4 w-4" /> Search Product Database
                     </Button>

@@ -85,7 +85,7 @@ export default function RegisterPage() {
           transition={{ duration: 0.5 }}
         >
           <div className="flex justify-center mb-6">
-            <Link href="/" className="inline-block" legacyBehavior>
+            <Link href="/" className="inline-block">
               <div className="flex items-center gap-2">
                 <div className="rounded-full bg-primary/10 p-2">
                   <svg 

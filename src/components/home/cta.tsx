@@ -31,12 +31,12 @@ export function CTA() {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/register" legacyBehavior>
+                <Link href="/register">
                   <Button size="lg" className="w-full sm:w-auto">
                     Create free account
                   </Button>
                 </Link>
-                <Link href="/products/scan" legacyBehavior>
+                <Link href="/products/scan">
                   <Button size="lg" variant="outline" className="w-full sm:w-auto">
                     <QrCode className="mr-2 h-4 w-4" /> Try scanner
                   </Button>

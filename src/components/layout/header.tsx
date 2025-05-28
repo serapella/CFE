@@ -38,7 +38,7 @@ export function Header() {
     }`}>
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-2" legacyBehavior>
+          <Link href="/" className="flex items-center gap-2">
             <BarChart2 className="h-6 w-6 text-primary" />
             <span className="font-bold text-xl">BODYMATTERS</span>
           </Link>
@@ -66,21 +66,21 @@ export function Header() {
                         </NavigationMenuLink>
                       </li>
                       <li>
-                        <Link href="/recipes/create" legacyBehavior passHref>
+                        <Link href="/recipes/create">
                           <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Create Recipe
                           </NavigationMenuLink>
                         </Link>
                       </li>
                       <li>
-                        <Link href="/recipes/favorites" legacyBehavior passHref>
+                        <Link href="/recipes/favorites">
                           <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             My Favorites
                           </NavigationMenuLink>
                         </Link>
                       </li>
                       <li>
-                        <Link href="/shopping-list" legacyBehavior passHref>
+                        <Link href="/shopping-list">
                           <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Shopping List
                           </NavigationMenuLink>
@@ -110,21 +110,21 @@ export function Header() {
                         </NavigationMenuLink>
                       </li>
                       <li>
-                        <Link href="/products/scan" legacyBehavior passHref>
+                        <Link href="/products/scan">
                           <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Scan Product
                           </NavigationMenuLink>
                         </Link>
                       </li>
                       <li>
-                        <Link href="/products/compare" legacyBehavior passHref>
+                        <Link href="/products/compare">
                           <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Compare Products
                           </NavigationMenuLink>
                         </Link>
                       </li>
                       <li>
-                        <Link href="/health-goals" legacyBehavior passHref>
+                        <Link href="/health-goals">
                           <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Health Goals
                           </NavigationMenuLink>
@@ -135,7 +135,7 @@ export function Header() {
                 </NavigationMenuItem>
                 
                 <NavigationMenuItem>
-                  <Link href="/community" legacyBehavior passHref>
+                  <Link href="/community">
                     <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                       Community
                     </NavigationMenuLink>
@@ -151,7 +151,7 @@ export function Header() {
             <Search className="h-5 w-5" />
           </Button>
           
-          <Link href="/shopping-list" legacyBehavior>
+          <Link href="/shopping-list">
             <Button variant="ghost" size="icon" className="hidden md:flex">
               <ShoppingCart className="h-5 w-5" />
             </Button>
@@ -162,10 +162,10 @@ export function Header() {
           </div>
           
           <div className="hidden md:flex gap-2">
-            <Link href="/login" legacyBehavior>
+            <Link href="/login">
               <Button variant="outline">Log in</Button>
             </Link>
-            <Link href="/register" legacyBehavior>
+            <Link href="/register">
               <Button>Sign up</Button>
             </Link>
           </div>
@@ -178,7 +178,7 @@ export function Header() {
             </SheetTrigger>
             <SheetContent side="right">
               <div className="flex flex-col gap-6 py-6">
-                <Link href="/" className="flex items-center gap-2" legacyBehavior>
+                <Link href="/" className="flex items-center gap-2">
                   <BarChart2 className="h-6 w-6 text-primary" />
                   <span className="font-bold text-xl">BODYMATTERS</span>
                 </Link>
@@ -192,10 +192,10 @@ export function Header() {
                 </div>
                 
                 <div className="flex flex-col gap-2 mt-auto">
-                  <Link href="/login" legacyBehavior>
+                  <Link href="/login">
                     <Button variant="outline" className="w-full">Log in</Button>
                   </Link>
-                  <Link href="/register" legacyBehavior>
+                  <Link href="/register">
                     <Button className="w-full">Sign up</Button>
                   </Link>
                   

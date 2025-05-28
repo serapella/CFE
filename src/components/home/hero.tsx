@@ -74,12 +74,12 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="flex flex-col sm:flex-row justify-center items-center gap-4"
           >
-            <Link href="/products/scan" legacyBehavior>
+            <Link href="/products/scan">
               <Button variant="outline" size="lg">
                 <Scan className="mr-2 h-4 w-4" /> Scan product
               </Button>
             </Link>
-            <Link href="/recipes" legacyBehavior>
+            <Link href="/recipes">
               <Button variant="outline" size="lg">
                 Browse recipes
               </Button>
