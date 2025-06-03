@@ -1,291 +1,103 @@
-"use client";
-
-import Link from "next/link";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Search, Scan, Info, Leaf, Heart, ArrowRight } from "lucide-react";
-import { motion } from "@/components/ui/motion";
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-b from-secondary to-background py-20">
-        <div className="container">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                Discover what's really in your products
-              </h1>
-              <p className="text-lg text-muted-foreground mb-8">
-                Make informed choices about your personal care products. Scan,
-                analyze, and understand ingredients for better health decisions.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <Button size="lg" className="bg-primary hover:bg-primary/90">
-                  <Scan className="mr-2 h-5 w-5" /> Scan Product
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-primary text-primary hover:bg-primary/10"
-                >
-                  <Search className="mr-2 h-5 w-5" /> Search Database
-                </Button>
-              </div>
-              <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                <div className="flex items-center">
-                  <Badge variant="secondary" className="mr-2">
-                    8000+
-                  </Badge>
-                  <span>Products analyzed</span>
-                </div>
-                <div className="h-1 w-1 bg-muted-foreground rounded-full"></div>
-                <span>100% Independent advice</span>
-              </div>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="relative aspect-square"
-            >
-              <Image
-                src="/window.svg"
-                alt="Product analysis illustration"
-                fill
-                className="object-cover rounded-2xl"
-                priority
-              />
-            </motion.div>
-          </div>
+    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+        <Image
+          className="dark:invert"
+          src="/next.svg"
+          alt="Next.js logo"
+          width={180}
+          height={38}
+          priority
+        />
+        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
+          <li className="mb-2 tracking-[-.01em]">
+            Get started by editing{" "}
+            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
+              src/app/page.tsx
+            </code>
+            .
+          </li>
+          <li className="tracking-[-.01em]">
+            Save and see your changes instantly.
+          </li>
+        </ol>
+
+        <div className="flex gap-4 items-center flex-col sm:flex-row">
+          <a
+            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
+            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Image
+              className="dark:invert"
+              src="/vercel.svg"
+              alt="Vercel logomark"
+              width={20}
+              height={20}
+            />
+            Deploy now
+          </a>
+          <a
+            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
+            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Read our docs
+          </a>
         </div>
-      </section>
-
-      {/* Features */}
-      <section className="py-20 bg-accent/20">
-        <div className="container">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Make better choices for your health
-            </h2>
-            <p className="text-lg text-muted-foreground">
-              We help you understand what goes into your personal care products
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: <Scan className="h-8 w-8 text-[hsl(var(--peacock))]" />,
-                title: "Scan & Analyze",
-                description:
-                  "Instantly analyze product ingredients with a simple scan",
-              },
-              {
-                icon: <Info className="h-8 w-8 text-[hsl(var(--papaya))]" />,
-                title: "Understand Ingredients",
-                description:
-                  "Learn about ingredients and their impact on your health",
-              },
-              {
-                icon: <Leaf className="h-8 w-8 text-[hsl(var(--azure))]" />,
-                title: "Find Alternatives",
-                description:
-                  "Discover healthier alternatives for your favorite products",
-              },
-            ].map((feature, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-background p-8 rounded-xl border"
-              >
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-secondary mb-6">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-muted-foreground">{feature.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Recent Analyses */}
-      <section className="py-20">
-        <div className="container">
-          <div className="flex justify-between items-end mb-12">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-bold mb-2">
-                Recently Analyzed Products
-              </h2>
-              <p className="text-muted-foreground">
-                See what others have discovered
-              </p>
-            </div>
-            <Button variant="ghost" className="hidden md:flex items-center">
-              View all analyses <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { name: "Natural Face Cream", score: "A", concerns: [] },
-              {
-                name: "Organic Shampoo",
-                score: "B",
-                concerns: ["Contains fragrance"],
-              },
-              {
-                name: "Body Lotion",
-                score: "C",
-                concerns: [
-                  "Contains parabens",
-                  "Contains synthetic fragrances",
-                ],
-              },
-            ].map((product, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <div className="group bg-background rounded-xl border overflow-hidden">
-                  <div className="relative aspect-square">
-                    <Image
-                      src="/window.svg"
-                      alt={product.name}
-                      fill
-                      className="object-cover"
-                    />
-                    <div className="absolute top-4 left-4">
-                      <Badge
-                        variant={
-                          product.score === "A"
-                            ? "default"
-                            : product.score === "B"
-                            ? "secondary"
-                            : "destructive"
-                        }
-                        className="text-lg font-bold"
-                      >
-                        {product.score}
-                      </Badge>
-                    </div>
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      className="absolute top-4 right-4 bg-background/80 backdrop-blur-sm hover:bg-background/90"
-                    >
-                      <Heart className="h-5 w-5" />
-                    </Button>
-                  </div>
-                  <div className="p-6">
-                    <h3 className="font-semibold text-lg mb-2">
-                      {product.name}
-                    </h3>
-                    {product.concerns.length > 0 ? (
-                      <div className="space-y-2">
-                        {product.concerns.map((concern, j) => (
-                          <Badge key={j} variant="secondary" className="mr-2">
-                            {concern}
-                          </Badge>
-                        ))}
-                      </div>
-                    ) : (
-                      <Badge
-                        variant="outline"
-                        className="bg-[hsl(var(--secondary))] text-[hsl(var(--peacock))] border-[hsl(var(--peacock))]"
-                      >
-                        No concerns found
-                      </Badge>
-                    )}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* DIY Section */}
-      <section className="py-20 bg-accent/20">
-        <div className="container">
-          <div className="bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--peacock))] rounded-2xl p-8 md:p-12">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="text-white">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                  Create your own natural care products
-                </h2>
-                <p className="text-lg opacity-90 mb-8">
-                  Discover simple recipes for natural alternatives you can make
-                  at home.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button size="lg" variant="secondary">
-                    View Recipes
-                  </Button>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="text-white border-white hover:bg-white/20"
-                  >
-                    Learn More
-                  </Button>
-                </div>
-              </div>
-              <div className="relative aspect-square">
-                <Image
-                  src="/window.svg"
-                  alt="DIY Recipes"
-                  fill
-                  className="object-cover rounded-xl"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-20">
-        <div className="container">
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Start making informed choices today
-            </h2>
-            <p className="text-lg text-muted-foreground mb-8">
-              Join our community and get access to all features
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                size="lg"
-                className="bg-[hsl(var(--peacock))] hover:bg-[hsl(var(--peacock))]/90"
-              >
-                Create Account
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-[hsl(var(--peacock))] text-[hsl(var(--peacock))] hover:bg-[hsl(var(--peacock))]/10"
-              >
-                Learn More
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
+      </main>
+      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
+        <a
+          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            aria-hidden
+            src="/file.svg"
+            alt="File icon"
+            width={16}
+            height={16}
+          />
+          Learn
+        </a>
+        <a
+          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            aria-hidden
+            src="/window.svg"
+            alt="Window icon"
+            width={16}
+            height={16}
+          />
+          Examples
+        </a>
+        <a
+          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            aria-hidden
+            src="/globe.svg"
+            alt="Globe icon"
+            width={16}
+            height={16}
+          />
+          Go to nextjs.org →
+        </a>
+      </footer>
+    </div>
   );
 }
