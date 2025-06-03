@@ -37,10 +37,10 @@ export function Header() {
           : "bg-transparent"
       }`}
     >
-      <div className="w-full flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+      <div className="w-full flex h-24 items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-6 flex-1 min-w-0">
           <Link href="/" className="flex items-center gap-2 min-w-0">
-            <span className="relative h-14 w-[clamp(120px,18vw,240px)] sm:h-16 sm:w-[clamp(160px,18vw,280px)] lg:h-20 lg:w-[clamp(200px,18vw,320px)] block max-w-full">
+            <span className="relative h-16 w-48 sm:h-20 sm:w-64 lg:h-24 lg:w-80 block max-w-xs min-w-[120px]">
               <Image
                 src="/BarcodeBM.png"
                 alt="BODY MATTERS logo"
