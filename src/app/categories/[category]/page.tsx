@@ -122,13 +122,12 @@ export default function CategoryPage({
         <h1 className="text-4xl font-bold mb-4">{category.title}</h1>
         <p className="text-lg text-muted-foreground">{category.description}</p>
       </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {category.subcategories.map((subcategory) => (
           <Link
             key={subcategory.id}
             href={`/categories/${params.category}/${subcategory.id}`}
-          >
+            legacyBehavior>
             <Card className="group hover:shadow-lg transition-shadow">
               <div className="p-6">
                 <h2 className="text-xl font-semibold mb-2">
@@ -145,7 +144,6 @@ export default function CategoryPage({
           </Link>
         ))}
       </div>
-
       <div className="mt-12">
         <Card className="bg-muted/50">
           <div className="p-8">

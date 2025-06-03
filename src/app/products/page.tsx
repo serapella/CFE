@@ -49,7 +49,6 @@ export default async function ProductsPage() {
           Browse and search for products to see their health scores and ingredients
         </p>
       </div>
-
       <div className="flex flex-col md:flex-row gap-4 mb-6">
         <div className="relative w-full md:w-auto md:flex-1">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
@@ -66,7 +65,7 @@ export default async function ProductsPage() {
             Filters
           </Button>
 
-          <Link href="/products/scan">
+          <Link href="/products/scan" legacyBehavior>
             <Button variant="secondary" className="w-full md:w-auto">
               <QrCode className="mr-2 h-4 w-4" />
               Scan Product
@@ -74,7 +73,6 @@ export default async function ProductsPage() {
           </Link>
         </div>
       </div>
-
       <Collapsible>
         <CollapsibleContent>
           <div className="bg-muted/50 rounded-lg p-4 mb-6">
@@ -143,7 +141,6 @@ export default async function ProductsPage() {
           </div>
         </CollapsibleContent>
       </Collapsible>
-
       <Tabs defaultValue="grid" className="w-full">
         <div className="flex justify-between items-center mb-6">
           <p className="text-sm text-muted-foreground">
@@ -179,7 +176,7 @@ export default async function ProductsPage() {
                       <span className="font-medium">{product.score}</span>
                     </div>
                   )}
-                  <Link href={`/products/${product.id}`}>
+                  <Link href={`/products/${product.id}`} legacyBehavior>
                     <Button variant="outline" className="w-full mt-2">
                       View Details
                     </Button>
@@ -252,12 +249,12 @@ export default async function ProductsPage() {
                         </div>
 
                         <div className="flex gap-2">
-                          <Link href={`/products/${product.id}`}>
+                          <Link href={`/products/${product.id}`} legacyBehavior>
                             <Button variant="outline" size="sm">
                               View Details
                             </Button>
                           </Link>
-                          <Link href={`/products/alternatives/${product.id}`}>
+                          <Link href={`/products/alternatives/${product.id}`} legacyBehavior>
                             <Button variant="secondary" size="sm">
                               Alternatives
                             </Button>

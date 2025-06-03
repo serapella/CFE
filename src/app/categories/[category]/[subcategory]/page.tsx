@@ -126,7 +126,7 @@ export default function Page({ params }: Props) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {products.map((product) => (
               <Card key={product.id} className="overflow-hidden">
-                <Link href={`/products/${product.id}`}>
+                <Link href={`/products/${product.id}`} legacyBehavior>
                   <div className="relative aspect-square">
                     <Image
                       src={product.image}

@@ -15,7 +15,6 @@ export default function AboutPage() {
           personal care products through transparency and education.
         </p>
       </div>
-
       {/* Mission & Values */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
         {[
@@ -53,7 +52,6 @@ export default function AboutPage() {
           </Card>
         ))}
       </div>
-
       {/* Story Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
         <div>
@@ -80,7 +78,6 @@ export default function AboutPage() {
           />
         </div>
       </div>
-
       {/* Team Section */}
       <div className="text-center mb-12">
         <h2 className="text-3xl font-bold mb-4">Meet Our Team</h2>
@@ -89,7 +86,6 @@ export default function AboutPage() {
           enthusiasts working together to make personal care more transparent.
         </p>
       </div>
-
       {/* CTA Section */}
       <Card className="bg-[hsl(var(--peacock))] text-white">
         <div className="p-8 md:p-12">
@@ -103,7 +99,7 @@ export default function AboutPage() {
               <Button size="lg" variant="secondary">
                 Join Our Community
               </Button>
-              <Link href="/contact">
+              <Link href="/contact" legacyBehavior>
                 <Button
                   size="lg"
                   variant="outline"

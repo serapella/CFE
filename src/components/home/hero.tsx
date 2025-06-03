@@ -15,12 +15,10 @@ export function Hero() {
     <section className="relative py-20 md:py-32">
       {/* Gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--peacock))] via-background to-[hsl(var(--azure))] opacity-10"></div>
-      
       {/* Background pattern */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-grid-white/10 bg-grid-16 [mask-image:radial-gradient(white,transparent_85%)]"></div>
       </div>
-
       <div className="container relative z-20">
         <div className="max-w-4xl mx-auto">
           <motion.div

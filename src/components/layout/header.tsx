@@ -68,8 +68,7 @@ export function Header() {
                       <li className="row-span-3">
                         <Link
                           href="/recipes"
-                          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                        >
+                          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md">
                           <div className="mb-2 mt-4 text-lg font-medium">
                             Explore Recipes
                           </div>
@@ -80,7 +79,7 @@ export function Header() {
                         </Link>
                       </li>
                       <li>
-                        <Link href="/recipes/create">
+                        <Link href="/recipes/create" legacyBehavior>
                           <NavigationMenuLink
                             className={navigationMenuTriggerStyle()}
                           >
@@ -89,7 +88,7 @@ export function Header() {
                         </Link>
                       </li>
                       <li>
-                        <Link href="/recipes/favorites">
+                        <Link href="/recipes/favorites" legacyBehavior>
                           <NavigationMenuLink
                             className={navigationMenuTriggerStyle()}
                           >
@@ -98,7 +97,7 @@ export function Header() {
                         </Link>
                       </li>
                       <li>
-                        <Link href="/shopping-list">
+                        <Link href="/shopping-list" legacyBehavior>
                           <NavigationMenuLink
                             className={navigationMenuTriggerStyle()}
                           >
@@ -117,8 +116,7 @@ export function Header() {
                       <li className="row-span-3">
                         <Link
                           href="/products"
-                          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                        >
+                          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md">
                           <div className="mb-2 mt-4 text-lg font-medium">
                             Product Database
                           </div>
@@ -129,7 +127,7 @@ export function Header() {
                         </Link>
                       </li>
                       <li>
-                        <Link href="/products/scan">
+                        <Link href="/products/scan" legacyBehavior>
                           <NavigationMenuLink
                             className={navigationMenuTriggerStyle()}
                           >
@@ -138,7 +136,7 @@ export function Header() {
                         </Link>
                       </li>
                       <li>
-                        <Link href="/products/compare">
+                        <Link href="/products/compare" legacyBehavior>
                           <NavigationMenuLink
                             className={navigationMenuTriggerStyle()}
                           >
@@ -147,7 +145,7 @@ export function Header() {
                         </Link>
                       </li>
                       <li>
-                        <Link href="/health-goals">
+                        <Link href="/health-goals" legacyBehavior>
                           <NavigationMenuLink
                             className={navigationMenuTriggerStyle()}
                           >
@@ -177,7 +175,7 @@ export function Header() {
             <Search className="h-5 w-5" />
           </Button>
 
-          <Link href="/favorites">
+          <Link href="/favorites" legacyBehavior>
             <Button variant="ghost" size="icon" className="hidden md:flex">
               <Heart className="h-5 w-5" />
             </Button>
@@ -188,10 +186,10 @@ export function Header() {
           </div>
 
           <div className="hidden md:flex gap-2">
-            <Link href="/login">
+            <Link href="/login" legacyBehavior>
               <Button variant="outline">Log in</Button>
             </Link>
-            <Link href="/register">
+            <Link href="/register" legacyBehavior>
               <Button>Sign up</Button>
             </Link>
           </div>
@@ -242,12 +240,12 @@ export function Header() {
                 </div>
 
                 <div className="flex flex-col gap-2 mt-auto">
-                  <Link href="/login">
+                  <Link href="/login" legacyBehavior>
                     <Button variant="outline" className="w-full">
                       Log in
                     </Button>
                   </Link>
-                  <Link href="/register">
+                  <Link href="/register" legacyBehavior>
                     <Button className="w-full">Sign up</Button>
                   </Link>
 

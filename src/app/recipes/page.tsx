@@ -59,7 +59,6 @@ export default function RecipesPage() {
           Create your own natural beauty and personal care products at home
         </p>
       </div>
-
       <div className="flex overflow-x-auto pb-4 mb-8 gap-2">
         {categories.map((category, index) => (
           <Button
@@ -71,7 +70,6 @@ export default function RecipesPage() {
           </Button>
         ))}
       </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {recipes.map((recipe, index) => (
           <motion.div
@@ -80,7 +78,7 @@ export default function RecipesPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: index * 0.1 }}
           >
-            <Link href={`/recipes/${recipe.id}`}>
+            <Link href={`/recipes/${recipe.id}`} legacyBehavior>
               <Card className="group overflow-hidden">
                 <div className="relative aspect-[4/3]">
                   <Image
@@ -115,7 +113,6 @@ export default function RecipesPage() {
           </motion.div>
         ))}
       </div>
-
       <div className="mt-12 text-center">
         <Button size="lg">
           Load More Recipes <ChevronRight className="ml-2 h-4 w-4" />

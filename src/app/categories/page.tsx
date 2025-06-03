@@ -60,7 +60,6 @@ export default function CategoriesPage() {
           Explore our curated collection of natural and organic personal care products
         </p>
       </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {categories.map((category, index) => (
           <motion.div
@@ -69,7 +68,7 @@ export default function CategoriesPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: index * 0.1 }}
           >
-            <Link href={`/categories/${category.id}`}>
+            <Link href={`/categories/${category.id}`} legacyBehavior>
               <Card className="group overflow-hidden">
                 <div className="relative aspect-[4/3]">
                   <Image
