@@ -51,19 +51,17 @@ export function Header() {
                   <NavigationMenuContent>
                     <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
                       <li className="row-span-3">
-                        <NavigationMenuLink asChild>
-                          <a
-                            className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                            href="/recipes"
-                          >
-                            <div className="mb-2 mt-4 text-lg font-medium">
-                              Explore Recipes
-                            </div>
-                            <p className="text-sm leading-tight text-muted-foreground">
-                              Discover healthy recipes tailored to your preferences
-                            </p>
-                          </a>
-                        </NavigationMenuLink>
+                        <Link
+                          href="/recipes"
+                          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                        >
+                          <div className="mb-2 mt-4 text-lg font-medium">
+                            Explore Recipes
+                          </div>
+                          <p className="text-sm leading-tight text-muted-foreground">
+                            Discover healthy recipes tailored to your preferences
+                          </p>
+                        </Link>
                       </li>
                       <li>
                         <Link href="/recipes/create">
@@ -95,19 +93,17 @@ export function Header() {
                   <NavigationMenuContent>
                     <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
                       <li className="row-span-3">
-                        <NavigationMenuLink asChild>
-                          <a
-                            className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                            href="/products"
-                          >
-                            <div className="mb-2 mt-4 text-lg font-medium">
-                              Product Database
-                            </div>
-                            <p className="text-sm leading-tight text-muted-foreground">
-                              Explore our database of products with detailed health information
-                            </p>
-                          </a>
-                        </NavigationMenuLink>
+                        <Link
+                          href="/products"
+                          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                        >
+                          <div className="mb-2 mt-4 text-lg font-medium">
+                            Product Database
+                          </div>
+                          <p className="text-sm leading-tight text-muted-foreground">
+                            Explore our database of products with detailed health information
+                          </p>
+                        </Link>
                       </li>
                       <li>
                         <Link href="/products/scan">
@@ -135,10 +131,8 @@ export function Header() {
                 </NavigationMenuItem>
                 
                 <NavigationMenuItem>
-                  <Link href="/community">
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                      Community
-                    </NavigationMenuLink>
+                  <Link href="/community" className={navigationMenuTriggerStyle()}>
+                    Community
                   </Link>
                 </NavigationMenuItem>
               </NavigationMenuList>

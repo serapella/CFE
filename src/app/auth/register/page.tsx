@@ -7,32 +7,23 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { motion } from "@/components/ui/motion";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Loader2, UserPlus } from "lucide-react";
 import Link from "next/link";
+import { useFormAction } from "@/hooks/use-form-action";
 
 export default function RegisterPage() {
   const { toast } = useToast();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [agreeToTerms, setAgreeToTerms] = useState(false);
   
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-  
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const { pending, execute } = useFormAction(async (formData: FormData) => {
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const confirmPassword = formData.get("confirmPassword") as string;
     
-    // Basic validation
-    if (!formData.name || !formData.email || !formData.password) {
+    if (!name || !email || !password || !confirmPassword) {
       toast({
         title: "Invalid input",
         description: "Please fill in all required fields.",
@@ -41,7 +32,7 @@ export default function RegisterPage() {
       return;
     }
     
-    if (formData.password !== formData.confirmPassword) {
+    if (password !== confirmPassword) {
       toast({
         title: "Passwords don't match",
         description: "Please make sure your passwords match.",
@@ -50,31 +41,27 @@ export default function RegisterPage() {
       return;
     }
     
-    if (!acceptTerms) {
+    if (!agreeToTerms) {
       toast({
         title: "Terms not accepted",
-        description: "Please accept the terms and conditions to continue.",
+        description: "Please agree to the terms and conditions.",
         variant: "destructive",
       });
       return;
     }
     
-    setIsLoading(true);
-    
     // In a real app, this would be a call to the auth API
-    setTimeout(() => {
-      setIsLoading(false);
-      
-      // Simulate successful registration
-      toast({
-        title: "Registration successful!",
-        description: "Your account has been created. Welcome to BODYMATTERS!",
-      });
-      
-      // Navigate to dashboard or home page (would use router in a real app)
-      window.location.href = "/";
-    }, 1500);
-  };
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    // Simulate successful registration
+    toast({
+      title: "Welcome!",
+      description: "Your account has been created successfully.",
+    });
+    
+    // Navigate to dashboard or home page (would use router in a real app)
+    window.location.href = "/";
+  });
   
   return (
     <div className="container flex items-center justify-center min-h-screen py-8">
@@ -117,15 +104,14 @@ export default function RegisterPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleRegister} className="space-y-4">
+              <form action={execute} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="name">Full Name</Label>
                   <Input 
                     id="name" 
                     name="name"
+                    type="text" 
                     placeholder="John Doe" 
-                    value={formData.name}
-                    onChange={handleChange}
                     required
                   />
                 </div>
@@ -137,8 +123,6 @@ export default function RegisterPage() {
                     name="email"
                     type="email" 
                     placeholder="you@example.com" 
-                    value={formData.email}
-                    onChange={handleChange}
                     required
                   />
                 </div>
@@ -151,8 +135,6 @@ export default function RegisterPage() {
                       name="password"
                       type={showPassword ? "text" : "password"}
                       placeholder="••••••••" 
-                      value={formData.password}
-                      onChange={handleChange}
                       required
                     />
                     <button
@@ -163,9 +145,6 @@ export default function RegisterPage() {
                       {showPassword ? "Hide" : "Show"}
                     </button>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Password must be at least 8 characters long
-                  </p>
                 </div>
                 
                 <div className="space-y-2">
@@ -175,40 +154,34 @@ export default function RegisterPage() {
                     name="confirmPassword"
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••" 
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
                     required
                   />
                 </div>
                 
-                <div className="flex items-start space-x-2">
+                <div className="flex items-center space-x-2">
                   <Checkbox 
                     id="terms" 
-                    checked={acceptTerms}
-                    onCheckedChange={(checked) => setAcceptTerms(checked as boolean)}
+                    name="terms"
+                    checked={agreeToTerms}
+                    onCheckedChange={(checked: boolean | 'indeterminate') => setAgreeToTerms(!!checked)}
                   />
-                  <div className="grid gap-1.5 leading-none">
-                    <label
-                      htmlFor="terms"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      I accept the terms and conditions
-                    </label>
-                    <p className="text-xs text-muted-foreground">
-                      By signing up, you agree to our{" "}
-                      <Link href="/terms" className="text-primary hover:underline">
-                        Terms of Service
-                      </Link>{" "}
-                      and{" "}
-                      <Link href="/privacy" className="text-primary hover:underline">
-                        Privacy Policy
-                      </Link>
-                    </p>
-                  </div>
+                  <label
+                    htmlFor="terms"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    I agree to the{" "}
+                    <Link href="/terms" className="text-primary hover:underline">
+                      Terms of Service
+                    </Link>{" "}
+                    and{" "}
+                    <Link href="/privacy" className="text-primary hover:underline">
+                      Privacy Policy
+                    </Link>
+                  </label>
                 </div>
                 
-                <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? (
+                <Button type="submit" className="w-full" disabled={pending}>
+                  {pending ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Creating account...
@@ -290,7 +263,7 @@ export default function RegisterPage() {
                 </Button>
               </div>
             </CardContent>
-            <CardFooter className="flex justify-center">
+            <CardFooter className="flex flex-col items-center justify-center space-y-2">
               <p className="text-sm text-muted-foreground">
                 Already have an account?{" "}
                 <Link href="/auth/login" className="text-primary hover:underline">

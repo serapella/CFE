@@ -7,21 +7,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { motion } from "@/components/ui/motion";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Loader2, LogIn } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
+import { useFormAction } from "@/hooks/use-form-action";
 
 export default function LoginPage() {
   const { toast } = useToast();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const { pending, execute } = useFormAction(async (formData: FormData) => {
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
     
     if (!email || !password) {
       toast({
@@ -32,22 +30,18 @@ export default function LoginPage() {
       return;
     }
     
-    setIsLoading(true);
-    
     // In a real app, this would be a call to the auth API
-    setTimeout(() => {
-      setIsLoading(false);
-      
-      // Simulate successful login
-      toast({
-        title: "Welcome back!",
-        description: "You have successfully logged in.",
-      });
-      
-      // Navigate to dashboard or home page (would use router in a real app)
-      window.location.href = "/";
-    }, 1500);
-  };
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    // Simulate successful login
+    toast({
+      title: "Welcome back!",
+      description: "You have successfully logged in.",
+    });
+    
+    // Navigate to dashboard or home page (would use router in a real app)
+    window.location.href = "/";
+  });
   
   return (
     <div className="container flex items-center justify-center min-h-screen py-8">
@@ -90,15 +84,14 @@ export default function LoginPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleLogin} className="space-y-4">
+              <form action={execute} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
                   <Input 
                     id="email" 
+                    name="email"
                     type="email" 
                     placeholder="you@example.com" 
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
                     required
                   />
                 </div>
@@ -116,10 +109,9 @@ export default function LoginPage() {
                   <div className="relative">
                     <Input 
                       id="password" 
+                      name="password"
                       type={showPassword ? "text" : "password"}
                       placeholder="••••••••" 
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
                       required
                     />
                     <button
@@ -135,8 +127,9 @@ export default function LoginPage() {
                 <div className="flex items-center space-x-2">
                   <Checkbox 
                     id="remember" 
+                    name="remember"
                     checked={rememberMe}
-                    onCheckedChange={(checked) => setRememberMe(checked as boolean)}
+                    onCheckedChange={(checked: boolean | 'indeterminate') => setRememberMe(!!checked)}
                   />
                   <label
                     htmlFor="remember"
@@ -146,8 +139,8 @@ export default function LoginPage() {
                   </label>
                 </div>
                 
-                <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? (
+                <Button type="submit" className="w-full" disabled={pending}>
+                  {pending ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Signing in...
