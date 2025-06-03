@@ -83,6 +83,10 @@ export class ApiService {
     return this.fetchFrontend<Product>(`/products/barcode/${barcode}`);
   }
 
+  static async getProductReviews(id: number) {
+    return this.fetchFrontend(`/products/${id}/reviews`);
+  }
+
   // Category routes
   static async getCategories(): Promise<Category[]> {
     return this.fetchFrontend<Category[]>('/categories');

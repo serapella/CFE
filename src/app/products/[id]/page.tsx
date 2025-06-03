@@ -15,12 +15,15 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+// import type { Product, Review } from "@/types"; // Uncomment if you have these types
 
 export default async function ProductPage({ params }: { params: { id: string } }) {
   let product = null;
+  let reviews = [];
   let error = null;
   try {
     product = await ApiService.getProduct(Number(params.id));
+    reviews = await ApiService.getProductReviews(Number(params.id)) as any[];
   } catch (err: any) {
     error = err.message || "Unknown error";
   }
@@ -48,16 +51,12 @@ export default async function ProductPage({ params }: { params: { id: string } }
         {/* Product Images */}
         <div>
           <div className="relative aspect-square rounded-xl overflow-hidden mb-6">
-            {product.image_url ? (
-              <Image
-                src={product.image_url}
-                alt={product.name}
-                fill
-                className="object-cover"
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center bg-muted text-muted-foreground">No image</div>
-            )}
+            <Image
+              src={product.image_url || "/fallback.png"}
+              alt={product.name}
+              fill
+              className="object-cover"
+            />
           </div>
           <div className="grid grid-cols-4 gap-4">
             {[...Array(4)].map((_, i) => (
@@ -267,6 +266,35 @@ export default async function ProductPage({ params }: { params: { id: string } }
                   View Details
                 </Button>
               </div>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      {/* Reviews Section */}
+      <div className="mt-16">
+        <h2 className="text-2xl font-bold mb-6">Reviews</h2>
+        {reviews.length === 0 && <div className="text-muted-foreground">No reviews yet.</div>}
+        <div className="space-y-6">
+          {reviews.map((review: any) => (
+            <Card key={review.id} className="p-4">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="font-semibold">
+                  {review.user?.name || `User #${review.user_id}`}
+                </div>
+                <div className="flex items-center gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`h-4 w-4 ${i < review.rating ? "text-[hsl(var(--sunshine))] fill-[hsl(var(--sunshine))]" : "text-[hsl(var(--muted-foreground))]"}`}
+                    />
+                  ))}
+                </div>
+                <span className="text-xs text-muted-foreground ml-auto">
+                  {new Date(review.created_at).toLocaleDateString()}
+                </span>
+              </div>
+              <div className="text-muted-foreground text-sm">{review.comment}</div>
             </Card>
           ))}
         </div>

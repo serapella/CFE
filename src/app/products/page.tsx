@@ -1,3 +1,5 @@
+import { ApiService } from "@/lib/api";
+import type { Product } from "@/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -28,65 +30,23 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 
-// Product data
-const products = [
-  {
-    id: 1,
-    name: "Natural Daily Moisturizer",
-    image: "https://images.pexels.com/photos/3685530/pexels-photo-3685530.jpeg",
-    brand: "Pure Essentials",
-    category: "Moisturizer",
-    dangerScore: 12, // Low danger score (good)
-    rating: "A",
-    keyIngredients: ["Aloe Vera", "Jojoba Oil", "Vitamin E"],
-    concerns: [],
-  },
-  {
-    id: 2,
-    name: "Hydrating Face Cream",
-    image: "https://images.pexels.com/photos/3786215/pexels-photo-3786215.jpeg",
-    brand: "GlowBoost",
-    category: "Face Cream",
-    dangerScore: 35, // Medium danger score
-    rating: "B",
-    keyIngredients: ["Hyaluronic Acid", "Ceramides", "Glycerin"],
-    concerns: ["Contains fragrance"],
-  },
-  {
-    id: 3,
-    name: "Ultra Shine Shampoo",
-    image: "https://images.pexels.com/photos/3735219/pexels-photo-3735219.jpeg",
-    brand: "LuxHair",
-    category: "Shampoo",
-    dangerScore: 72, // High danger score (bad)
-    rating: "C",
-    keyIngredients: ["Sodium Laureth Sulfate", "Fragrance", "Methylparaben"],
-    concerns: ["Contains sulfates", "Contains parabens", "Contains fragrance"],
-  },
-];
+export default async function ProductsPage() {
+  let products: Product[] = [];
+  let error = null;
+  try {
+    products = await ApiService.getProducts();
+  } catch (err: any) {
+    error = err.message || "Unknown error";
+  }
 
-// Function to determine progress bar color based on danger score
-const getDangerScoreColor = (score: number) => {
-  if (score < 30) return "bg-[hsl(var(--peacock))]"; // Low danger (good)
-  if (score < 60) return "bg-[hsl(var(--sunshine))]"; // Medium danger
-  return "bg-[hsl(var(--coral))]"; // High danger (bad)
-};
+  if (error) return <div className="container py-12 text-red-500">{error}</div>;
 
-// Function to determine badge variant based on rating
-const getRatingBadgeVariant = (rating: string) => {
-  if (rating === "A") return "outline";
-  if (rating === "B") return "secondary";
-  return "destructive";
-};
-
-export default function ProductsPage() {
   return (
     <div className="container py-12">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Product Database</h1>
         <p className="text-muted-foreground">
-          Browse and search for products to see their health scores and
-          ingredients
+          Browse and search for products to see their health scores and ingredients
         </p>
       </div>
 
@@ -197,106 +157,33 @@ export default function ProductsPage() {
 
         <TabsContent value="grid" className="mt-0">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {products.map((product) => (
-              <Card key={product.id} className="overflow-hidden">
-                <div className="p-6">
-                  <div className="flex gap-4 mb-4">
-                    <div className="relative h-24 w-24 rounded-md overflow-hidden flex-shrink-0">
-                      <Image
-                        src={product.image}
-                        alt={product.name}
-                        className="object-cover"
-                        fill
-                      />
-                    </div>
-                    <div>
-                      <Badge variant={getRatingBadgeVariant(product.rating)}>
-                        {product.rating} Rating
-                      </Badge>
-                      <h3 className="font-semibold text-lg mt-1">
-                        {product.name}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        {product.brand} • {product.category}
-                      </p>
-                    </div>
+            {products.map((product: Product) => (
+              <Card key={product.id} className="overflow-hidden h-full">
+                <div className="relative aspect-square rounded-t-lg overflow-hidden">
+                  <Image
+                    src={product.image_url || "/fallback.png"}
+                    alt={product.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
+                  <div className="text-sm text-muted-foreground mb-2">
+                    {product.brand?.name && <span>{product.brand.name}</span>}
+                    {product.category?.name && <span> • {product.category.name}</span>}
                   </div>
-
-                  <div className="mb-4">
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-sm font-medium">Danger Score</span>
-                      <span className="text-sm font-medium">
-                        {product.dangerScore}%
-                      </span>
-                    </div>
-                    <Progress
-                      value={product.dangerScore}
-                      className="h-2"
-                      style={
-                        {
-                          "--progress-background": getDangerScoreColor(
-                            product.dangerScore
-                          ),
-                        } as React.CSSProperties
-                      }
-                    />
-                  </div>
-
-                  <div className="mb-4">
-                    <p className="text-sm font-medium mb-2">Key Ingredients:</p>
-                    <div className="flex flex-wrap gap-1">
-                      {product.keyIngredients.map((ingredient) => (
-                        <Badge
-                          key={ingredient}
-                          variant="outline"
-                          className="text-xs"
-                        >
-                          {ingredient}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-
-                  {product.concerns.length > 0 && (
-                    <div className="mb-4">
-                      <p className="text-sm font-medium flex items-center gap-1 text-[hsl(var(--sunshine))]">
-                        <AlertTriangle className="h-3.5 w-3.5" /> Concerns:
-                      </p>
-                      <ul className="text-xs text-muted-foreground mt-1">
-                        {product.concerns.map((concern, i) => (
-                          <li key={i} className="flex items-start gap-1 mt-1">
-                            <span className="h-3.5 w-3.5 rounded-full border border-[hsl(var(--sunshine))] flex-shrink-0"></span>
-                            {concern}
-                          </li>
-                        ))}
-                      </ul>
+                  {typeof product.score === 'number' && (
+                    <div className="mb-2">
+                      <span className="font-medium">Score: </span>
+                      <span className="font-medium">{product.score}</span>
                     </div>
                   )}
-
-                  {product.concerns.length === 0 && (
-                    <div className="mb-4">
-                      <p className="text-sm font-medium flex items-center gap-1 text-[hsl(var(--peacock))]">
-                        <ThumbsUp className="h-3.5 w-3.5" /> No concerns
-                        detected
-                      </p>
-                    </div>
-                  )}
-
-                  <div className="flex gap-2">
-                    <Link href={`/products/${product.id}`} className="flex-1">
-                      <Button variant="outline" className="w-full">
-                        <Search className="h-3.5 w-3.5 mr-1" /> Details
-                      </Button>
-                    </Link>
-                    <Link
-                      href={`/products/alternatives/${product.id}`}
-                      className="flex-1"
-                    >
-                      <Button variant="secondary" className="w-full">
-                        Alternatives
-                      </Button>
-                    </Link>
-                  </div>
+                  <Link href={`/products/${product.id}`}>
+                    <Button variant="outline" className="w-full mt-2">
+                      View Details
+                    </Button>
+                  </Link>
                 </div>
               </Card>
             ))}
@@ -311,7 +198,7 @@ export default function ProductsPage() {
                   <div className="flex gap-4">
                     <div className="relative h-20 w-20 rounded-md overflow-hidden flex-shrink-0">
                       <Image
-                        src={product.image}
+                        src={product.image_url || "/fallback.png"}
                         alt={product.name}
                         className="object-cover"
                         fill
@@ -321,46 +208,27 @@ export default function ProductsPage() {
                     <div className="flex-1">
                       <div className="flex justify-between items-start">
                         <div>
-                          <Badge
-                            variant={getRatingBadgeVariant(product.rating)}
-                          >
-                            {product.rating} Rating
-                          </Badge>
                           <h3 className="font-semibold text-lg mt-1">
                             {product.name}
                           </h3>
                           <p className="text-sm text-muted-foreground">
-                            {product.brand} • {product.category}
+                            {product.brand?.name && <span>{product.brand.name}</span>}
+                            {product.category?.name && <span> • {product.category.name}</span>}
                           </p>
                         </div>
 
                         <div className="text-right">
                           <div className="flex items-center mb-1">
                             <span className="text-sm font-medium mr-2">
-                              Danger Score:
+                              Health Score:
                             </span>
-                            <span
-                              className={`text-sm font-bold ${
-                                product.dangerScore < 30
-                                  ? "text-[hsl(var(--peacock))]"
-                                  : product.dangerScore < 60
-                                  ? "text-[hsl(var(--sunshine))]"
-                                  : "text-[hsl(var(--coral))]"
-                              }`}
-                            >
-                              {product.dangerScore}%
+                            <span className="font-bold">
+                              {typeof product.score === 'number' ? product.score : 'N/A'}
                             </span>
                           </div>
                           <Progress
-                            value={product.dangerScore}
+                            value={typeof product.score === 'number' ? product.score : 0}
                             className="h-2 w-32"
-                            style={
-                              {
-                                "--progress-background": getDangerScoreColor(
-                                  product.dangerScore
-                                ),
-                              } as React.CSSProperties
-                            }
                           />
                         </div>
                       </div>
@@ -371,13 +239,13 @@ export default function ProductsPage() {
                             Key Ingredients:
                           </p>
                           <div className="flex flex-wrap gap-1">
-                            {product.keyIngredients.map((ingredient) => (
+                            {product.keyIngredients?.map((ingredient: any) => (
                               <Badge
-                                key={ingredient}
+                                key={ingredient.id}
                                 variant="outline"
                                 className="text-xs"
                               >
-                                {ingredient}
+                                {ingredient.name}
                               </Badge>
                             ))}
                           </div>
@@ -386,7 +254,7 @@ export default function ProductsPage() {
                         <div className="flex gap-2">
                           <Link href={`/products/${product.id}`}>
                             <Button variant="outline" size="sm">
-                              <Search className="h-3.5 w-3.5 mr-1" /> Details
+                              View Details
                             </Button>
                           </Link>
                           <Link href={`/products/alternatives/${product.id}`}>
