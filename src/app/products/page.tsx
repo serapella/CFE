@@ -44,7 +44,7 @@ export default async function ProductsPage() {
   return (
     <div className="container py-12">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Product Database</h1>
+        <h1 className="text-3xl font-bold mb-2">Products</h1>
         <p className="text-muted-foreground">
           Browse and search for products to see their health scores and ingredients
         </p>

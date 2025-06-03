@@ -4,7 +4,9 @@
 // @ts-ignore
 // src/types.ts
 
+// src/types.ts
 
+// Product type
 export interface Product {
   id: number;
   name: string;
@@ -17,7 +19,7 @@ export interface Product {
   description?: string;
   created_at?: string;
   updated_at?: string;
-  reviews?: Review[]; // Optioneel: lijst van reviews bij het product
+  // reviews?: Review[];
 }
 
 // Brand type
@@ -62,10 +64,10 @@ export interface Review {
   rating: number;
   comment: string;
   created_at?: string;
-  user?: User; // Optioneel: user info bij de review
+  user?: User;
 }
 
-// User type (optioneel, voor reviews)
+// User type
 export interface User {
   id: number;
   name: string;

@@ -1,5 +1,3 @@
-"use client";
-
 import { motion } from "@/components/ui/motion";
 import {
   QrCode,

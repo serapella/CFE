@@ -15,15 +15,15 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-// import type { Product, Review } from "@/types"; // Uncomment if you have these types
+import type { Product, Review } from "@/types";
 
 export default async function ProductPage({ params }: { params: { id: string } }) {
-  let product = null;
-  let reviews = [];
+  let product: Product | null = null;
+  let reviews: Review[] = [];
   let error = null;
   try {
     product = await ApiService.getProduct(Number(params.id));
-    reviews = await ApiService.getProductReviews(Number(params.id)) as any[];
+    reviews = await ApiService.getProductReviews(Number(params.id));
   } catch (err: any) {
     error = err.message || "Unknown error";
   }
@@ -112,7 +112,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
           <div className="mb-8">
             <h2 className="font-semibold mb-3">Ingredients</h2>
             <ul className="space-y-2">
-              {(product.ingredients || []).map((ingredient: any, i: number) => (
+              {(product.ingredients || []).map((ingredient: { id: number; name: string; description?: string }, i: number) => (
                 <li key={i} className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 p-3 rounded-lg bg-muted/50">
                   <span className="font-medium">{ingredient.name}</span>
                   {ingredient.description && (
@@ -154,7 +154,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
 
             <TabsContent value="ingredients" className="mt-6">
               <div className="space-y-4">
-                {(product.ingredients || []).map((ingredient: any, i: number) => (
+                {(product.ingredients || []).map((ingredient: { id: number; name: string; description?: string }, i: number) => (
                   <Card key={i}>
                     <div className="p-4">
                       <div className="flex items-start justify-between mb-2">
@@ -183,58 +183,47 @@ export default async function ProductPage({ params }: { params: { id: string } }
             </TabsContent>
 
             <TabsContent value="reviews" className="mt-6">
-              <div className="flex items-start gap-8 mb-8">
-                <div className="text-center">
-                  <div className="text-4xl font-bold mb-1">
-                    {product.reviews.average}
-                  </div>
-                  <div className="flex items-center gap-1 mb-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`h-4 w-4 ${
-                          i < Math.floor(product.reviews.average)
-                            ? "text-[hsl(var(--sunshine))] fill-[hsl(var(--sunshine))]"
-                            : "text-[hsl(var(--muted-foreground))]"
-                        }`}
-                      />
-                    ))}
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    {String((product.reviews as any)?.count ?? '')} reviews
-                  </p>
+              <div className="mb-6">
+                <div className="text-4xl font-bold mb-1">
+                  {reviews.length > 0
+                    ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
+                    : "No reviews"}
                 </div>
-
-                <div className="flex-1">
-                  {Object.entries(product.reviews.distribution)
-                    .reverse()
-                    .map(([rating, count]) => (
-                      <div
-                        key={rating}
-                        className="flex items-center gap-2 mb-2"
-                      >
-                        <div className="w-8 text-sm">{rating}★</div>
-                        <div className="flex-1">
-                          <div className="h-2 bg-muted rounded-full overflow-hidden">
-                            <div
-                              className="h-full bg-[hsl(var(--sunshine))]"
-                              style={{
-                                width: `${
-                                  (count / product.reviews.count) * 100
-                                }%`,
-                              }}
-                            />
-                          </div>
-                        </div>
-                        <div className="w-8 text-sm text-right">{count}</div>
-                      </div>
-                    ))}
+                <div className="flex items-center gap-1 mb-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`h-4 w-4 ${i < Math.round(reviews.reduce((sum, r) => sum + r.rating, 0) / (reviews.length || 1)) ? "text-[hsl(var(--sunshine))] fill-[hsl(var(--sunshine))]" : "text-[hsl(var(--muted-foreground))]"}`}
+                    />
+                  ))}
                 </div>
+                <p className="text-sm text-muted-foreground">
+                  {reviews.length} review{reviews.length === 1 ? "" : "s"}
+                </p>
               </div>
-
-              <Button className="w-full">
-                Read All Reviews <ChevronRight className="ml-2 h-4 w-4" />
-              </Button>
+              <div className="space-y-6">
+                {reviews.map((review: Review) => (
+                  <Card key={review.id} className="p-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="font-semibold">
+                        {review.user?.name || `User #${review.userId}`}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className={`h-4 w-4 ${i < review.rating ? "text-[hsl(var(--sunshine))] fill-[hsl(var(--sunshine))]" : "text-[hsl(var(--muted-foreground))]"}`}
+                          />
+                        ))}
+                      </div>
+                      <span className="text-xs text-muted-foreground ml-auto">
+                        {review.created_at ? new Date(review.created_at).toLocaleDateString() : ""}
+                      </span>
+                    </div>
+                    <div className="text-muted-foreground text-sm">{review.comment}</div>
+                  </Card>
+                ))}
+              </div>
             </TabsContent>
           </Tabs>
         </div>
@@ -276,7 +265,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
         <h2 className="text-2xl font-bold mb-6">Reviews</h2>
         {reviews.length === 0 && <div className="text-muted-foreground">No reviews yet.</div>}
         <div className="space-y-6">
-          {reviews.map((review: any) => (
+          {reviews.map((review: Review) => (
             <Card key={review.id} className="p-4">
               <div className="flex items-center gap-3 mb-2">
                 <div className="font-semibold">
