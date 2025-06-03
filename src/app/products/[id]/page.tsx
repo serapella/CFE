@@ -1,7 +1,7 @@
+import { ApiService } from "@/lib/api";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   AlertTriangle,
@@ -16,85 +16,48 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 
-// Mock product data
-const product = {
-  id: 1,
-  name: "Natural Daily Moisturizer",
-  image: "https://images.pexels.com/photos/3685530/pexels-photo-3685530.jpeg",
-  brand: "Pure Essentials",
-  category: "Moisturizer",
-  dangerScore: 12,
-  rating: "A",
-  keyIngredients: ["Aloe Vera", "Jojoba Oil", "Vitamin E"],
-  concerns: [],
-  description:
-    "A gentle, natural moisturizer suitable for all skin types. Made with organic ingredients to nourish and hydrate your skin.",
-  benefits: [
-    "Deeply hydrates skin",
-    "Non-comedogenic",
-    "Suitable for sensitive skin",
-    "100% natural ingredients",
-  ],
-  ingredients: [
-    {
-      name: "Aloe Vera",
-      safety: "Safe",
-      description: "Natural moisturizer with healing properties",
-      rating: "A",
-    },
-    {
-      name: "Jojoba Oil",
-      safety: "Safe",
-      description: "Mimics skin's natural oils, non-comedogenic",
-      rating: "A",
-    },
-    {
-      name: "Vitamin E",
-      safety: "Safe",
-      description: "Antioxidant, helps protect skin",
-      rating: "A",
-    },
-  ],
-  reviews: {
-    average: 4.8,
-    count: 128,
-    distribution: {
-      5: 80,
-      4: 32,
-      3: 12,
-      2: 3,
-      1: 1,
-    },
-  },
-};
+export default async function ProductPage({ params }: { params: { id: string } }) {
+  let product = null;
+  let error = null;
+  try {
+    product = await ApiService.getProduct(Number(params.id));
+  } catch (err: any) {
+    error = err.message || "Unknown error";
+  }
 
-// Function to determine progress bar color based on danger score
-function getScoreColor(score: number) {
-  if (score < 30) return "bg-[hsl(var(--peacock))]";
-  if (score < 60) return "bg-[hsl(var(--sunshine))]";
-  return "bg-[hsl(var(--coral))]";
-}
+  if (error) return <div className="container py-12 text-red-500">{error}</div>;
+  if (!product) return <div className="container py-12">No product found.</div>;
 
-// Function to determine badge variant based on rating
-const getRatingBadgeVariant = (rating: string) => {
-  if (rating === "A") return "outline";
-  if (rating === "B") return "secondary";
-  return "destructive";
-};
+  // Function to determine progress bar color based on danger score
+  function getScoreColor(score: number) {
+    if (score < 30) return "bg-[hsl(var(--peacock))]";
+    if (score < 60) return "bg-[hsl(var(--sunshine))]";
+    return "bg-[hsl(var(--coral))]";
+  }
 
-export default function ProductPage({ params }: { params: { id: string } }) {
+  // Function to determine badge variant based on rating
+  const getRatingBadgeVariant = (rating: string) => {
+    if (rating === "A") return "outline";
+    if (rating === "B") return "secondary";
+    return "destructive";
+  };
+
   return (
     <div className="container py-12">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Product Images */}
         <div>
           <div className="relative aspect-square rounded-xl overflow-hidden mb-6">
-            <Image
-              src={product.image}
-              alt={product.name}
-              fill
-              className="object-cover"
-            />
+            {product.image_url ? (
+              <Image
+                src={product.image_url}
+                alt={product.name}
+                fill
+                className="object-cover"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-muted text-muted-foreground">No image</div>
+            )}
           </div>
           <div className="grid grid-cols-4 gap-4">
             {[...Array(4)].map((_, i) => (
@@ -103,7 +66,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                 className="relative aspect-square rounded-lg overflow-hidden"
               >
                 <Image
-                  src={product.image}
+                  src={product.image_url}
                   alt={`${product.name} view ${i + 1}`}
                   fill
                   className="object-cover"
@@ -121,7 +84,19 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                 {product.rating} Rating
               </Badge>
               <h1 className="text-3xl font-bold mt-2 mb-1">{product.name}</h1>
-              <p className="text-lg text-muted-foreground">{product.brand}</p>
+              <div className="text-lg text-muted-foreground mb-2">
+                {product.brand?.name && <span>{product.brand.name}</span>}
+                {product.category?.name && <span> • {product.category.name}</span>}
+              </div>
+              {product.barcode && (
+                <div className="mb-2 text-sm text-muted-foreground">Barcode: {product.barcode}</div>
+              )}
+              {typeof product.score === 'number' && (
+                <div className="mb-4">
+                  <span className="font-medium">Score: </span>
+                  <span className="font-medium">{product.score}</span>
+                </div>
+              )}
             </div>
             <div className="flex gap-2">
               <Button variant="outline" size="icon">
@@ -133,47 +108,25 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             </div>
           </div>
 
-          <div className="mb-8">
-            <div className="flex justify-between items-center mb-2">
-              <span className="font-medium">Health Score</span>
-              <span className="font-medium">{product.dangerScore}%</span>
-            </div>
-            <Progress
-              value={product.dangerScore}
-              className="h-3 mb-2"
-              style={
-                {
-                  "--progress-background": getScoreColor(
-                    product.dangerScore
-                  ),
-                } as React.CSSProperties
-              }
-            />
-            {product.concerns.length > 0 ? (
-              <div className="flex items-center gap-2 text-[hsl(var(--sunshine))]">
-                <AlertTriangle className="h-4 w-4" />
-                <span className="text-sm">This product has some concerns</span>
-              </div>
-            ) : (
-              <div className="flex items-center gap-2 text-[hsl(var(--peacock))]">
-                <ThumbsUp className="h-4 w-4" />
-                <span className="text-sm">This product is safe to use</span>
-              </div>
-            )}
-          </div>
-
-          <p className="text-muted-foreground mb-6">{product.description}</p>
+          {product.description && <p className="text-muted-foreground mb-6">{product.description}</p>}
 
           <div className="mb-8">
-            <h2 className="font-semibold mb-3">Key Benefits</h2>
-            <ul className="grid grid-cols-2 gap-2">
-              {product.benefits.map((benefit, i) => (
-                <li key={i} className="flex items-center gap-2 text-sm">
-                  <div className="h-2 w-2 rounded-full bg-[hsl(var(--peacock))]" />
-                  {benefit}
+            <h2 className="font-semibold mb-3">Ingredients</h2>
+            <ul className="space-y-2">
+              {(product.ingredients || []).map((ingredient: any, i: number) => (
+                <li key={i} className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 p-3 rounded-lg bg-muted/50">
+                  <span className="font-medium">{ingredient.name}</span>
+                  {ingredient.description && (
+                    <span className="text-muted-foreground text-sm">{ingredient.description}</span>
+                  )}
                 </li>
               ))}
             </ul>
+          </div>
+
+          <div className="mb-8 text-sm text-muted-foreground">
+            {product.created_at && <div>Created: {new Date(product.created_at).toLocaleDateString()}</div>}
+            {product.updated_at && <div>Updated: {new Date(product.updated_at).toLocaleDateString()}</div>}
           </div>
 
           <div className="flex gap-4 mb-12">
@@ -202,7 +155,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
             <TabsContent value="ingredients" className="mt-6">
               <div className="space-y-4">
-                {product.ingredients.map((ingredient, i) => (
+                {(product.ingredients || []).map((ingredient: any, i: number) => (
                   <Card key={i}>
                     <div className="p-4">
                       <div className="flex items-start justify-between mb-2">
@@ -249,7 +202,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                     ))}
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    {product.reviews.count} reviews
+                    {String((product.reviews as any)?.count ?? '')} reviews
                   </p>
                 </div>
 
@@ -300,7 +253,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             <Card key={i} className="overflow-hidden">
               <div className="relative aspect-square">
                 <Image
-                  src={product.image}
+                  src={product.image_url}
                   alt="Similar product"
                   fill
                   className="object-cover"

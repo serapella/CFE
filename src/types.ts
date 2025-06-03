@@ -2,34 +2,36 @@
 // Fallback RowDataPacket type if mysql2 is not available
 // Remove this if you have @types/mysql2 installed
 // @ts-ignore
-export type RowDataPacket = any;
 
-export interface TodoDB extends RowDataPacket {
-    id: number;
-    title: string;
-    checked: number;
-  }
-  
-  export interface Todo {
-    id: number;
-    title: string;
-    checked: boolean;
-  }
   
   export interface ProductDB extends RowDataPacket {
-    id: number;
-    name: string;
-    brand: string;
-    category_id: number;
-    description: string;
-  }
+  
+      id: number;
+      name: string;
+      barcode: string;
+      brand?: { id: number; name: string };
+      category?: { id: number; name: string };
+      ingredients?: { id: number; name: string; description?: string }[];
+      score?: number;
+      image_url?: string;
+      description?: string;
+      created_at?: string;
+      updated_at?: string;
+    }
+  
   
   export interface Product {
     id: number;
     name: string;
-    brand: string;
-    categoryId: number;
-    description: string;
+    barcode: string;
+    brand?: { id: number; name: string };
+    category?: { id: number; name: string };
+    ingredients?: { id: number; name: string; description?: string }[];
+    score?: number;
+    image_url?: string;
+    description?: string;
+    created_at?: string;
+    updated_at?: string;
   }
   
   export interface IngredientDB extends RowDataPacket {
