@@ -37,11 +37,11 @@ const mockScanResult = {
 };
 
 // Function to determine progress bar color based on danger score
-const getDangerScoreColor = (score: number) => {
-  if (score < 30) return "bg-green-500"; // Low danger (good)
-  if (score < 60) return "bg-yellow-500"; // Medium danger
-  return "bg-red-500"; // High danger (bad)
-};
+function getScoreColor(score: number) {
+  if (score < 30) return "bg-[hsl(var(--peacock))]";
+  if (score < 60) return "bg-[hsl(var(--sunshine))]";
+  return "bg-[hsl(var(--coral))]";
+}
 
 // Function to determine badge variant based on rating
 const getRatingBadgeVariant = (rating: string) => {
@@ -248,7 +248,7 @@ export default function ScanPage() {
           <Card className="overflow-hidden">
             <CardContent className="p-0">
               {scanResult ? (
-                <div className="relative aspect-video bg-black flex items-center justify-center">
+                <div className="relative aspect-video bg-background flex items-center justify-center">
                   <Image
                     src="/window.svg"
                     alt={scanResult.name}
@@ -263,7 +263,7 @@ export default function ScanPage() {
                   </Badge>
                 </div>
               ) : (
-                <div className="relative aspect-video bg-black flex items-center justify-center">
+                <div className="relative aspect-video bg-background flex items-center justify-center">
                   {uploadMode ? (
                     <div className="flex flex-col items-center justify-center h-full w-full p-8">
                       <div className="relative border-2 border-dashed border-muted-foreground/50 rounded-lg p-12 flex flex-col items-center justify-center cursor-pointer hover:border-primary/50 transition-colors">
@@ -348,8 +348,8 @@ export default function ScanPage() {
                               >
                                 {flashlightOn ? (
                                   <span className="relative flex h-5 w-5 items-center justify-center">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-4 w-4 bg-yellow-500"></span>
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[hsl(var(--sunshine))] opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-4 w-4 bg-[hsl(var(--sunshine))]"></span>
                                   </span>
                                 ) : (
                                   <span className="h-5 w-5 border border-current rounded-full"></span>
@@ -403,7 +403,7 @@ export default function ScanPage() {
                         value={scanResult.dangerScore}
                         className="h-2"
                         style={{
-                          "--progress-background": getDangerScoreColor(scanResult.dangerScore),
+                          "--progress-background": getScoreColor(scanResult.dangerScore),
                         } as React.CSSProperties}
                       />
                     </div>
@@ -421,13 +421,13 @@ export default function ScanPage() {
                     
                     {scanResult.concerns.length > 0 ? (
                       <div>
-                        <p className="text-sm font-medium flex items-center gap-1 text-yellow-500 dark:text-yellow-400">
+                        <p className="text-sm font-medium flex items-center gap-1 text-[hsl(var(--sunshine))] dark:text-[hsl(var(--sunshine))]">
                           <AlertTriangle className="h-3.5 w-3.5" /> Concerns:
                         </p>
                         <ul className="text-xs text-muted-foreground mt-1">
                           {scanResult.concerns.map((concern, i) => (
                             <li key={i} className="flex items-start gap-1 mt-1">
-                              <span className="h-3.5 w-3.5 rounded-full border border-yellow-500 dark:border-yellow-400 flex-shrink-0"></span>
+                              <span className="h-3.5 w-3.5 rounded-full border border-[hsl(var(--sunshine))] dark:border-[hsl(var(--sunshine))] flex-shrink-0"></span>
                               {concern}
                             </li>
                           ))}
@@ -435,7 +435,7 @@ export default function ScanPage() {
                       </div>
                     ) : (
                       <div>
-                        <p className="text-sm font-medium flex items-center gap-1 text-green-500">
+                        <p className="text-sm font-medium flex items-center gap-1 text-[hsl(var(--peacock))]">
                           <ThumbsUp className="h-3.5 w-3.5" /> No concerns detected
                         </p>
                       </div>

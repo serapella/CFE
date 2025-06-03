@@ -69,11 +69,11 @@ const product = {
 };
 
 // Function to determine progress bar color based on danger score
-const getDangerScoreColor = (score: number) => {
+function getScoreColor(score: number) {
   if (score < 30) return "bg-[hsl(var(--peacock))]";
   if (score < 60) return "bg-[hsl(var(--sunshine))]";
   return "bg-[hsl(var(--coral))]";
-};
+}
 
 // Function to determine badge variant based on rating
 const getRatingBadgeVariant = (rating: string) => {
@@ -143,7 +143,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               className="h-3 mb-2"
               style={
                 {
-                  "--progress-background": getDangerScoreColor(
+                  "--progress-background": getScoreColor(
                     product.dangerScore
                   ),
                 } as React.CSSProperties
@@ -242,8 +242,8 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                         key={i}
                         className={`h-4 w-4 ${
                           i < Math.floor(product.reviews.average)
-                            ? "text-yellow-400 fill-yellow-400"
-                            : "text-gray-300"
+                            ? "text-[hsl(var(--sunshine))] fill-[hsl(var(--sunshine))]"
+                            : "text-[hsl(var(--muted-foreground))]"
                         }`}
                       />
                     ))}
@@ -265,7 +265,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                         <div className="flex-1">
                           <div className="h-2 bg-muted rounded-full overflow-hidden">
                             <div
-                              className="h-full bg-yellow-400"
+                              className="h-full bg-[hsl(var(--sunshine))]"
                               style={{
                                 width: `${
                                   (count / product.reviews.count) * 100

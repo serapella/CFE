@@ -143,7 +143,7 @@ export default function Page({ params }: Props) {
                     </p>
                     <div className="flex items-center gap-2 mb-4">
                       <div className="flex items-center">
-                        <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                        <Star className="h-4 w-4 text-[hsl(var(--sunshine))] fill-[hsl(var(--sunshine))]" />
                         <span className="ml-1 text-sm font-medium">
                           {product.rating}
                         </span>

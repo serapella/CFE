@@ -2,9 +2,9 @@
 
 import { Hero } from "@/components/home/hero";
 import { Features } from "@/components/home/features";
-import { ProductSpotlight } from "@/components/home/product-spotlight";
-import { TrendingRecipes } from "@/components/home/trending-recipes";
-import { HowItWorks } from "@/components/home/how-it-works";
+import { ProductSpotlight } from "@/components/home/productSpotlight";
+import { TrendingRecipes } from "@/components/home/trendingRecipes";
+import { HowItWorks } from "@/components/home/howItWorks";
 import { Banner } from "@/components/home/banner";
 
 export default function Home() {

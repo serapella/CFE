@@ -2,14 +2,14 @@
 
 import { motion } from "@/components/ui/motion";
 import {
-  BarChart2,
   QrCode,
-  ShoppingCart,
-  Heart,
   Search,
-  Goal,
-  Activity,
-  Star,
+  AlertTriangle,
+  Leaf,
+  Info,
+  History,
+  BadgeCheck,
+  Share2,
 } from "lucide-react";
 
 const features = [
@@ -17,55 +17,55 @@ const features = [
     icon: <QrCode className="h-10 w-10 text-[hsl(var(--peacock))]" />,
     title: "Barcode Scanner",
     description:
-      "Scan product barcodes to instantly access detailed ingredient information and health scores.",
+      "Scan product barcodes to instantly access detailed ingredient information and safety ratings.",
     color: "bg-[hsl(var(--seafoam))]",
   },
   {
-    icon: <BarChart2 className="h-10 w-10 text-[hsl(var(--azure))]" />,
-    title: "Health Scoring",
+    icon: <AlertTriangle className="h-10 w-10 text-[hsl(var(--sunshine))]" />,
+    title: "Safety Alerts",
     description:
-      "See clear A-B-C health ratings based on scientific analysis of product ingredients.",
-    color: "bg-[hsl(var(--peony))]",
-  },
-  {
-    icon: <Search className="h-10 w-10 text-[hsl(var(--sunshine))]" />,
-    title: "Advanced Search",
-    description:
-      "Find products and recipes that match your dietary needs and health preferences.",
+      "Get instant alerts about potentially harmful ingredients and allergens in products.",
     color: "bg-[hsl(var(--sunshine))]/10",
   },
   {
-    icon: <Heart className="h-10 w-10 text-[hsl(var(--coral))]" />,
-    title: "Personalized Recipes",
+    icon: <Leaf className="h-10 w-10 text-[hsl(var(--peacock))]" />,
+    title: "Natural Alternatives",
     description:
-      "Discover recipes tailored to your preferences and dietary requirements.",
-    color: "bg-[hsl(var(--coral))]/10",
+      "Discover safer, natural alternatives to products with concerning ingredients.",
+    color: "bg-[hsl(var(--peony))]",
   },
   {
-    icon: <ShoppingCart className="h-10 w-10 text-[hsl(var(--petrol))]" />,
-    title: "Shopping Lists",
-    description: "Generate shopping lists directly from your favorite recipes.",
-    color: "bg-[hsl(var(--petrol))]/10",
-  },
-  {
-    icon: <Activity className="h-10 w-10 text-[hsl(var(--papaya))]" />,
-    title: "Ingredient Analysis",
+    icon: <Info className="h-10 w-10 text-[hsl(var(--azure))]" />,
+    title: "Ingredient Education",
     description:
-      "Understand the effects of ingredients on your health with detailed information.",
-    color: "bg-[hsl(var(--papaya))]/10",
-  },
-  {
-    icon: <Goal className="h-10 w-10 text-[hsl(var(--azure))]" />,
-    title: "Health Goals",
-    description:
-      "Set and track personal health goals with product recommendations.",
+      "Learn about ingredients, their effects, and why they're used in products.",
     color: "bg-[hsl(var(--azure))]/10",
   },
   {
-    icon: <Star className="h-10 w-10 text-[hsl(var(--sunshine))]" />,
-    title: "Community Reviews",
+    icon: <Search className="h-10 w-10 text-[hsl(var(--coral))]" />,
+    title: "Product Search",
     description:
-      "Read and share experiences with products and recipes from the community.",
+      "Find and compare personal care products based on your safety preferences.",
+    color: "bg-[hsl(var(--coral))]/10",
+  },
+  {
+    icon: <History className="h-10 w-10 text-[hsl(var(--papaya))]" />,
+    title: "Scan History",
+    description:
+      "Keep track of all your scanned products and their safety assessments.",
+    color: "bg-[hsl(var(--papaya))]/10",
+  },
+  {
+    icon: <BadgeCheck className="h-10 w-10 text-[hsl(var(--azure))]" />,
+    title: "Certifications",
+    description:
+      "Understand product certifications and what they mean for your safety.",
+    color: "bg-[hsl(var(--azure))]/10",
+  },
+  {
+    icon: <Share2 className="h-10 w-10 text-[hsl(var(--sunshine))]" />,
+    title: "Share Findings",
+    description: "Share product safety information with friends and family.",
     color: "bg-[hsl(var(--sunshine))]/10",
   },
 ];
@@ -82,7 +82,7 @@ export function Features() {
             transition={{ duration: 0.5 }}
             className="text-3xl md:text-4xl font-bold mb-4"
           >
-            Make informed choices for your health
+            Make informed choices about your personal care
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -91,8 +91,8 @@ export function Features() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-xl text-muted-foreground"
           >
-            BODYMATTERS combines cutting-edge technology with scientific
-            research to help you make better choices for your personal care.
+            BODYMATTERS helps you understand what's in your personal care
+            products and make safer choices for your health.
           </motion.p>
         </div>
 
