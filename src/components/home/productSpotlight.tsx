@@ -63,7 +63,7 @@ const getRatingBadgeVariant = (rating: string) => {
 export function ProductSpotlight() {
   return (
     <section className="py-20 bg-secondary/50">
-      <div className="container">
+      <div className="container px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12">
           <div>
             <motion.h2 

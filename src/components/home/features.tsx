@@ -72,7 +72,7 @@ const features = [
 
 export function Features() {
   return (
-    <section className="py-20 bg-[hsl(var(--seafoam))]/20">
+    <section className="py-20">
       <div className="container">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <motion.h2
@@ -82,7 +82,7 @@ export function Features() {
             transition={{ duration: 0.5 }}
             className="text-3xl md:text-4xl font-bold mb-4"
           >
-            Make informed choices about your personal care
+            Everything you need to make informed choices
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -91,8 +91,7 @@ export function Features() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-xl text-muted-foreground"
           >
-            BODYMATTERS helps you understand what's in your personal care
-            products and make safer choices for your health.
+            Our comprehensive tools help you understand what's in your products
           </motion.p>
         </div>
 

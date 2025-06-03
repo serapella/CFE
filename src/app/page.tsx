@@ -9,13 +9,15 @@ import { Banner } from "@/components/home/banner";
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <div className="flex flex-col">
       <Hero />
-      <Features />
+      <div className="px-4 sm:px-6 lg:px-8">
+        <Features />
+        <HowItWorks />
+        <TrendingRecipes />
+      </div>
       <ProductSpotlight />
-      <HowItWorks />
-      <TrendingRecipes />
       <Banner />
-    </main>
+    </div>
   );
 }

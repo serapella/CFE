@@ -15,6 +15,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import Image from "next/image";
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -36,11 +37,25 @@ export function Header() {
           : "bg-transparent"
       }`}
     >
-      <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-2">
-            <BarChart2 className="h-6 w-6 text-primary" />
-            <span className="font-bold text-xl">BODYMATTERS</span>
+      <div className="w-full flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+        <div className="flex items-center gap-6 flex-1 min-w-0">
+          <Link href="/" className="flex items-center gap-2 min-w-0">
+            <span className="relative h-14 w-[clamp(120px,18vw,240px)] sm:h-16 sm:w-[clamp(160px,18vw,280px)] lg:h-20 lg:w-[clamp(200px,18vw,320px)] block max-w-full">
+              <Image
+                src="/BarcodeBM.png"
+                alt="BODY MATTERS logo"
+                fill
+                className="object-contain dark:hidden"
+                priority
+              />
+              <Image
+                src="/BarcodeBMWhite.png"
+                alt="BODY MATTERS logo"
+                fill
+                className="object-contain hidden dark:block"
+                priority
+              />
+            </span>
           </Link>
 
           <div className="hidden md:flex">
@@ -157,7 +172,7 @@ export function Header() {
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 flex-shrink-0">
           <Button variant="ghost" size="icon" className="hidden md:flex">
             <Search className="h-5 w-5" />
           </Button>
@@ -190,8 +205,22 @@ export function Header() {
             <SheetContent side="right">
               <div className="flex flex-col gap-6 py-6">
                 <Link href="/" className="flex items-center gap-2">
-                  <BarChart2 className="h-6 w-6 text-primary" />
-                  <span className="font-bold text-xl">BODYMATTERS</span>
+                  <span className="relative h-10 w-32 block">
+                    <Image
+                      src="/BarcodeBM.png"
+                      alt="BODY MATTERS logo"
+                      fill
+                      className="object-contain dark:hidden"
+                      priority
+                    />
+                    <Image
+                      src="/BarcodeBMWhite.png"
+                      alt="BODY MATTERS logo"
+                      fill
+                      className="object-contain hidden dark:block"
+                      priority
+                    />
+                  </span>
                 </Link>
 
                 <div className="flex flex-col gap-2">
