@@ -1,23 +1,24 @@
 "use client";
 
-import { useState } from 'react';
-import Image from 'next/image';
-import { Button } from '@/components/ui/button';
-import { Search, Scan } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import Link from 'next/link';
-import { motion } from '@/components/ui/motion';
+import { useState } from "react";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Search, Scan } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import Link from "next/link";
+import { motion } from "@/components/ui/motion";
 
 export function Hero() {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   return (
     <section className="relative py-20 md:py-28">
-      <div className="absolute inset-0 bg-gradient-to-b from-background to-background/50 dark:from-background dark:to-background/80 z-10"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background/50 dark:from-background dark:to-background/80 z-10"></div>
+
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute inset-0 opacity-30 dark:opacity-10">
-          <Image 
-            src="/window.svg" 
+          <Image
+            src="https://images.pexels.com/photos/3785147/pexels-photo-3785147.jpeg"
             alt="Background image with skincare products"
             className="object-cover"
             priority
@@ -25,6 +26,7 @@ export function Hero() {
           />
         </div>
       </div>
+
       <div className="container relative z-20">
         <div className="max-w-3xl mx-auto text-center">
           <motion.div
@@ -33,20 +35,24 @@ export function Hero() {
             transition={{ duration: 0.5 }}
           >
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-              Make informed choices for your <span className="text-chart-1 dark:text-chart-1">health</span>
+              Make informed choices for your{" "}
+              <span className="text-[hsl(var(--peacock))] dark:text-[hsl(var(--azure))]">
+                health
+              </span>
             </h1>
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             <p className="text-xl md:text-2xl text-muted-foreground mb-8">
-              Discover product ingredients, health scores, and recipes that align with your wellness goals.
+              Discover product ingredients, health scores, and make better
+              choices for your personal care.
             </p>
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -57,17 +63,20 @@ export function Hero() {
               <Input
                 type="text"
                 placeholder="Search products or ingredients..."
-                className="pr-10 h-12 w-full"
+                className="pr-10 h-12 w-full bg-background/80 backdrop-blur-sm border-[hsl(var(--peacock))]"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             </div>
-            <Button size="lg" className="w-full sm:w-auto">
+            <Button
+              size="lg"
+              className="w-full sm:w-auto bg-[hsl(var(--peacock))] hover:bg-[hsl(var(--peacock))]/90"
+            >
               <Search className="mr-2 h-4 w-4" /> Search
             </Button>
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -75,13 +84,21 @@ export function Hero() {
             className="flex flex-col sm:flex-row justify-center items-center gap-4"
           >
             <Link href="/products/scan">
-              <Button variant="outline" size="lg">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-[hsl(var(--azure))] text-[hsl(var(--azure))] hover:bg-[hsl(var(--azure))]/10"
+              >
                 <Scan className="mr-2 h-4 w-4" /> Scan product
               </Button>
             </Link>
-            <Link href="/recipes">
-              <Button variant="outline" size="lg">
-                Browse recipes
+            <Link href="/products">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-[hsl(var(--papaya))] text-[hsl(var(--papaya))] hover:bg-[hsl(var(--papaya))]/10"
+              >
+                Browse products
               </Button>
             </Link>
           </motion.div>

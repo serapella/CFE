@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { motion } from "@/components/ui/motion";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Loader2, Mail } from "lucide-react";
 import Link from "next/link";
 
@@ -26,11 +26,7 @@ export default function ForgotPasswordPage() {
     e.preventDefault();
 
     if (!email) {
-      toast({
-        title: "Invalid input",
-        description: "Please enter your email address.",
-        variant: "destructive",
-      });
+      toast("Please enter your email address.");
       return;
     }
 
@@ -39,11 +35,7 @@ export default function ForgotPasswordPage() {
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
-      toast({
-        title: "Reset link sent!",
-        description:
-          "Check your email for instructions to reset your password.",
-      });
+      toast("Check your email for instructions to reset your password.");
     }, 1500);
   };
 
