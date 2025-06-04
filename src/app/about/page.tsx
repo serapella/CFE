@@ -71,7 +71,7 @@ export default function AboutPage() {
         </div>
         <div className="relative aspect-video rounded-xl overflow-hidden">
           <Image
-            src="https://images.pexels.com/photos/3735641/pexels-photo-3735641.jpeg"
+            src="/facemask.jpg"
             alt="Our team working"
             fill
             className="object-cover"

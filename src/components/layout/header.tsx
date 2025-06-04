@@ -16,9 +16,11 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import Image from "next/image";
+import { ApiService } from "@/config/api";
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,6 +30,23 @@ export function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    const checkLogin = () => {
+      setIsLoggedIn(typeof window !== 'undefined' && !!sessionStorage.getItem('token'));
+    };
+    checkLogin();
+    window.addEventListener('storage', checkLogin);
+    return () => window.removeEventListener('storage', checkLogin);
+  }, []);
+
+  const handleLogout = async () => {
+    sessionStorage.removeItem('token');
+    try {
+      await ApiService.logout();
+    } catch (e) {}
+    window.location.href = '/auth/login';
+  };
 
   return (
     <header
@@ -162,12 +181,18 @@ export function Header() {
           </div>
 
           <div className="hidden md:flex gap-2">
-            <Link href="/auth/login">
-              <Button variant="outline">Log in</Button>
-            </Link>
-            <Link href="/auth/register">
-              <Button>Sign up</Button>
-            </Link>
+            {isLoggedIn ? (
+              <Button variant="outline" onClick={handleLogout}>Logout</Button>
+            ) : (
+              <>
+                <Link href="/auth/login">
+                  <Button variant="outline">Log in</Button>
+                </Link>
+                <Link href="/auth/register">
+                  <Button>Sign up</Button>
+                </Link>
+              </>
+            )}
           </div>
 
           <Sheet>

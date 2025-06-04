@@ -155,7 +155,7 @@ export default function CategoryPage({
                 <Card key={i} className="overflow-hidden">
                   <div className="relative aspect-square">
                     <Image
-                      src={`https://images.pexels.com/photos/3785147/pexels-photo-3785147.jpeg`}
+                      src="/cream.jpg"
                       alt="Product"
                       fill
                       className="object-cover"

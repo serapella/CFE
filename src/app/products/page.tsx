@@ -1,4 +1,4 @@
-import { ApiService } from "@/lib/api";
+import { ApiService } from "@/config/api";
 import type { Product } from "@/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -34,7 +34,8 @@ export default async function ProductsPage() {
   let products: Product[] = [];
   let error = null;
   try {
-    products = await ApiService.getProducts();
+    const response = await ApiService.getProducts();
+    products = response.data;
   } catch (err: any) {
     error = err.message || "Unknown error";
   }

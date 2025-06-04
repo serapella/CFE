@@ -29,6 +29,9 @@ export default function LoginPage() {
     
     try {
       const response = await ApiService.login(email, password);
+      if (response.data?.token) {
+        sessionStorage.setItem('token', response.data.token);
+      }
       toast("Welcome back! You have successfully logged in.");
       window.location.href = "/";
     } catch (error) {
@@ -77,7 +80,7 @@ export default function LoginPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form action={execute} className="space-y-4">
+              <form action={execute} className="space-y-4" autoComplete="off" onSubmit={() => {}}>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
                   <Input 
@@ -86,6 +89,7 @@ export default function LoginPage() {
                     type="email" 
                     placeholder="you@example.com" 
                     required
+                    autoComplete="email"
                   />
                 </div>
                 
@@ -106,10 +110,13 @@ export default function LoginPage() {
                       type={showPassword ? "text" : "password"}
                       placeholder="••••••••" 
                       required
+                      autoComplete="current-password"
                     />
                     <button
                       type="button"
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
+                      tabIndex={-1}
+                      aria-label={showPassword ? "Hide password" : "Show password"}
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? "Hide" : "Show"}
@@ -132,7 +139,12 @@ export default function LoginPage() {
                   </label>
                 </div>
                 
-                <Button type="submit" className="w-full" disabled={pending}>
+                <Button
+                  type="submit"
+                  className="w-full transition-colors duration-150 cursor-pointer"
+                  disabled={pending}
+                  aria-busy={pending}
+                >
                   {pending ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />

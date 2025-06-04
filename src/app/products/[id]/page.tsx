@@ -1,4 +1,4 @@
-import { ApiService } from "@/lib/api";
+import { ApiService } from "@/config/api";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -22,9 +22,10 @@ export default async function ProductPage({ params }: { params: { id: string } }
   let reviews: Review[] = [];
   let error: string | null = null;
   try {
-    product = await ApiService.getProduct(Number(params.id));
-    const reviewsResult = await ApiService.getProductReviews(Number(params.id));
-    reviews = Array.isArray(reviewsResult) ? reviewsResult : [];
+    const response = await ApiService.getProductById(params.id);
+    product = response.data;
+    const reviewsResponse = await ApiService.getProductReviews(params.id);
+    reviews = Array.isArray(reviewsResponse.data) ? reviewsResponse.data : [];
   } catch (err) {
     if (err instanceof Error) {
       error = err.message;

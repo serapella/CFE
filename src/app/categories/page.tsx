@@ -11,42 +11,42 @@ const categories = [
     id: "essential-oils",
     name: "Essential Oils",
     description: "Natural aromatic compounds found in plants",
-    image: "https://images.pexels.com/photos/4041392/pexels-photo-4041392.jpeg",
+    image: "/sunscreen.jpg",
     color: "bg-sunshine"
   },
   {
     id: "face-care",
     name: "Face Care",
     description: "Products for facial skincare and treatment",
-    image: "https://images.pexels.com/photos/3785147/pexels-photo-3785147.jpeg",
+    image: "/facemask.jpg",
     color: "bg-peony"
   },
   {
     id: "body-care",
     name: "Body Care",
     description: "Full body care and treatment products",
-    image: "https://images.pexels.com/photos/3737594/pexels-photo-3737594.jpeg",
+    image: "/cream.jpg",
     color: "bg-azure"
   },
   {
     id: "hair-care",
     name: "Hair Care",
     description: "Products for hair health and styling",
-    image: "https://images.pexels.com/photos/3993449/pexels-photo-3993449.jpeg",
+    image: "/child.jpg",
     color: "bg-papaya"
   },
   {
     id: "natural-makeup",
     name: "Natural Makeup",
     description: "Clean and natural cosmetic products",
-    image: "https://images.pexels.com/photos/2253833/pexels-photo-2253833.jpeg",
+    image: "/facemask2.jpg",
     color: "bg-coral"
   },
   {
     id: "supplements",
     name: "Supplements",
     description: "Natural health supplements and vitamins",
-    image: "https://images.pexels.com/photos/4024914/pexels-photo-4024914.jpeg",
+    image: "/mirror.jpg",
     color: "bg-peacock"
   }
 ];
