@@ -28,12 +28,15 @@ export default function LoginPage() {
     }
     
     try {
-      const response = await ApiService.login(email, password);
-      if (response.data?.token) {
-        sessionStorage.setItem('token', response.data.token);
+      await ApiService.login(email, password);
+      // After login, check if user is authenticated
+      const meResponse = await ApiService.getCurrentUser();
+      if (meResponse.data && meResponse.data.id) {
+        toast("Welcome back! You have successfully logged in.");
+        window.location.href = "/";
+      } else {
+        toast("Login failed: could not fetch user info.");
       }
-      toast("Welcome back! You have successfully logged in.");
-      window.location.href = "/";
     } catch (error) {
       toast(error instanceof Error ? error.message : "Login failed");
     }
