@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2, LogIn } from "lucide-react";
 import Link from "next/link";
 import { useFormAction } from "@/hooks/use-form-action";
+import { ApiService } from "@/config/api";
 
 export default function LoginPage() {
   const { toast } = useToast();
@@ -22,25 +23,17 @@ export default function LoginPage() {
     const password = formData.get("password") as string;
     
     if (!email || !password) {
-      toast({
-        title: "Invalid input",
-        description: "Please enter both email and password.",
-        variant: "destructive",
-      });
+      toast("Please enter both email and password.");
       return;
     }
     
-    // In a real app, this would be a call to the auth API
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    // Simulate successful login
-    toast({
-      title: "Welcome back!",
-      description: "You have successfully logged in.",
-    });
-    
-    // Navigate to dashboard or home page (would use router in a real app)
-    window.location.href = "/";
+    try {
+      const response = await ApiService.login(email, password);
+      toast("Welcome back! You have successfully logged in.");
+      window.location.href = "/";
+    } catch (error) {
+      toast(error instanceof Error ? error.message : "Login failed");
+    }
   });
   
   return (
@@ -52,7 +45,7 @@ export default function LoginPage() {
           transition={{ duration: 0.5 }}
         >
           <div className="flex justify-center mb-6">
-            <Link href="/" className="inline-block" legacyBehavior>
+            <Link href="/" className="inline-block">
               <div className="flex items-center gap-2">
                 <div className="rounded-full bg-primary/10 p-2">
                   <svg 

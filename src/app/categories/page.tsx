@@ -68,7 +68,7 @@ export default function CategoriesPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: index * 0.1 }}
           >
-            <Link href={`/categories/${category.id}`} legacyBehavior>
+            <Link href={`/categories/${category.id}`}>
               <Card className="group overflow-hidden">
                 <div className="relative aspect-[4/3]">
                   <Image

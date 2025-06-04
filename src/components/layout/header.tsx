@@ -79,31 +79,19 @@ export function Header() {
                         </Link>
                       </li>
                       <li>
-                        <Link href="/recipes/create" legacyBehavior>
-                          <NavigationMenuLink
-                            className={navigationMenuTriggerStyle()}
-                          >
-                            Create Recipe
-                          </NavigationMenuLink>
-                        </Link>
+                        <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                          <Link href="/recipes/create">Create Recipe</Link>
+                        </NavigationMenuLink>
                       </li>
                       <li>
-                        <Link href="/recipes/favorites" legacyBehavior>
-                          <NavigationMenuLink
-                            className={navigationMenuTriggerStyle()}
-                          >
-                            My Favorites
-                          </NavigationMenuLink>
-                        </Link>
+                        <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                          <Link href="/recipes/favorites">My Favorites</Link>
+                        </NavigationMenuLink>
                       </li>
                       <li>
-                        <Link href="/shopping-list" legacyBehavior>
-                          <NavigationMenuLink
-                            className={navigationMenuTriggerStyle()}
-                          >
-                            Shopping List
-                          </NavigationMenuLink>
-                        </Link>
+                        <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                          <Link href="/shopping-list">Shopping List</Link>
+                        </NavigationMenuLink>
                       </li>
                     </ul>
                   </NavigationMenuContent>
@@ -127,31 +115,19 @@ export function Header() {
                         </Link>
                       </li>
                       <li>
-                        <Link href="/products/scan" legacyBehavior>
-                          <NavigationMenuLink
-                            className={navigationMenuTriggerStyle()}
-                          >
-                            Scan Product
-                          </NavigationMenuLink>
-                        </Link>
+                        <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                          <Link href="/products/scan">Scan Product</Link>
+                        </NavigationMenuLink>
                       </li>
                       <li>
-                        <Link href="/products/compare" legacyBehavior>
-                          <NavigationMenuLink
-                            className={navigationMenuTriggerStyle()}
-                          >
-                            Compare Products
-                          </NavigationMenuLink>
-                        </Link>
+                        <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                          <Link href="/products/compare">Compare Products</Link>
+                        </NavigationMenuLink>
                       </li>
                       <li>
-                        <Link href="/health-goals" legacyBehavior>
-                          <NavigationMenuLink
-                            className={navigationMenuTriggerStyle()}
-                          >
-                            Health Goals
-                          </NavigationMenuLink>
-                        </Link>
+                        <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                          <Link href="/health-goals">Health Goals</Link>
+                        </NavigationMenuLink>
                       </li>
                     </ul>
                   </NavigationMenuContent>
@@ -175,7 +151,7 @@ export function Header() {
             <Search className="h-5 w-5" />
           </Button>
 
-          <Link href="/favorites" legacyBehavior>
+          <Link href="/favorites">
             <Button variant="ghost" size="icon" className="hidden md:flex">
               <Heart className="h-5 w-5" />
             </Button>
@@ -186,10 +162,10 @@ export function Header() {
           </div>
 
           <div className="hidden md:flex gap-2">
-            <Link href="/login" legacyBehavior>
+            <Link href="/auth/login">
               <Button variant="outline">Log in</Button>
             </Link>
-            <Link href="/register" legacyBehavior>
+            <Link href="/auth/register">
               <Button>Sign up</Button>
             </Link>
           </div>
@@ -240,12 +216,12 @@ export function Header() {
                 </div>
 
                 <div className="flex flex-col gap-2 mt-auto">
-                  <Link href="/login" legacyBehavior>
+                  <Link href="/auth/login">
                     <Button variant="outline" className="w-full">
                       Log in
                     </Button>
                   </Link>
-                  <Link href="/register" legacyBehavior>
+                  <Link href="/auth/register">
                     <Button className="w-full">Sign up</Button>
                   </Link>
 

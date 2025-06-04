@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2, UserPlus } from "lucide-react";
 import Link from "next/link";
 import { useFormAction } from "@/hooks/use-form-action";
+import { ApiService } from "@/config/api";
 
 export default function RegisterPage() {
   const { toast } = useToast();
@@ -24,43 +25,32 @@ export default function RegisterPage() {
     const confirmPassword = formData.get("confirmPassword") as string;
     
     if (!name || !email || !password || !confirmPassword) {
-      toast({
-        title: "Invalid input",
-        description: "Please fill in all required fields.",
-        variant: "destructive",
-      });
+      toast("Please fill in all required fields.");
       return;
     }
     
     if (password !== confirmPassword) {
-      toast({
-        title: "Passwords don't match",
-        description: "Please make sure your passwords match.",
-        variant: "destructive",
-      });
+      toast("Please make sure your passwords match.");
       return;
     }
     
     if (!agreeToTerms) {
-      toast({
-        title: "Terms not accepted",
-        description: "Please agree to the terms and conditions.",
-        variant: "destructive",
-      });
+      toast("Please agree to the terms and conditions.");
       return;
     }
     
-    // In a real app, this would be a call to the auth API
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    // Simulate successful registration
-    toast({
-      title: "Welcome!",
-      description: "Your account has been created successfully.",
-    });
-    
-    // Navigate to dashboard or home page (would use router in a real app)
-    window.location.href = "/";
+    try {
+      await ApiService.register({
+        name,
+        email,
+        password,
+        password_confirmation: confirmPassword
+      });
+      toast("Your account has been created successfully.");
+      window.location.href = "/";
+    } catch (error) {
+      toast(error instanceof Error ? error.message : "Registration failed");
+    }
   });
   
   return (
@@ -72,7 +62,7 @@ export default function RegisterPage() {
           transition={{ duration: 0.5 }}
         >
           <div className="flex justify-center mb-6">
-            <Link href="/" className="inline-block" legacyBehavior>
+            <Link href="/" className="inline-block">
               <div className="flex items-center gap-2">
                 <div className="rounded-full bg-primary/10 p-2">
                   <svg 
@@ -104,7 +94,12 @@ export default function RegisterPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form action={execute} className="space-y-4">
+              <form
+                action={execute}
+                className="space-y-4"
+                autoComplete="off"
+                onSubmit={() => {}}
+              >
                 <div className="space-y-2">
                   <Label htmlFor="name">Full Name</Label>
                   <Input 
@@ -113,6 +108,7 @@ export default function RegisterPage() {
                     type="text" 
                     placeholder="John Doe" 
                     required
+                    autoComplete="name"
                   />
                 </div>
                 
@@ -124,6 +120,7 @@ export default function RegisterPage() {
                     type="email" 
                     placeholder="you@example.com" 
                     required
+                    autoComplete="email"
                   />
                 </div>
                 
@@ -136,10 +133,13 @@ export default function RegisterPage() {
                       type={showPassword ? "text" : "password"}
                       placeholder="••••••••" 
                       required
+                      autoComplete="new-password"
                     />
                     <button
                       type="button"
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
+                      tabIndex={-1}
+                      aria-label={showPassword ? "Hide password" : "Show password"}
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? "Hide" : "Show"}
@@ -155,6 +155,7 @@ export default function RegisterPage() {
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••" 
                     required
+                    autoComplete="new-password"
                   />
                 </div>
                 
@@ -180,7 +181,12 @@ export default function RegisterPage() {
                   </label>
                 </div>
                 
-                <Button type="submit" className="w-full" disabled={pending}>
+                <Button
+                  type="submit"
+                  className="w-full transition-colors duration-150 cursor-pointer"
+                  disabled={pending}
+                  aria-busy={pending}
+                >
                   {pending ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -209,8 +215,9 @@ export default function RegisterPage() {
               <div className="flex gap-2">
                 <Button
                   variant="outline"
-                  className="w-full flex items-center gap-2"
+                  className="w-full flex items-center gap-2 cursor-pointer"
                   type="button"
+                  tabIndex={-1}
                 >
                   <svg
                     width="18"
@@ -240,8 +247,9 @@ export default function RegisterPage() {
                 </Button>
                 <Button
                   variant="outline"
-                  className="w-full flex items-center gap-2"
+                  className="w-full flex items-center gap-2 cursor-pointer"
                   type="button"
+                  tabIndex={-1}
                 >
                   <svg
                     width="18"

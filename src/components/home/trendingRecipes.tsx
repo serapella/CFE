@@ -84,7 +84,7 @@ export function TrendingRecipes() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="mt-4 md:mt-0"
           >
-            <Link href="/recipes" legacyBehavior>
+            <Link href="/recipes">
               <Button variant="outline" className="gap-2">
                 View all recipes <ChevronRight className="h-4 w-4" />
               </Button>
@@ -144,7 +144,7 @@ export function TrendingRecipes() {
                 </CardContent>
                 
                 <CardFooter className="p-4 pt-0">
-                  <Link href={`/recipes/${recipe.id}`} className="w-full" legacyBehavior>
+                  <Link href={`/recipes/${recipe.id}`} className="w-full">
                     <Button variant="secondary" className="w-full">View Recipe</Button>
                   </Link>
                 </CardFooter>

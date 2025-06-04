@@ -1,13 +1,15 @@
+"use client";
+
 import { ApiService } from "@/lib/api";
 import type { Product } from "@/types";
-import { motion } from '@/components/ui/motion';
+import { motion } from "@/components/ui/motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, AlertTriangle, ThumbsUp, Search } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from "next/image";
+import Link from "next/link";
 
 // Function to determine progress bar color based on danger score
 const getDangerScoreColor = (score: number) => {
@@ -39,7 +41,7 @@ export async function ProductSpotlight() {
       <div className="container px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12">
           <div>
-            <motion.h2 
+            <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -48,7 +50,7 @@ export async function ProductSpotlight() {
             >
               Product health spotlight
             </motion.h2>
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -87,7 +89,9 @@ export async function ProductSpotlight() {
                       />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-lg mt-1">{product.name}</h3>
+                      <h3 className="font-semibold text-lg mt-1">
+                        {product.name}
+                      </h3>
                       <p className="text-sm text-muted-foreground">
                         {product.brand?.name} • {product.category?.name}
                       </p>
@@ -95,7 +99,9 @@ export async function ProductSpotlight() {
                   </div>
                   <div className="mb-4">
                     <span className="text-sm font-medium">Score: </span>
-                    <span className="text-sm font-medium">{product.score ?? "N/A"}</span>
+                    <span className="text-sm font-medium">
+                      {product.score ?? "N/A"}
+                    </span>
                   </div>
                   <div className="flex gap-2">
                     <Link href={`/products/${product.id}`} className="flex-1">

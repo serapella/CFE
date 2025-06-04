@@ -442,15 +442,14 @@ export default function ScanPage() {
                     )}
                     
                     <div className="flex gap-2 pt-2">
-                      <Link href={`/products/${scanResult.id}`} className="flex-1" legacyBehavior>
+                      <Link href={`/products/${scanResult.id}`} className="flex-1">
                         <Button variant="secondary" className="w-full">
                           <Info className="mr-2 h-4 w-4" /> View Details
                         </Button>
                       </Link>
                       <Link
                         href={`/products/alternatives/${scanResult.id}`}
-                        className="flex-1"
-                        legacyBehavior>
+                        className="flex-1">
                         <Button className="w-full">Find Alternatives</Button>
                       </Link>
                     </div>
@@ -557,7 +556,7 @@ export default function ScanPage() {
                     </div>
                   </div>
                   
-                  <Link href="/products/search" legacyBehavior>
+                  <Link href="/products/search">
                     <Button variant="outline" className="w-full mt-2">
                       <Search className="mr-2 h-4 w-4" /> Search Product Database
                     </Button>

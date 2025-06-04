@@ -65,7 +65,7 @@ export default async function ProductsPage() {
             Filters
           </Button>
 
-          <Link href="/products/scan" legacyBehavior>
+          <Link href="/products/scan">
             <Button variant="secondary" className="w-full md:w-auto">
               <QrCode className="mr-2 h-4 w-4" />
               Scan Product
@@ -170,13 +170,11 @@ export default async function ProductsPage() {
                     {product.brand?.name && <span>{product.brand.name}</span>}
                     {product.category?.name && <span> • {product.category.name}</span>}
                   </div>
-                  {typeof product.score === 'number' && (
-                    <div className="mb-2">
-                      <span className="font-medium">Score: </span>
-                      <span className="font-medium">{product.score}</span>
-                    </div>
-                  )}
-                  <Link href={`/products/${product.id}`} legacyBehavior>
+                  <div className="mb-4">
+                    <span className="text-sm font-medium">Score: </span>
+                    <span className="text-sm font-medium">{product.score ?? "N/A"}</span>
+                  </div>
+                  <Link href={`/products/${product.id}`}>
                     <Button variant="outline" className="w-full mt-2">
                       View Details
                     </Button>
@@ -236,7 +234,7 @@ export default async function ProductsPage() {
                             Key Ingredients:
                           </p>
                           <div className="flex flex-wrap gap-1">
-                            {product.keyIngredients?.map((ingredient: any) => (
+                            {product.ingredients?.map((ingredient: any) => (
                               <Badge
                                 key={ingredient.id}
                                 variant="outline"
@@ -249,12 +247,12 @@ export default async function ProductsPage() {
                         </div>
 
                         <div className="flex gap-2">
-                          <Link href={`/products/${product.id}`} legacyBehavior>
+                          <Link href={`/products/${product.id}`}>
                             <Button variant="outline" size="sm">
                               View Details
                             </Button>
                           </Link>
-                          <Link href={`/products/alternatives/${product.id}`} legacyBehavior>
+                          <Link href={`/products/alternatives/${product.id}`}>
                             <Button variant="secondary" size="sm">
                               Alternatives
                             </Button>

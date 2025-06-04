@@ -20,12 +20,17 @@ import type { Product, Review } from "@/types";
 export default async function ProductPage({ params }: { params: { id: string } }) {
   let product: Product | null = null;
   let reviews: Review[] = [];
-  let error = null;
+  let error: string | null = null;
   try {
     product = await ApiService.getProduct(Number(params.id));
-    reviews = await ApiService.getProductReviews(Number(params.id));
-  } catch (err: any) {
-    error = err.message || "Unknown error";
+    const reviewsResult = await ApiService.getProductReviews(Number(params.id));
+    reviews = Array.isArray(reviewsResult) ? reviewsResult : [];
+  } catch (err) {
+    if (err instanceof Error) {
+      error = err.message;
+    } else {
+      error = "Unknown error";
+    }
   }
 
   if (error) return <div className="container py-12 text-red-500">{error}</div>;
@@ -65,7 +70,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
                 className="relative aspect-square rounded-lg overflow-hidden"
               >
                 <Image
-                  src={product.image_url}
+                  src={product.image_url || "/fallback.png"}
                   alt={`${product.name} view ${i + 1}`}
                   fill
                   className="object-cover"
@@ -79,9 +84,6 @@ export default async function ProductPage({ params }: { params: { id: string } }
         <div>
           <div className="flex items-start justify-between mb-6">
             <div>
-              <Badge variant={getRatingBadgeVariant(product.rating)}>
-                {product.rating} Rating
-              </Badge>
               <h1 className="text-3xl font-bold mt-2 mb-1">{product.name}</h1>
               <div className="text-lg text-muted-foreground mb-2">
                 {product.brand?.name && <span>{product.brand.name}</span>}
@@ -164,17 +166,6 @@ export default async function ProductPage({ params }: { params: { id: string } }
                             {ingredient.description}
                           </p>
                         </div>
-                        <Badge
-                          variant={getRatingBadgeVariant(ingredient.rating)}
-                        >
-                          {ingredient.rating}
-                        </Badge>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm">
-                        <Info className="h-4 w-4 text-[hsl(var(--peacock))]" />
-                        <span className="text-[hsl(var(--peacock))]">
-                          {ingredient.safety}
-                        </span>
                       </div>
                     </div>
                   </Card>
@@ -241,7 +232,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
             <Card key={i} className="overflow-hidden">
               <div className="relative aspect-square">
                 <Image
-                  src={product.image_url}
+                  src={product.image_url || "/fallback.png"}
                   alt="Similar product"
                   fill
                   className="object-cover"
@@ -269,7 +260,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
             <Card key={review.id} className="p-4">
               <div className="flex items-center gap-3 mb-2">
                 <div className="font-semibold">
-                  {review.user?.name || `User #${review.user_id}`}
+                  {review.user?.name || `User #${review.userId}`}
                 </div>
                 <div className="flex items-center gap-1">
                   {[...Array(5)].map((_, i) => (
@@ -280,7 +271,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
                   ))}
                 </div>
                 <span className="text-xs text-muted-foreground ml-auto">
-                  {new Date(review.created_at).toLocaleDateString()}
+                  {review.created_at ? new Date(review.created_at).toLocaleDateString() : ""}
                 </span>
               </div>
               <div className="text-muted-foreground text-sm">{review.comment}</div>

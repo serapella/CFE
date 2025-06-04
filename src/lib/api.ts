@@ -7,9 +7,12 @@ export class ApiService {
 
   // Voor frontend routes (session auth) - gebruikt door de web applicatie
   private static async fetchFrontend<T>(path: string, options: RequestInit = {}): Promise<T> {
-    const response = await fetch(path, {
+    // Gebruik de gewone web-routes (zonder /api) voor frontend
+    const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_URL || "http://laravel.ddev.site";
+    const url = path.startsWith("http") ? path : `${baseUrl}${path.startsWith("/") ? path : "/" + path}`;
+    const response = await fetch(url, {
       ...options,
-      credentials: 'include', // Belangrijk voor session cookies
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
         ...options.headers,
@@ -30,13 +33,14 @@ export class ApiService {
 
   // Voor externe API integraties (API key) - gebruikt door externe services/apps
   private static async fetchExternal<T>(path: string, options: RequestInit = {}): Promise<T> {
-    const url = `${this.getApiUrl()}${path}`;
-    
+    // Gebruik de API-routes (met /api) en stuur API key mee
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://laravel.ddev.site/api";
+    const url = path.startsWith("http") ? path : `${baseUrl}${path.startsWith("/") ? path : "/" + path}`;
     const response = await fetch(url, {
       ...options,
       headers: {
         'Content-Type': 'application/json',
-        'CBE-API-KEY': process.env.NEXT_PUBLIC_API_KEY!, // Alleen voor externe integraties
+        'CBE-API-KEY': process.env.NEXT_PUBLIC_API_KEY!,
         ...options.headers,
       },
     });
