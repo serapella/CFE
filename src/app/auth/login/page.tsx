@@ -232,7 +232,7 @@ export default function LoginPage() {
             </CardContent>
             <CardFooter className="flex flex-col items-center justify-center space-y-2">
               <p className="text-sm text-muted-foreground">
-                Don't have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <Link href="/auth/register" className="text-primary hover:underline">
                   Sign up
                 </Link>

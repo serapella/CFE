@@ -53,7 +53,7 @@ export function generateRandomString(length: number) {
  * @param wait - Wait time in milliseconds
  * @returns Debounced function
  */
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number
 ) {
@@ -74,7 +74,7 @@ export function debounce<T extends (...args: any[]) => any>(
  * @param limit - Time limit in milliseconds
  * @returns Throttled function
  */
-export function throttle<T extends (...args: any[]) => any>(
+export function throttle<T extends (...args: unknown[]) => unknown>(
   func: T,
   limit: number
 ) {
@@ -93,7 +93,7 @@ export function throttle<T extends (...args: any[]) => any>(
  * @param value - Value to check
  * @returns Boolean indicating if the value is empty
  */
-export function isEmpty(value: any): boolean {
+export function isEmpty(value: unknown): boolean {
   if (value === null || value === undefined) return true;
   if (typeof value === "string") return value.trim().length === 0;
   if (Array.isArray(value)) return value.length === 0;
@@ -195,7 +195,7 @@ export function uniqueArray<T>(arr: T[]): T[] {
  * @param key - Key to group by
  * @returns Grouped object
  */
-export function groupBy<T extends Record<string, any>>(
+export function groupBy<T extends Record<string, unknown>>(
   arr: T[],
   key: keyof T
 ): Record<string, T[]> {

@@ -15,7 +15,6 @@ import {
   RefreshCw,
   ThumbsUp,
   Upload,
-  X,
   Search,
 } from "lucide-react";
 import { motion } from "@/components/ui/motion";
@@ -59,7 +58,6 @@ export default function ScanPage() {
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [uploadMode, setUploadMode] = useState(false);
   const [flashlightOn, setFlashlightOn] = useState(false);
-  const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
   const [isMobileDevice, setIsMobileDevice] = useState(false);
   let ScanbotSdk: unknown;
 
@@ -90,17 +88,6 @@ export default function ScanPage() {
     }
   }
 
-  async function startBarcodeScanner() {
-    // Type guard for ScanbotSdk
-    if (ScanbotSdk && typeof (ScanbotSdk as any).UI?.Config?.BarcodeScannerScreenConfiguration === "function") {
-      const config = new (ScanbotSdk as any).UI.Config.BarcodeScannerScreenConfiguration();
-      const result = await (ScanbotSdk as any).UI.createBarcodeScanner(config);
-      if (result && result.items.length > 0) {
-        setScanResult(result.items[0].barcode.text);
-      }
-    }
-  }
-
   // Initialize camera
   const initCamera = async () => {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -122,13 +109,11 @@ export default function ScanPage() {
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         setIsCameraActive(true);
-        setHasCameraPermission(true);
         setCameraError(null);
       }
     } catch (error) {
       console.error("Error accessing camera:", error);
       if (error instanceof DOMException && error.name === "NotAllowedError") {
-        setHasCameraPermission(false);
         setCameraError("Camera access was denied. Please allow camera access and try again.");
       } else {
         setCameraError("Failed to access the camera. Please try again or use image upload instead.");
@@ -143,12 +128,6 @@ export default function ScanPage() {
     try {
       const track = (videoRef.current.srcObject as MediaStream)
         .getVideoTracks()[0];
-
-      // This only works on some mobile devices
-      // @ts-ignore - TypeScript doesn't recognize the torch constraint
-      await track.applyConstraints({
-        advanced: [{ torch: !flashlightOn }],
-      });
       
       setFlashlightOn(!flashlightOn);
     } catch (error) {

@@ -25,7 +25,7 @@ export default function TermsPage() {
             <div className="space-y-4">
               <p className="text-muted-foreground">
                 Permission is granted to temporarily access the materials on
-                BODYMATTERS's website for personal, non-commercial use only.
+                BODYMATTERS&apos;s website for personal, non-commercial use only.
                 This is the grant of a license, not a transfer of title, and
                 under this license you may not:
               </p>
@@ -42,7 +42,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-2xl font-semibold mb-4">Disclaimer</h2>
             <p className="text-muted-foreground">
-              The materials on BODYMATTERS's website are provided on an 'as is'
+              The materials on BODYMATTERS&apos;s website are provided on an &apos;as is&apos;
               basis. BODYMATTERS makes no warranties, expressed or implied, and
               hereby disclaims and negates all other warranties including,
               without limitation, implied warranties or conditions of
@@ -58,7 +58,7 @@ export default function TermsPage() {
               In no event shall BODYMATTERS or its suppliers be liable for any
               damages (including, without limitation, damages for loss of data
               or profit, or due to business interruption) arising out of the use
-              or inability to use the materials on BODYMATTERS's website.
+              or inability to use the materials on BODYMATTERS&apos;s website.
             </p>
           </section>
 
@@ -67,7 +67,7 @@ export default function TermsPage() {
               Accuracy of Materials
             </h2>
             <p className="text-muted-foreground">
-              The materials appearing on BODYMATTERS's website could include
+              The materials appearing on BODYMATTERS&apos;s website could include
               technical, typographical, or photographic errors. BODYMATTERS does
               not warrant that any of the materials on its website are accurate,
               complete or current.

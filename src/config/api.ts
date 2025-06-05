@@ -14,7 +14,7 @@ async function ensureCsrfCookie() {
 }
 
 // Types for API responses
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   data?: T;
   message?: string;
   errors?: Record<string, string[]>;

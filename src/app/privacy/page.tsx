@@ -12,7 +12,7 @@ export default function PrivacyPolicyPage() {
         <Card className="p-6 mb-8">
           <h2 className="text-2xl font-semibold mb-4">Introduction</h2>
           <p className="text-muted-foreground mb-4">
-            BODYMATTERS ("we", "our", or "us") is committed to protecting your
+            BODYMATTERS (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) is committed to protecting your
             privacy. This Privacy Policy explains how we collect, use, disclose,
             and safeguard your information when you use our website and
             services.
