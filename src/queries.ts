@@ -1,9 +1,6 @@
 import type { Product, Category, Ingredient, Recipe } from "./types";
 import { ApiService } from "./lib/api";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
-
 // Products
 export async function getProducts(): Promise<Product[]> {
   return ApiService.getProducts();

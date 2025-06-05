@@ -4,26 +4,10 @@ import { ApiService } from "@/config/api";
 import type { Product } from "@/types";
 import { motion } from "@/components/ui/motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, AlertTriangle, ThumbsUp, Search } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
+import { ChevronRight, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-
-// Function to determine progress bar color based on danger score
-const getDangerScoreColor = (score: number) => {
-  if (score < 30) return "bg-green-500"; // Low danger (good)
-  if (score < 60) return "bg-yellow-500"; // Medium danger
-  return "bg-red-500"; // High danger (bad)
-};
-
-// Function to determine badge variant based on rating
-const getRatingBadgeVariant = (rating: string) => {
-  if (rating === "A") return "outline";
-  if (rating === "B") return "secondary";
-  return "destructive";
-};
 
 export async function ProductSpotlight() {
   let products: Product[] = [];

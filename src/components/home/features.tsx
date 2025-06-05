@@ -38,7 +38,7 @@ const features = [
     icon: <Info className="h-10 w-10 text-[hsl(var(--azure))]" />,
     title: "Ingredient Education",
     description:
-      "Learn about ingredients, their effects, and why they're used in products.",
+      "Learn about ingredients, their effects, and why they&apos;re used in products.",
     color: "bg-[hsl(var(--azure))]/10",
   },
   {
@@ -91,7 +91,7 @@ export function Features() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-xl text-muted-foreground"
           >
-            Our comprehensive tools help you understand what's in your products
+            Our comprehensive tools help you understand what&apos;s in your products
           </motion.p>
         </div>
 

@@ -1,4 +1,4 @@
- "use client";
+"use client";
 
 import { useState } from "react";
 import { motion } from "@/components/ui/motion";
@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Heart, Search, Star, Trash2, AlertTriangle, ThumbsUp } from "lucide-react";
+import { Heart, Search, Star, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 

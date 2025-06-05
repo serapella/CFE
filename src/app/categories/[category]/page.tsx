@@ -105,29 +105,33 @@ const categories = {
   },
 };
 
-export default function CategoryPage({
-  params,
-}: {
-  params: { category: string };
-}) {
-  const category = categories[params.category as keyof typeof categories];
+type PageProps = {
+  params: Promise<{ category: string }>;
+};
 
-  if (!category) {
+export default async function CategoryPage({ params }: PageProps) {
+  const { category } = await params; // Unwrap the Promise
+  const categoryData = categories[category as keyof typeof categories];
+
+  if (!categoryData) {
     notFound();
   }
 
   return (
     <div className="container py-12">
       <div className="max-w-2xl mx-auto text-center mb-12">
-        <h1 className="text-4xl font-bold mb-4">{category.title}</h1>
-        <p className="text-lg text-muted-foreground">{category.description}</p>
+        <h1 className="text-4xl font-bold mb-4">{categoryData.title}</h1>
+        <p className="text-lg text-muted-foreground">
+          {categoryData.description}
+        </p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {category.subcategories.map((subcategory) => (
+        {categoryData.subcategories.map((subcategory) => (
           <Link
             key={subcategory.id}
-            href={`/categories/${params.category}/${subcategory.id}`}
-            legacyBehavior>
+            href={`/categories/${category}/${subcategory.id}`}
+            legacyBehavior
+          >
             <Card className="group hover:shadow-lg transition-shadow">
               <div className="p-6">
                 <h2 className="text-xl font-semibold mb-2">
@@ -148,7 +152,7 @@ export default function CategoryPage({
         <Card className="bg-muted/50">
           <div className="p-8">
             <h2 className="text-2xl font-semibold mb-4">
-              Popular Products in {category.title}
+              Popular Products in {categoryData.title}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[1, 2, 3].map((i) => (

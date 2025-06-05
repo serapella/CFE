@@ -1,7 +1,6 @@
 // src/types.ts
 // Fallback RowDataPacket type if mysql2 is not available
 // Remove this if you have @types/mysql2 installed
-// @ts-ignore
 // src/types.ts
 
 // src/types.ts

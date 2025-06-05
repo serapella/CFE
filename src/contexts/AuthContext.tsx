@@ -25,8 +25,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         credentials: 'include'
       });
       setIsAuthenticated(response.ok);
-    } catch (error) {
-      setIsAuthenticated(false);
+    } catch {
+      // Handle error silently
     } finally {
       setIsLoading(false);
     }

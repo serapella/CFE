@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
-import { Menu, Search, User, BarChart2, Heart } from "lucide-react";
+import { Menu, Search, Heart } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   NavigationMenu,
@@ -44,7 +44,9 @@ export function Header() {
     sessionStorage.removeItem('token');
     try {
       await ApiService.logout();
-    } catch (e) {}
+    } catch {
+      // Handle error silently
+    }
     window.location.href = '/auth/login';
   };
 

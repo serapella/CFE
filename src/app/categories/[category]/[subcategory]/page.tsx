@@ -1,4 +1,3 @@
-import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -10,19 +9,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search, SlidersHorizontal, Star } from "lucide-react";
+import { Search, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-type Props = {
-  params: {
-    category: string;
-    subcategory: string;
-  };
+type PageProps = {
+  params: Promise<{ category: string; subcategory: string }>;
 };
 
-export default function Page({ params }: Props) {
-  const { category, subcategory } = params;
+export default async function Page({ params }: PageProps) {
+  const { category, subcategory } = await params; // Unwrap the Promise
   const products = Array.from({ length: 9 }, (_, i) => ({
     id: i + 1,
     name: `Product ${i + 1}`,
@@ -98,7 +94,9 @@ export default function Page({ params }: Props) {
         <div className="flex-1">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
             <div>
-              <h1 className="text-3xl font-bold mb-2">{category} - {subcategory}</h1>
+              <h1 className="text-3xl font-bold mb-2">
+                {category} - {subcategory}
+              </h1>
               <p className="text-muted-foreground">
                 Showing {products.length} products
               </p>

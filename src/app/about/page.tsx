@@ -11,7 +11,7 @@ export default function AboutPage() {
       <div className="text-center max-w-3xl mx-auto mb-16">
         <h1 className="text-4xl font-bold mb-4">About BODYMATTERS</h1>
         <p className="text-lg text-muted-foreground">
-          We're on a mission to help consumers make informed choices about their
+          We&apos;re on a mission to help consumers make informed choices about their
           personal care products through transparency and education.
         </p>
       </div>
@@ -58,11 +58,11 @@ export default function AboutPage() {
           <h2 className="text-3xl font-bold mb-4">Our Story</h2>
           <p className="text-lg text-muted-foreground mb-6">
             BODYMATTERS was founded in 2023 with a simple goal: to make it
-            easier for people to understand what's in their personal care
+            easier for people to understand what&apos;s in their personal care
             products.
           </p>
           <p className="text-lg text-muted-foreground mb-6">
-            We believe that everyone deserves to know exactly what they're
+            We believe that everyone deserves to know exactly what they&apos;re
             putting on their skin and into their bodies. Our platform combines
             cutting-edge technology with extensive research to provide clear,
             actionable information about product ingredients.
@@ -82,7 +82,7 @@ export default function AboutPage() {
       <div className="text-center mb-12">
         <h2 className="text-3xl font-bold mb-4">Meet Our Team</h2>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          We're a diverse group of scientists, developers, and health
+          We&apos;re a diverse group of scientists, developers, and health
           enthusiasts working together to make personal care more transparent.
         </p>
       </div>

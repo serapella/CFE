@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -54,12 +54,14 @@ export default function ScanPage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
-  const [scanResult, setScanResult] = useState<typeof mockScanResult | null>(null);
+  const [scanResult, setScanResult] = useState<typeof mockScanResult | null>(
+    null
+  );
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [uploadMode, setUploadMode] = useState(false);
   const [flashlightOn, setFlashlightOn] = useState(false);
   const [isMobileDevice, setIsMobileDevice] = useState(false);
-  let ScanbotSdk: unknown;
+  const scanbotSdkRef = useRef<unknown>(null);
 
   // Check if the device is mobile
   useEffect(() => {
@@ -71,22 +73,21 @@ export default function ScanPage() {
   }, []);
 
   // Initialize the Scanbot Barcode SDK
-  useEffect(() => {
-    loadSDK();
-  }, []);
-
-  async function loadSDK() {
+  const loadSDK = useCallback(async () => {
     // Use dynamic inline imports to load the SDK, else Next will load it into the server bundle
-    const sdkModule = await import("scanbot-web-sdk/ui");
-    ScanbotSdk = sdkModule.default;
-    // Type guard to ensure ScanbotSdk has initialize method
-    if (typeof (ScanbotSdk as any).initialize === "function") {
-      await (ScanbotSdk as any).initialize({
+    const sdkModule: { default: unknown } = await import("scanbot-web-sdk/ui");
+    scanbotSdkRef.current = sdkModule.default;
+    if (scanbotSdkRef.current && typeof (scanbotSdkRef.current as { initialize?: unknown }).initialize === "function") {
+      await (scanbotSdkRef.current as { initialize: (opts: object) => Promise<void> }).initialize({
         licenseKey: "", // Leave empty for trial mode
         enginePath: "/wasm/",
       });
     }
-  }
+  }, []);
+
+  useEffect(() => {
+    loadSDK();
+  }, [loadSDK]);
 
   // Initialize camera
   const initCamera = async () => {
@@ -103,9 +104,9 @@ export default function ScanPage() {
           height: { ideal: 720 },
         },
       };
-      
+
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
-      
+
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         setIsCameraActive(true);
@@ -114,9 +115,13 @@ export default function ScanPage() {
     } catch (error) {
       console.error("Error accessing camera:", error);
       if (error instanceof DOMException && error.name === "NotAllowedError") {
-        setCameraError("Camera access was denied. Please allow camera access and try again.");
+        setCameraError(
+          "Camera access was denied. Please allow camera access and try again."
+        );
       } else {
-        setCameraError("Failed to access the camera. Please try again or use image upload instead.");
+        setCameraError(
+          "Failed to access the camera. Please try again or use image upload instead."
+        );
       }
     }
   };
@@ -126,9 +131,8 @@ export default function ScanPage() {
     if (!videoRef.current?.srcObject) return;
 
     try {
-      const track = (videoRef.current.srcObject as MediaStream)
-        .getVideoTracks()[0];
-      
+      // Only works on some mobile devices
+      // No type-safe way to set torch, so skip
       setFlashlightOn(!flashlightOn);
     } catch (error) {
       console.error("Flashlight error:", error);
@@ -149,9 +153,9 @@ export default function ScanPage() {
   // Simulate barcode scanning
   const scanBarcode = () => {
     if (!isCameraActive) return;
-    
+
     setIsScanning(true);
-    
+
     // Simulate processing with a delay
     setTimeout(() => {
       // Capture current frame
@@ -159,14 +163,14 @@ export default function ScanPage() {
         const video = videoRef.current;
         const canvas = canvasRef.current;
         const context = canvas.getContext("2d");
-        
+
         if (context) {
           canvas.width = video.videoWidth;
           canvas.height = video.videoHeight;
           context.drawImage(video, 0, 0, canvas.width, canvas.height);
         }
       }
-      
+
       // In a real app, we would now process the canvas image with a barcode detection library
       // For demo purposes, we'll just simulate a successful scan after a delay
       setTimeout(() => {
@@ -190,14 +194,14 @@ export default function ScanPage() {
       if (canvasRef.current) {
         const canvas = canvasRef.current;
         const context = canvas.getContext("2d");
-        
+
         if (context) {
-          const img = new Image();
+          const img = document.createElement("img") as HTMLImageElement;
           img.onload = () => {
             canvas.width = img.width;
             canvas.height = img.height;
             context.drawImage(img, 0, 0);
-            
+
             // Simulate processing
             setTimeout(() => {
               setIsScanning(false);
@@ -241,7 +245,7 @@ export default function ScanPage() {
                     className="object-contain max-h-full"
                     fill
                   />
-                  <Badge 
+                  <Badge
                     className="absolute top-4 left-4 text-sm"
                     variant={getRatingBadgeVariant(scanResult.rating)}
                   >
@@ -261,7 +265,8 @@ export default function ScanPage() {
                         />
                         <Upload className="h-12 w-12 text-muted-foreground mb-4" />
                         <p className="text-center text-muted-foreground">
-                          Click to upload or drag and drop an image of the barcode
+                          Click to upload or drag and drop an image of the
+                          barcode
                         </p>
                       </div>
                     </div>
@@ -277,7 +282,7 @@ export default function ScanPage() {
                         }`}
                         onCanPlay={() => setIsCameraActive(true)}
                       ></video>
-                      
+
                       {cameraError && (
                         <div className="absolute inset-0 flex flex-col items-center justify-center p-8 bg-background/90">
                           <AlertTriangle className="h-12 w-12 text-destructive mb-4" />
@@ -292,7 +297,7 @@ export default function ScanPage() {
                           </div>
                         </div>
                       )}
-                      
+
                       {!isCameraActive && !cameraError && (
                         <div className="absolute inset-0 flex flex-col items-center justify-center">
                           <Camera className="h-12 w-12 text-muted-foreground mb-4" />
@@ -304,12 +309,12 @@ export default function ScanPage() {
                           </Button>
                         </div>
                       )}
-                      
+
                       {isCameraActive && !cameraError && (
                         <>
                           <div className="absolute inset-0 pointer-events-none">
                             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4/5 h-1/4 border-2 border-primary/50 rounded-md"></div>
-                            
+
                             {isScanning && (
                               <motion.div
                                 initial={{ top: "38%" }}
@@ -323,7 +328,7 @@ export default function ScanPage() {
                               ></motion.div>
                             )}
                           </div>
-                          
+
                           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
                             {isMobileDevice && (
                               <Button
@@ -342,7 +347,7 @@ export default function ScanPage() {
                                 )}
                               </Button>
                             )}
-                            
+
                             <Button
                               size="icon"
                               variant="secondary"
@@ -358,15 +363,17 @@ export default function ScanPage() {
                   )}
                 </div>
               )}
-              
+
               <canvas ref={canvasRef} className="hidden"></canvas>
-              
+
               <div className="p-6 space-y-4">
                 {scanResult ? (
                   <div className="space-y-4">
                     <div className="flex justify-between items-start">
                       <div>
-                        <h2 className="text-2xl font-bold">{scanResult.name}</h2>
+                        <h2 className="text-2xl font-bold">
+                          {scanResult.name}
+                        </h2>
                         <p className="text-muted-foreground">
                           {scanResult.brand} • {scanResult.category}
                         </p>
@@ -374,37 +381,51 @@ export default function ScanPage() {
                           Barcode: {scanResult.barcode}
                         </p>
                       </div>
-                      
+
                       <Button variant="ghost" size="icon" onClick={resetScan}>
                         <RefreshCw className="h-5 w-5" />
                       </Button>
                     </div>
-                    
+
                     <div>
                       <div className="flex justify-between items-center mb-1">
-                        <span className="text-sm font-medium">Danger Score</span>
-                        <span className="text-sm font-medium">{scanResult.dangerScore}%</span>
+                        <span className="text-sm font-medium">
+                          Danger Score
+                        </span>
+                        <span className="text-sm font-medium">
+                          {scanResult.dangerScore}%
+                        </span>
                       </div>
                       <Progress
                         value={scanResult.dangerScore}
                         className="h-2"
-                        style={{
-                          "--progress-background": getScoreColor(scanResult.dangerScore),
-                        } as React.CSSProperties}
+                        style={
+                          {
+                            "--progress-background": getScoreColor(
+                              scanResult.dangerScore
+                            ),
+                          } as React.CSSProperties
+                        }
                       />
                     </div>
-                    
+
                     <div>
-                      <p className="text-sm font-medium mb-2">Key Ingredients:</p>
+                      <p className="text-sm font-medium mb-2">
+                        Key Ingredients:
+                      </p>
                       <div className="flex flex-wrap gap-1">
                         {scanResult.keyIngredients.map((ingredient) => (
-                          <Badge key={ingredient} variant="outline" className="text-xs">
+                          <Badge
+                            key={ingredient}
+                            variant="outline"
+                            className="text-xs"
+                          >
                             {ingredient}
                           </Badge>
                         ))}
                       </div>
                     </div>
-                    
+
                     {scanResult.concerns.length > 0 ? (
                       <div>
                         <p className="text-sm font-medium flex items-center gap-1 text-[hsl(var(--sunshine))] dark:text-[hsl(var(--sunshine))]">
@@ -422,20 +443,25 @@ export default function ScanPage() {
                     ) : (
                       <div>
                         <p className="text-sm font-medium flex items-center gap-1 text-[hsl(var(--peacock))]">
-                          <ThumbsUp className="h-3.5 w-3.5" /> No concerns detected
+                          <ThumbsUp className="h-3.5 w-3.5" /> No concerns
+                          detected
                         </p>
                       </div>
                     )}
-                    
+
                     <div className="flex gap-2 pt-2">
-                      <Link href={`/products/${scanResult.id}`} className="flex-1">
+                      <Link
+                        href={`/products/${scanResult.id}`}
+                        className="flex-1"
+                      >
                         <Button variant="secondary" className="w-full">
                           <Info className="mr-2 h-4 w-4" /> View Details
                         </Button>
                       </Link>
                       <Link
                         href={`/products/alternatives/${scanResult.id}`}
-                        className="flex-1">
+                        className="flex-1"
+                      >
                         <Button className="w-full">Find Alternatives</Button>
                       </Link>
                     </div>
@@ -452,7 +478,9 @@ export default function ScanPage() {
                       </div>
                     ) : isCameraActive ? (
                       <>
-                        <p className="mb-4">Position the barcode within the frame</p>
+                        <p className="mb-4">
+                          Position the barcode within the frame
+                        </p>
                         <Button onClick={scanBarcode} disabled={isScanning}>
                           <QrCode className="mr-2 h-4 w-4" /> Scan Now
                         </Button>
@@ -468,12 +496,12 @@ export default function ScanPage() {
             </CardContent>
           </Card>
         </div>
-        
+
         <div className="lg:col-span-2">
           <Card>
             <CardContent className="p-6">
               <h3 className="text-xl font-bold mb-4">Scanning Tips</h3>
-              
+
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <div className="bg-primary/10 p-2 rounded-full">
@@ -482,11 +510,12 @@ export default function ScanPage() {
                   <div>
                     <p className="font-medium">Hold steady</p>
                     <p className="text-sm text-muted-foreground">
-                      Keep your phone steady and ensure the barcode is clearly visible
+                      Keep your phone steady and ensure the barcode is clearly
+                      visible
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start gap-3">
                   <div className="bg-primary/10 p-2 rounded-full">
                     <CheckCircle className="h-5 w-5 text-primary" />
@@ -498,7 +527,7 @@ export default function ScanPage() {
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start gap-3">
                   <div className="bg-primary/10 p-2 rounded-full">
                     <CheckCircle className="h-5 w-5 text-primary" />
@@ -506,17 +535,20 @@ export default function ScanPage() {
                   <div>
                     <p className="font-medium">Right distance</p>
                     <p className="text-sm text-muted-foreground">
-                      Position the camera about 6-8 inches (15-20 cm) from the barcode
+                      Position the camera about 6-8 inches (15-20 cm) from the
+                      barcode
                     </p>
                   </div>
                 </div>
               </div>
-              
+
               <div className="border-t my-6"></div>
-              
+
               <div className="space-y-4">
-                <h3 className="text-xl font-bold mb-4">Can't scan a product?</h3>
-                
+                <h3 className="text-xl font-bold mb-4">
+                  Can&apos;t scan a product?
+                </h3>
+
                 <div className="space-y-3">
                   <div className="flex items-start gap-3">
                     <div className="bg-secondary p-2 rounded-full">
@@ -529,7 +561,7 @@ export default function ScanPage() {
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start gap-3">
                     <div className="bg-secondary p-2 rounded-full">
                       <QrCode className="h-5 w-5" />
@@ -541,20 +573,21 @@ export default function ScanPage() {
                       </p>
                     </div>
                   </div>
-                  
+
                   <Link href="/products/search">
                     <Button variant="outline" className="w-full mt-2">
-                      <Search className="mr-2 h-4 w-4" /> Search Product Database
+                      <Search className="mr-2 h-4 w-4" /> Search Product
+                      Database
                     </Button>
                   </Link>
                 </div>
               </div>
-              
+
               <div className="border-t my-6"></div>
-              
+
               <div>
                 <h3 className="text-xl font-bold mb-4">Recently Scanned</h3>
-                
+
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
                     <div className="relative h-12 w-12 rounded-md overflow-hidden">
@@ -566,12 +599,16 @@ export default function ScanPage() {
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium truncate">Natural Daily Moisturizer</p>
-                      <p className="text-xs text-muted-foreground">Pure Essentials</p>
+                      <p className="font-medium truncate">
+                        Natural Daily Moisturizer
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Pure Essentials
+                      </p>
                     </div>
                     <Badge variant="outline">A</Badge>
                   </div>
-                  
+
                   <div className="flex items-center gap-3">
                     <div className="relative h-12 w-12 rounded-md overflow-hidden">
                       <Image
@@ -582,7 +619,9 @@ export default function ScanPage() {
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium truncate">Hydrating Face Cream</p>
+                      <p className="font-medium truncate">
+                        Hydrating Face Cream
+                      </p>
                       <p className="text-xs text-muted-foreground">GlowBoost</p>
                     </div>
                     <Badge variant="secondary">B</Badge>
