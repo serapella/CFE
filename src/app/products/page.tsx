@@ -32,12 +32,12 @@ import Link from "next/link";
 
 export default async function ProductsPage() {
   let products: Product[] = [];
-  let error = null;
+  let error: string | null = null;
   try {
     const response = await ApiService.getProducts();
     products = response.data;
-  } catch (err: any) {
-    error = err.message || "Unknown error";
+  } catch (err) {
+    error = err instanceof Error ? err.message : "Unknown error";
   }
 
   if (error) return <div className="container py-12 text-red-500">{error}</div>;
@@ -235,7 +235,7 @@ export default async function ProductsPage() {
                             Key Ingredients:
                           </p>
                           <div className="flex flex-wrap gap-1">
-                            {product.ingredients?.map((ingredient: any) => (
+                            {product.ingredients?.map((ingredient: { id: number; name: string }) => (
                               <Badge
                                 key={ingredient.id}
                                 variant="outline"

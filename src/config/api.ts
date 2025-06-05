@@ -5,7 +5,7 @@ export const api = axios.create({
   withCredentials: true,
   xsrfCookieName: 'XSRF-TOKEN',
   xsrfHeaderName: 'X-XSRF-TOKEN',
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://laravel.ddev.site',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://bodymattersadmin-8brl4.ondigitalocean.app',
 });
 
 // Helper to ensure CSRF cookie is set before mutating requests

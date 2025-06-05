@@ -61,7 +61,7 @@ export default function ScanPage() {
   const [flashlightOn, setFlashlightOn] = useState(false);
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
   const [isMobileDevice, setIsMobileDevice] = useState(false);
-  let ScanbotSdk: any;
+  let ScanbotSdk: unknown;
 
   // Check if the device is mobile
   useEffect(() => {
@@ -79,18 +79,25 @@ export default function ScanPage() {
 
   async function loadSDK() {
     // Use dynamic inline imports to load the SDK, else Next will load it into the server bundle
-    ScanbotSdk = (await import("scanbot-web-sdk/ui")).default;
-    await ScanbotSdk.initialize({
-      licenseKey: "", // Leave empty for trial mode
-      enginePath: "/wasm/",
-    });
+    const sdkModule = await import("scanbot-web-sdk/ui");
+    ScanbotSdk = sdkModule.default;
+    // Type guard to ensure ScanbotSdk has initialize method
+    if (typeof (ScanbotSdk as any).initialize === "function") {
+      await (ScanbotSdk as any).initialize({
+        licenseKey: "", // Leave empty for trial mode
+        enginePath: "/wasm/",
+      });
+    }
   }
 
   async function startBarcodeScanner() {
-    const config = new ScanbotSdk.UI.Config.BarcodeScannerScreenConfiguration();
-    const result = await ScanbotSdk.UI.createBarcodeScanner(config);
-    if (result && result.items.length > 0) {
-      setScanResult(result.items[0].barcode.text);
+    // Type guard for ScanbotSdk
+    if (ScanbotSdk && typeof (ScanbotSdk as any).UI?.Config?.BarcodeScannerScreenConfiguration === "function") {
+      const config = new (ScanbotSdk as any).UI.Config.BarcodeScannerScreenConfiguration();
+      const result = await (ScanbotSdk as any).UI.createBarcodeScanner(config);
+      if (result && result.items.length > 0) {
+        setScanResult(result.items[0].barcode.text);
+      }
     }
   }
 

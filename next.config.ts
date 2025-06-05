@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
-// Use BACKEND_URL from env, fallback to local ddev
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'http://laravel.ddev.site';
+// Use BACKEND_URL from env, fallback to production backend
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'https://bodymattersadmin-8brl4.ondigitalocean.app';
 
 const nextConfig: NextConfig = {
   images: {
