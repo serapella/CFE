@@ -1,5 +1,3 @@
-"use client";
-
 import { Product } from "@/types/models";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,9 +6,8 @@ import Link from "next/link";
 import { productQueries } from "@/queries/productQueries";
 
 export async function ProductSpotlight() {
-  // Fetch featured products server-side
   const products = await productQueries.getAll();
-  const featuredProducts = products.slice(0, 3); // Get first 3 products as featured
+  const featuredProducts = products.slice(0, 3);
 
   return (
     <section className="py-12">

@@ -101,7 +101,7 @@ export function HowItWorks() {
                 className="relative rounded-lg overflow-hidden aspect-square md:aspect-video shadow-xl"
               >
                 <Image 
-                  src="/window.svg" 
+                  src="/BarcodeBM.png" 
                   alt="Person scanning product barcode with smartphone"
                   className="object-cover"
                   fill
@@ -146,7 +146,7 @@ export function HowItWorks() {
                 className="relative rounded-lg overflow-hidden aspect-square md:aspect-video shadow-xl"
               >
                 <Image 
-                  src="/window.svg" 
+                  src="/BarcodeBM.png" 
                   alt="Person looking at recipes on a tablet"
                   className="object-cover"
                   fill
@@ -191,7 +191,7 @@ export function HowItWorks() {
                 className="relative rounded-lg overflow-hidden aspect-square md:aspect-video shadow-xl"
               >
                 <Image 
-                  src="/window.svg" 
+                  src="/BarcodeBM.png" 
                   alt="Person comparing product information"
                   className="object-cover"
                   fill

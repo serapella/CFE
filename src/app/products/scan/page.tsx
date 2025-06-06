@@ -25,7 +25,7 @@ import Image from "next/image";
 const mockScanResult = {
   id: 4,
   name: "Sensitive Skin Cleanser",
-  image: "/window.svg",
+  image: "/BarcodeBM.png",
   brand: "DermaCare",
   category: "Face Cleanser",
   dangerScore: 18,
@@ -240,7 +240,7 @@ export default function ScanPage() {
               {scanResult ? (
                 <div className="relative aspect-video bg-background flex items-center justify-center">
                   <Image
-                    src="/window.svg"
+                    src="/BarcodeBM.png"
                     alt={scanResult.name}
                     className="object-contain max-h-full"
                     fill
@@ -592,7 +592,7 @@ export default function ScanPage() {
                   <div className="flex items-center gap-3">
                     <div className="relative h-12 w-12 rounded-md overflow-hidden">
                       <Image
-                        src="/window.svg"
+                        src="/BarcodeBM.png"
                         alt="Natural Daily Moisturizer"
                         fill
                         className="object-cover"
@@ -612,7 +612,7 @@ export default function ScanPage() {
                   <div className="flex items-center gap-3">
                     <div className="relative h-12 w-12 rounded-md overflow-hidden">
                       <Image
-                        src="/window.svg"
+                        src="/BarcodeBM.png"
                         alt="Hydrating Face Cream"
                         fill
                         className="object-cover"

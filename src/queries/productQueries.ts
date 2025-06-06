@@ -1,4 +1,4 @@
-//VOOR PAGE COMPONENTEN (SERVER SIDE), initial data , SEO kritieke content gebruiken
+//SEVRER SIDE METEEN FETCHEN VAN DE BACKEND.
 // Page components (Server Components)
 // Initial data loading
 // SEO-kritieke content
