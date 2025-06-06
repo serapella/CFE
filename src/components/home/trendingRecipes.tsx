@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Recipe } from '@/types/models';
 
+
 async function getTrendingRecipes(): Promise<Recipe[]> {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proxy/recipes`, {

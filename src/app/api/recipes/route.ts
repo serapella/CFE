@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { productQueries } from "@/queries/productQueries";
+import { recipeQueries } from "@/queries/recipeQueries";
 
 export async function GET() {
   try {
-    const products = await productQueries.getAll();
-    return NextResponse.json(products);
+    const recipes = await recipeQueries.getAll();
+    return NextResponse.json(recipes);
   } catch (e) {
     console.error(e);
     return NextResponse.json({ error: e }, { status: 500 });

@@ -1,6 +1,3 @@
-// src/action.ts
-// Add your server actions or utilities here. 
-
 "use server";
 
 import { revalidateTag } from "next/cache";
@@ -98,7 +95,6 @@ export async function handleDeleteProduct(id: number): Promise<Message> {
   }
 }
 
-// Recipe Actions
 export async function handleAddRecipe(fd: FormData): Promise<Message> {
   const title = fd.get("title") as string | null;
   const description = fd.get("description") as string | null;

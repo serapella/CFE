@@ -1,4 +1,5 @@
-//VOOR CLIENT SIDE COMPONENTEN, interactieve features, form submittions.
+//VOOR CLIENT SIDE COMPONENTEN, interactieve features, form submittions. 
+// WERKT SAMEN MET ACTIONS.TS!!!
 // Client Components
 // Form submissions
 // Real-time interacties
@@ -7,7 +8,6 @@
 
 import axios from "axios";
 
-// AXIOS
 export const api = axios.create({
   withCredentials: true,
   xsrfCookieName: "XSRF-TOKEN",

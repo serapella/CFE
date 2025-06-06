@@ -37,15 +37,15 @@ export const productQueries = {
     return response.json();
   },
 
-  getAlternatives: async (id: number): Promise<Product[]> => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proxy/products/${id}/alternatives`, {
-      next: { tags: [`product-${id}`] }
-    });
-    if (!response.ok) {
-      throw new Error('Failed to fetch alternatives');
-    }
-    return response.json();
-  },
+  // getAlternatives: async (id: number): Promise<Product[]> => {
+  //   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proxy/products/${id}/alternatives`, {
+  //     next: { tags: [`product-${id}`] }
+  //   });
+  //   if (!response.ok) {
+  //     throw new Error('Failed to fetch alternatives');
+  //   }
+  //   return response.json();
+  // },
 
   getByBarcode: async (barcode: string): Promise<Product> => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proxy/products/barcode/${barcode}`, {
