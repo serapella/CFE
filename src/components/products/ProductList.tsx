@@ -12,7 +12,13 @@ import { handleAddProduct } from "@/action";
 import type { Message } from "@/action";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Heart } from "lucide-react";
 
 interface ProductListProps {
@@ -21,7 +27,7 @@ interface ProductListProps {
 
 const initialState: Message = {
   type: undefined,
-  message: undefined
+  message: undefined,
 };
 
 export function ProductList({ initialProducts }: ProductListProps) {
@@ -41,9 +47,9 @@ export function ProductList({ initialProducts }: ProductListProps) {
   }
 
   const toggleFavorite = (productId: number) => {
-    setFavorites(prev => 
-      prev.includes(productId) 
-        ? prev.filter(id => id !== productId)
+    setFavorites((prev) =>
+      prev.includes(productId)
+        ? prev.filter((id) => id !== productId)
         : [...prev, productId]
     );
   };
@@ -63,25 +69,15 @@ export function ProductList({ initialProducts }: ProductListProps) {
             <form action={createAction} className="space-y-4">
               <div>
                 <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  name="name"
-                  required
-                />
+                <Input id="name" name="name" required />
               </div>
               <div>
                 <Label htmlFor="description">Description</Label>
-                <Input
-                  id="description"
-                  name="description"
-                />
+                <Input id="description" name="description" />
               </div>
               <div>
                 <Label htmlFor="barcode">Barcode</Label>
-                <Input
-                  id="barcode"
-                  name="barcode"
-                />
+                <Input id="barcode" name="barcode" />
               </div>
               <Button type="submit" className="w-full">
                 Create Product
@@ -92,7 +88,9 @@ export function ProductList({ initialProducts }: ProductListProps) {
       </div>
 
       {createState.message && (
-        <Alert variant={createState.type === "success" ? "default" : "destructive"}>
+        <Alert
+          variant={createState.type === "success" ? "default" : "destructive"}
+        >
           <AlertDescription>{createState.message}</AlertDescription>
         </Alert>
       )}
@@ -110,9 +108,15 @@ export function ProductList({ initialProducts }: ProductListProps) {
                     variant="ghost"
                     size="icon"
                     onClick={() => toggleFavorite(product.id)}
-                    className={favorites.includes(product.id) ? "text-red-500" : ""}
+                    className={
+                      favorites.includes(product.id) ? "text-red-500" : ""
+                    }
                   >
-                    <Heart className={`h-5 w-5 ${favorites.includes(product.id) ? "fill-current" : ""}`} />
+                    <Heart
+                      className={`h-5 w-5 ${
+                        favorites.includes(product.id) ? "fill-current" : ""
+                      }`}
+                    />
                   </Button>
                 </div>
               </CardHeader>

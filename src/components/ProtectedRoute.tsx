@@ -1,7 +1,6 @@
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '../contexts/AuthContext';
-
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/auth-context";
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
@@ -12,12 +11,12 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      router.push('/login');
+      router.push("/login");
     }
   }, [isLoading, isAuthenticated, router]);
 
   if (isLoading) {
-    return <div>Loading...</div>; // Of een mooiere loading component
+    return <div>Loading...</div>;
   }
 
   if (!isAuthenticated) {
@@ -25,4 +24,4 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
   }
 
   return <>{children}</>;
-} 
+}

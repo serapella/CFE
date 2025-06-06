@@ -1,13 +1,14 @@
-import { NextResponse } from "next/server";
-import { ingredientQueries } from "@/queries/ingredientQueries";
+import { NextRequest, NextResponse } from "next/server";
+import { ingredientQueries } from "@/queries/ingredientQueries"; // Adjust if needed
 
-export async function GET(
-  request: Request,
-  context: { params: { id: string } }
-) {
+type RouteParams = {
+  params: Promise<{ id: string }>;
+};
+
+export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
-    const { id } = context.params;
-    const ingredient = await ingredientQueries.getById(Number(id));
+    const { id } = await params;
+    const ingredient = await ingredientQueries.getById(Number(id)); // Use ingredientQueries
     return NextResponse.json(ingredient);
   } catch (e) {
     console.error(e);

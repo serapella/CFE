@@ -24,7 +24,7 @@ export interface Product {
   id: number;
   name: string;
   description?: string;
-  barcode?: string;
+  barcode?: string | undefined;
   image_url?: string;
   external_id?: string;
   composition_score?: number;

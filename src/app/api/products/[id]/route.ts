@@ -1,20 +1,17 @@
-// API route = endpoint/serverfunctie
-// En een Server component = React component die data ophaalt/rendered op de server , is geen api route!
+import { NextRequest, NextResponse } from "next/server";
+import { productQueries } from "@/queries/productQueries"; // Adjust to ingredientQueries if needed
 
-import { NextResponse } from 'next/server';
-import { productQueries } from "@/queries/productQueries";
-import { error } from "console";
+type RouteParams = {
+  params: Promise<{ id: string }>;
+};
 
-
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
-    const product = await productQueries.getById(Number(params.id));
+    const { id } = await params;
+    const product = await productQueries.getById(Number(id)); // Change to ingredientQueries if for ingredients
     return NextResponse.json(product);
   } catch (e) {
     console.error(e);
     return NextResponse.json({ error: e }, { status: 500 });
   }
-} 
+}

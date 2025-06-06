@@ -99,6 +99,7 @@ export default function RegisterPage() {
                 className="space-y-4"
                 autoComplete="off"
                 onSubmit={() => {}}
+                onInvalid={e => e.preventDefault()}
               >
                 <div className="space-y-2">
                   <Label htmlFor="name">Full Name</Label>

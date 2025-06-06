@@ -1,8 +1,4 @@
-import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { Product } from '@/types/models';
-import { PageProps } from '@/types/page';
-import { productQueries } from "@/queries/productQueries";
+import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -10,34 +6,37 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Heart, Share2, ShoppingCart, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import type { Review } from "@/types/models";
+import { productQueries } from "@/queries/productQueries";
 import { ProductForm } from "@/components/products/ProductForm";
+import type { Product, Review } from "@/types/models";
+
+type PageProps = {
+  params: Promise<{ id: string }>;
+};
 
 async function fetchProduct(id: string): Promise<Product> {
-  try {
-    return await productQueries.getById(Number(id));
-  } catch (error) {
-    throw new Error('Product not found');
-  }
+  const product = await productQueries.getById(Number(id)); // Adjust based on your fetch logic
+  if (!product) throw new Error("Product not found");
+  return product;
 }
 
 export default async function ProductPage({ params }: PageProps) {
+  const { id } = await params;
+
   try {
-    const product = await fetchProduct(params.id);
+    const product = await fetchProduct(id);
     let reviews: Review[] = [];
     let error: string | null = null;
     try {
-      reviews = await productQueries.getReviews(Number(params.id));
+      reviews = await productQueries.getReviews(Number(id));
     } catch (err) {
-      if (err instanceof Error) {
-        error = err.message;
-      } else {
-        error = "Unknown error";
-      }
+      error = err instanceof Error ? err.message : "Unknown error";
     }
 
-    if (error) return <div className="container py-12 text-red-500">{error}</div>;
-    if (!product) return <div className="container py-12">No product found.</div>;
+    if (error)
+      return <div className="container py-12 text-red-500">{error}</div>;
+    if (!product)
+      return <div className="container py-12">No product found.</div>;
 
     return (
       <div className="container py-12">
@@ -97,7 +96,9 @@ export default async function ProductPage({ params }: PageProps) {
             </div>
 
             {product.description && (
-              <p className="text-muted-foreground mb-6">{product.description}</p>
+              <p className="text-muted-foreground mb-6">
+                {product.description}
+              </p>
             )}
 
             <div className="mb-8">
@@ -218,7 +219,9 @@ export default async function ProductPage({ params }: PageProps) {
                 </div>
                 <div className="p-4">
                   <h3 className="font-semibold mb-1">Product Name</h3>
-                  <p className="text-sm text-muted-foreground mb-4">Brand Name</p>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Brand Name
+                  </p>
                   <Button variant="outline" className="w-full">
                     View Details
                   </Button>
@@ -231,19 +234,5 @@ export default async function ProductPage({ params }: PageProps) {
     );
   } catch (error) {
     notFound();
-  }
-}
-
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  try {
-    const product = await fetchProduct(params.id);
-    return {
-      title: product.name,
-      description: product.description,
-    };
-  } catch {
-    return {
-      title: 'Product Not Found',
-    };
   }
 }
