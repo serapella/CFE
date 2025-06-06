@@ -1,82 +1,90 @@
 "use client";
 
-import { useFormState } from "react-dom";
+import { useState } from "react";
 import { Product } from "@/types/models";
-import { updateProduct, ProductFormState } from "@/actions/productActions";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
 
 interface ProductFormProps {
   product: Product;
 }
 
-const initialState: ProductFormState = {
-  success: undefined,
-  message: undefined,
-  errors: undefined,
-  data: undefined,
-};
-
 export function ProductForm({ product }: ProductFormProps) {
-  const [state, formAction] = useFormState(updateProduct, initialState);
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: product.name,
+    description: product.description || "",
+    barcode: product.barcode || "",
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const response = await fetch(`/api/products/${product.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update product");
+      }
+
+      toast.success("Product updated successfully");
+    } catch (error) {
+      toast.error("Failed to update product");
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
-    <div className="space-y-6">
-      <form action={formAction} className="space-y-4">
-        <input type="hidden" name="id" value={product.id} />
-        
-        <div>
-          <Label htmlFor="name">Name</Label>
-          <Input
-            id="name"
-            name="name"
-            defaultValue={product.name}
-            required
-            className={state.errors?.name ? "border-red-500" : ""}
-          />
-          {state.errors?.name && (
-            <p className="text-sm text-red-500">{state.errors.name}</p>
-          )}
-        </div>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="name">Product Name</Label>
+        <Input
+          id="name"
+          value={formData.name}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, name: e.target.value }))
+          }
+          required
+        />
+      </div>
 
-        <div>
-          <Label htmlFor="description">Description</Label>
-          <Input
-            id="description"
-            name="description"
-            defaultValue={product.description || ""}
-            className={state.errors?.description ? "border-red-500" : ""}
-          />
-          {state.errors?.description && (
-            <p className="text-sm text-red-500">{state.errors.description}</p>
-          )}
-        </div>
+      <div className="space-y-2">
+        <Label htmlFor="description">Description</Label>
+        <Textarea
+          id="description"
+          value={formData.description}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, description: e.target.value }))
+          }
+        />
+      </div>
 
-        <div>
-          <Label htmlFor="barcode">Barcode</Label>
-          <Input
-            id="barcode"
-            name="barcode"
-            defaultValue={product.barcode || ""}
-            className={state.errors?.barcode ? "border-red-500" : ""}
-          />
-          {state.errors?.barcode && (
-            <p className="text-sm text-red-500">{state.errors.barcode}</p>
-          )}
-        </div>
+      <div className="space-y-2">
+        <Label htmlFor="barcode">Barcode</Label>
+        <Input
+          id="barcode"
+          value={formData.barcode}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, barcode: e.target.value }))
+          }
+        />
+      </div>
 
-        <Button type="submit" className="w-full">
-          Update Product
-        </Button>
-      </form>
-
-      {state.message && (
-        <Alert variant={state.success ? "default" : "destructive"}>
-          <AlertDescription>{state.message}</AlertDescription>
-        </Alert>
-      )}
-    </div>
+      <Button type="submit" disabled={isLoading}>
+        {isLoading ? "Updating..." : "Update Product"}
+      </Button>
+    </form>
   );
 } 

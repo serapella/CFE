@@ -2,10 +2,29 @@
 
 import { motion } from '@/components/ui/motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { QrCode, Search, BookOpen } from "lucide-react";
+import { QrCode, Search, BookOpen, Heart } from "lucide-react";
 import Image from 'next/image';
+import { Card, CardContent } from "@/components/ui/card";
 
 export function HowItWorks() {
+  const steps = [
+    {
+      icon: <QrCode className="h-6 w-6" />,
+      title: "Scan Products",
+      description: "Use our barcode scanner to check product safety"
+    },
+    {
+      icon: <Search className="h-6 w-6" />,
+      title: "Review Details",
+      description: "Get detailed information about ingredients and safety ratings"
+    },
+    {
+      icon: <Heart className="h-6 w-6" />,
+      title: "Save Favorites",
+      description: "Keep track of your favorite safe products"
+    }
+  ];
+
   return (
     <section className="py-20">
       <div className="container">
@@ -181,6 +200,25 @@ export function HowItWorks() {
             </div>
           </TabsContent>
         </Tabs>
+
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+          {steps.map((step, index) => (
+            <Card key={index}>
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                    {step.icon}
+                  </div>
+                  <div className="text-2xl font-bold text-muted-foreground">
+                    {index + 1}
+                  </div>
+                </div>
+                <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
+                <p className="text-muted-foreground">{step.description}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
     </section>
   );

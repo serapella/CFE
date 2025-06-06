@@ -8,13 +8,14 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { LoadingGrid } from "@/components/ui/loading";
 import Link from "next/link";
 import { useFormState } from "react-dom";
-import { createProduct, deleteProduct, ProductFormState } from "@/actions/productActions";
+import { createProduct, ProductFormState } from "@/actions/productActions";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Heart } from "lucide-react";
 
 interface ProductListProps {
-  initialProducts?: Product[];
+  initialProducts: Product[];
 }
 
 const initialState: ProductFormState = {
@@ -28,9 +29,9 @@ export function ProductList({ initialProducts }: ProductListProps) {
   const [products, setProducts] = useState(initialProducts || []);
   const [isLoading, setIsLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [favorites, setFavorites] = useState<number[]>([]);
 
   const [createState, createAction] = useFormState(createProduct, initialState);
-  const [deleteState, deleteAction] = useFormState(deleteProduct, initialState);
 
   // Update products list when a new product is created
   if (createState.success && createState.data) {
@@ -38,13 +39,13 @@ export function ProductList({ initialProducts }: ProductListProps) {
     setIsDialogOpen(false);
   }
 
-  // Remove product from list when deleted
-  if (deleteState.success) {
-    const productId = deleteState.data?.id;
-    if (productId) {
-      setProducts(products.filter(p => p.id !== productId));
-    }
-  }
+  const toggleFavorite = (productId: number) => {
+    setFavorites(prev => 
+      prev.includes(productId) 
+        ? prev.filter(id => id !== productId)
+        : [...prev, productId]
+    );
+  };
 
   return (
     <div className="space-y-6">
@@ -107,12 +108,6 @@ export function ProductList({ initialProducts }: ProductListProps) {
         </Alert>
       )}
 
-      {deleteState.message && (
-        <Alert variant={deleteState.success ? "default" : "destructive"}>
-          <AlertDescription>{deleteState.message}</AlertDescription>
-        </Alert>
-      )}
-
       {isLoading ? (
         <LoadingGrid />
       ) : (
@@ -120,7 +115,17 @@ export function ProductList({ initialProducts }: ProductListProps) {
           {products.map((product: Product) => (
             <Card key={product.id}>
               <CardHeader>
-                <CardTitle>{product.name}</CardTitle>
+                <div className="flex justify-between items-start">
+                  <CardTitle>{product.name}</CardTitle>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => toggleFavorite(product.id)}
+                    className={favorites.includes(product.id) ? "text-red-500" : ""}
+                  >
+                    <Heart className={`h-5 w-5 ${favorites.includes(product.id) ? "fill-current" : ""}`} />
+                  </Button>
+                </div>
               </CardHeader>
               <CardContent>
                 {product.description && (
@@ -133,19 +138,11 @@ export function ProductList({ initialProducts }: ProductListProps) {
                     Barcode: {product.barcode}
                   </p>
                 )}
-                <div className="flex gap-2">
-                  <Link href={`/products/${product.id}`} className="flex-1">
-                    <Button variant="outline" className="w-full">
-                      View Details
-                    </Button>
-                  </Link>
-                  <form action={deleteAction} className="flex-1">
-                    <input type="hidden" name="id" value={product.id} />
-                    <Button variant="destructive" className="w-full" type="submit">
-                      Delete
-                    </Button>
-                  </form>
-                </div>
+                <Link href={`/products/${product.id}`} className="block">
+                  <Button variant="outline" className="w-full">
+                    View Details
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           ))}
