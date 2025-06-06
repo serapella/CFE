@@ -1,6 +1,8 @@
 // src/action.ts
 // Add your server actions or utilities here. 
 
+"use server";
+
 import { revalidateTag } from "next/cache";
 import type { Product } from "@/types/models";
 
@@ -42,14 +44,14 @@ export async function handleAddProduct(fd: FormData): Promise<Message> {
       return { type: "error", message: "Failed to add product" };
     }
 
-    revalidateTag(Tags.products);
+    revalidateTag("products");
     return { type: "success", message: "Product added successfully" };
   } catch (error) {
     return { type: "error", message: "An error occurred while adding the product" };
   }
 }
 
-export const handleUpdateProduct = async (fd: FormData): Promise<Message> => {
+export async function handleUpdateProduct(fd: FormData): Promise<Message> {
   const id = fd.get("id") as string | null;
   const name = fd.get("name") as string | null;
   const description = fd.get("description") as string | null;
@@ -70,15 +72,15 @@ export const handleUpdateProduct = async (fd: FormData): Promise<Message> => {
       return { type: "error", message: "Failed to update product" };
     }
 
-    revalidateTag(Tags.products);
-    revalidateTag(`${Tags.productDetail}-${id}`);
+    revalidateTag("products");
+    revalidateTag(`product-${id}`);
     return { type: "success", message: "Product updated successfully" };
   } catch (error) {
     return { type: "error", message: "An error occurred while updating the product" };
   }
-};
+}
 
-export const handleDeleteProduct = async (id: number): Promise<Message> => {
+export async function handleDeleteProduct(id: number): Promise<Message> {
   try {
     const res = await fetch(`${API_URL}/api/proxy/products/${id}`, {
       method: "DELETE",
@@ -88,16 +90,16 @@ export const handleDeleteProduct = async (id: number): Promise<Message> => {
       return { type: "error", message: "Failed to delete product" };
     }
 
-    revalidateTag(Tags.products);
-    revalidateTag(`${Tags.productDetail}-${id}`);
+    revalidateTag("products");
+    revalidateTag(`product-${id}`);
     return { type: "success", message: "Product deleted successfully" };
   } catch (error) {
     return { type: "error", message: "An error occurred while deleting the product" };
   }
-};
+}
 
 // Recipe Actions
-export const handleAddRecipe = async (fd: FormData): Promise<Message> => {
+export async function handleAddRecipe(fd: FormData): Promise<Message> {
   const title = fd.get("title") as string | null;
   const description = fd.get("description") as string | null;
   if (!title || !description) {
@@ -115,14 +117,14 @@ export const handleAddRecipe = async (fd: FormData): Promise<Message> => {
       return { type: "error", message: "Failed to add recipe" };
     }
 
-    revalidateTag(Tags.recipes);
+    revalidateTag("recipes");
     return { type: "success", message: "Recipe added successfully" };
   } catch (error) {
     return { type: "error", message: "An error occurred while adding the recipe" };
   }
-};
+}
 
-export const handleDeleteRecipe = async (id: number): Promise<Message> => {
+export async function handleDeleteRecipe(id: number): Promise<Message> {
   try {
     const res = await fetch(`${API_URL}/api/proxy/recipes/${id}`, {
       method: "DELETE",
@@ -132,15 +134,15 @@ export const handleDeleteRecipe = async (id: number): Promise<Message> => {
       return { type: "error", message: "Failed to delete recipe" };
     }
 
-    revalidateTag(Tags.recipes);
-    revalidateTag(`${Tags.recipeDetail}-${id}`);
+    revalidateTag("recipes");
+    revalidateTag(`recipe-${id}`);
     return { type: "success", message: "Recipe deleted successfully" };
   } catch (error) {
     return { type: "error", message: "An error occurred while deleting the recipe" };
   }
-};
+}
 
-export const handleToggleFavoriteRecipe = async (id: number): Promise<Message> => {
+export async function handleToggleFavoriteRecipe(id: number): Promise<Message> {
   try {
     const res = await fetch(`${API_URL}/api/proxy/recipes/${id}/favorite`, {
       method: "POST",
@@ -150,12 +152,12 @@ export const handleToggleFavoriteRecipe = async (id: number): Promise<Message> =
       return { type: "error", message: "Failed to toggle favorite" };
     }
 
-    revalidateTag(Tags.recipes);
-    revalidateTag(`${Tags.recipeDetail}-${id}`);
+    revalidateTag("recipes");
+    revalidateTag(`recipe-${id}`);
     return { type: "success", message: "Favorite status updated successfully" };
   } catch (error) {
     return { type: "error", message: "An error occurred while updating favorite status" };
   }
-};
+}
 
 // Repeat similar patterns for products, ingredients, categories, reviews, etc. 
