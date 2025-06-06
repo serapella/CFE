@@ -1,4 +1,10 @@
 //VOOR CLIENT SIDE COMPONENTEN, interactieve features, form submittions. 
+// Client Components
+// Form submissions
+// Real-time interacties
+// User actions (like, share, etc.)
+// Authenticated requests
+
 import axios from 'axios';
 
 // AXIOS

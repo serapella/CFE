@@ -39,6 +39,7 @@ export interface Category {
 export interface Ingredient {
   id: number;
   name: string;
+  description?: string;
   created_at: string;
   updated_at: string;
 }
@@ -83,4 +84,5 @@ export interface Review {
   comment?: string;
   created_at: string;
   updated_at: string;
+  user?: User;
 } 

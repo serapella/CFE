@@ -1,7 +1,7 @@
 "use client";
 
-import { ApiService } from "@/config/api";
-import type { Product } from "@/types";
+import { productQueries } from "@/queries/productQueries";
+import type { Product } from "@/types/models";
 import { motion } from "@/components/ui/motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,8 +13,7 @@ export async function ProductSpotlight() {
   let products: Product[] = [];
   let error = null;
   try {
-    const response = await ApiService.getProducts();
-    products = response.data;
+    products = await productQueries.getAll();
   } catch (err) {
     error = err instanceof Error ? err.message : "Unknown error";
   }

@@ -1,5 +1,8 @@
 //VOOR PAGE COMPONENTEN (SERVER SIDE), initial data , SEO kritieke content gebruiken
-
+// Page components (Server Components)
+// Initial data loading
+// SEO-kritieke content
+// Statische data
 import { Product, Review, Ingredient } from '@/types/models';
 
 // Server-side fetch functions for Next.js pages

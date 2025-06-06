@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Product } from '@/types/models';
 import { PageProps } from '@/types/page';
-import { ApiService } from "@/config/api";
+import { productQueries } from "@/queries/productQueries";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -10,14 +10,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Heart, Share2, ShoppingCart, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import type { Review } from "@/types";
+import type { Review } from "@/types/models";
+import { ProductForm } from "@/components/products/ProductForm";
 
 async function fetchProduct(id: string): Promise<Product> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proxy/products/${id}`, {
-    cache: 'no-store',
-  });
-  if (!res.ok) throw new Error('Product not found');
-  return res.json();
+  try {
+    return await productQueries.getById(Number(id));
+  } catch (error) {
+    throw new Error('Product not found');
+  }
 }
 
 export default async function ProductPage({ params }: PageProps) {
@@ -26,8 +27,7 @@ export default async function ProductPage({ params }: PageProps) {
     let reviews: Review[] = [];
     let error: string | null = null;
     try {
-      const reviewsResponse = await ApiService.getProductReviews(params.id);
-      reviews = Array.isArray(reviewsResponse.data) ? reviewsResponse.data : [];
+      reviews = await productQueries.getReviews(Number(params.id));
     } catch (err) {
       if (err instanceof Error) {
         error = err.message;
@@ -178,68 +178,29 @@ export default async function ProductPage({ params }: PageProps) {
               </TabsContent>
 
               <TabsContent value="reviews" className="mt-6">
-                <div className="mb-6">
-                  <div className="text-4xl font-bold mb-1">
-                    {reviews.length > 0
-                      ? (
-                          reviews.reduce((sum, r) => sum + r.rating, 0) /
-                          reviews.length
-                        ).toFixed(1)
-                      : "No reviews"}
-                  </div>
-                  <div className="flex items-center gap-1 mb-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`h-4 w-4 ${
-                          i <
-                          Math.round(
-                            reviews.reduce((sum, r) => sum + r.rating, 0) /
-                              (reviews.length || 1)
-                          )
-                            ? "text-[hsl(var(--sunshine))] fill-[hsl(var(--sunshine))]"
-                            : "text-[hsl(var(--muted-foreground))]"
-                        }`}
-                      />
-                    ))}
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    {reviews.length} review{reviews.length === 1 ? "" : "s"}
-                  </p>
-                </div>
-                <div className="space-y-6">
+                <div className="space-y-4">
                   {reviews.map((review) => (
-                    <Card key={review.id} className="p-4">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="font-semibold">
-                          {review.user?.name || `User #${review.userId}`}
+                    <Card key={review.id}>
+                      <div className="p-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                          <span className="font-medium">{review.rating}</span>
                         </div>
-                        <div className="flex items-center gap-1">
-                          {[...Array(5)].map((_, i) => (
-                            <Star
-                              key={i}
-                              className={`h-4 w-4 ${
-                                i < review.rating
-                                  ? "text-[hsl(var(--sunshine))] fill-[hsl(var(--sunshine))]"
-                                  : "text-[hsl(var(--muted-foreground))]"
-                              }`}
-                            />
-                          ))}
-                        </div>
-                        <span className="text-xs text-muted-foreground ml-auto">
-                          {review.created_at
-                            ? new Date(review.created_at).toLocaleDateString()
-                            : ""}
-                        </span>
-                      </div>
-                      <div className="text-muted-foreground text-sm">
-                        {review.comment}
+                        <p className="text-sm text-muted-foreground">
+                          {review.comment}
+                        </p>
                       </div>
                     </Card>
                   ))}
                 </div>
               </TabsContent>
             </Tabs>
+
+            {/* Edit Product Form */}
+            <div className="mt-12">
+              <h2 className="text-2xl font-bold mb-6">Edit Product</h2>
+              <ProductForm product={product} />
+            </div>
           </div>
         </div>
 
