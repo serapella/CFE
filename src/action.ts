@@ -1,8 +1,6 @@
 // src/action.ts
 // Add your server actions or utilities here. 
 
-"use server";
-
 import { revalidateTag } from "next/cache";
 import type { Product } from "@/types/models";
 
@@ -23,8 +21,8 @@ export const Tags = {
   categories: "categories"
 } as const;
 
-// Product Actions
-export const handleAddProduct = async (fd: FormData): Promise<Message> => {
+// Server Actions
+export async function handleAddProduct(fd: FormData): Promise<Message> {
   const name = fd.get("name") as string | null;
   const description = fd.get("description") as string | null;
   const barcode = fd.get("barcode") as string | null;
@@ -49,7 +47,7 @@ export const handleAddProduct = async (fd: FormData): Promise<Message> => {
   } catch (error) {
     return { type: "error", message: "An error occurred while adding the product" };
   }
-};
+}
 
 export const handleUpdateProduct = async (fd: FormData): Promise<Message> => {
   const id = fd.get("id") as string | null;
