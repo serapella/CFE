@@ -1,6 +1,7 @@
+//VOOR CLIENT SIDE COMPONENTEN, interactieve features, form submittions. 
 import axios from 'axios';
 
-// Create an axios instance with cookie and CSRF defaults
+// AXIOS
 export const api = axios.create({
   withCredentials: true,
   xsrfCookieName: 'XSRF-TOKEN',
@@ -8,12 +9,11 @@ export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://bodymattersadmin-8brl4.ondigitalocean.app',
 });
 
-// Helper to ensure CSRF cookie is set before mutating requests
+// CSRF aanwezig zonder in te loggen
 async function ensureCsrfCookie() {
   await api.get('/sanctum/csrf-cookie');
 }
 
-// Types for API responses
 export interface ApiResponse<T = unknown> {
   data?: T;
   message?: string;
@@ -29,7 +29,7 @@ export interface AuthResponse {
   token?: string;
 }
 
-// API Configuration
+// API config
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://laravel.ddev.site/api';
 
 export const API_ENDPOINTS = {
@@ -48,6 +48,8 @@ export const API_ENDPOINTS = {
     delete: (id: string) => `/proxy/products/${id}`,
     getByBarcode: (barcode: string) => `/proxy/products/barcode/${barcode}`,
     reviews: (id: string) => `/proxy/products/${id}/reviews`,
+    alternatives: (id: string) => `/proxy/products/${id}/alternatives`,
+    ingredients: (id: string) => `/proxy/products/${id}/ingredients`,
   },
   categories: {
     list: '/proxy/categories',
@@ -97,6 +99,12 @@ export const ApiService = {
   },
   async getProductReviews(id: string) {
     return api.get(API_ENDPOINTS.products.reviews(id));
+  },
+  async getProductAlternatives(id: string) {
+    return api.get(API_ENDPOINTS.products.alternatives(id));
+  },
+  async getProductIngredients(id: string) {
+    return api.get(API_ENDPOINTS.products.ingredients(id));
   },
   async getCategories() {
     return api.get(API_ENDPOINTS.categories.list);

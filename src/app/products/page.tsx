@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
-import { api } from "@/lib/api-client";
 import { Product } from "@/types";
 import { LoadingGrid } from "@/components/ui/loading";
 import { ProductList } from "@/components/features/products/ProductList";
@@ -12,8 +11,12 @@ export const metadata: Metadata = {
 
 async function getProducts() {
   try {
-    const response = await api.products.list();
-    return response.data as Product[];
+    const response = await fetch('/api/products');
+    if (!response.ok) {
+      throw new Error('Failed to fetch products');
+    }
+    const data = await response.json();
+    return data.data as Product[];
   } catch (error) {
     console.error("Failed to fetch products:", error);
     return [];

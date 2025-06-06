@@ -29,7 +29,7 @@ export default function LoginPage() {
     
     try {
       await ApiService.login(email, password);
-      // After login, check if user is authenticated
+   
       const meResponse = await ApiService.getCurrentUser();
       if (meResponse.data && meResponse.data.id) {
         toast("Welcome back! You have successfully logged in.");

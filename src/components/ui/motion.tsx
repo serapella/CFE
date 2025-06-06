@@ -9,6 +9,8 @@ import {
 export const motion = framerMotion;
 export const AnimatePresence = FramerAnimatePresence;
 
-export function MotionDiv(props: React.ComponentProps<typeof framerMotion.div>) {
+export function MotionDiv(
+  props: React.ComponentProps<typeof framerMotion.div>
+) {
   return <framerMotion.div {...props} />;
 }

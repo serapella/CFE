@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Header } from "@/components/layout/header";
@@ -13,7 +13,11 @@ export const metadata: Metadata = {
   description: "Discover what's really in your personal care products and make informed choices for your wellbeing.",
   keywords: ["cosmetics", "personal care", "ingredients", "beauty products"],
   authors: [{ name: "BODYMATTERS Team" }],
-  viewport: "width=device-width, initial-scale=1",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -23,6 +27,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <meta name="csrf-token" content={process.env.NEXT_PUBLIC_CSRF_TOKEN} />
+      </head>
       <body className={inter.className}>
         <ThemeProvider
           attribute="class"
