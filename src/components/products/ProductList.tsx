@@ -66,7 +66,7 @@ export function ProductList({ initialProducts }: ProductListProps) {
             <DialogHeader>
               <DialogTitle>Add New Product</DialogTitle>
             </DialogHeader>
-            <form action={createAction} className="space-y-4">
+            <form action={createAction} className="space-y-4" onInvalid={e => e.preventDefault()}>
               <div>
                 <Label htmlFor="name">Name</Label>
                 <Input id="name" name="name" required />
