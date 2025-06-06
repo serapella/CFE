@@ -136,3 +136,5 @@ export const ApiService = {
     return api.get(API_ENDPOINTS.ingredients.getById(id));
   },
 };
+
+export const FRONTEND_BASE_URL = process.env.NEXT_PUBLIC_FRONTEND_URL || "https://cfe-du2fij438-serapellas-projects.vercel.app/";
