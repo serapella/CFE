@@ -3,48 +3,32 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
+import { Recipe } from "@/types/models";
+import { Tags } from "@/action";
 
 export const metadata: Metadata = {
   title: "Recipes | BODYMATTERS",
   description: "Discover natural beauty recipes and DIY solutions",
 };
 
-const recipes = [
-  {
-    id: "face-mask",
-    title: "Natural Face Mask",
-    description: "A soothing face mask made with honey and oatmeal",
-    image: "/recipes/face-mask.jpg",
-    difficulty: "Easy",
-    time: "15 mins"
-  },
-  {
-    id: "hair-mask",
-    title: "Nourishing Hair Mask",
-    description: "Deep conditioning treatment with coconut oil",
-    image: "/recipes/hair-mask.jpg",
-    difficulty: "Medium",
-    time: "30 mins"
-  },
-  {
-    id: "body-scrub",
-    title: "Exfoliating Body Scrub",
-    description: "Gentle scrub with sugar and essential oils",
-    image: "/recipes/body-scrub.jpg",
-    difficulty: "Easy",
-    time: "10 mins"
-  },
-  {
-    id: "lip-balm",
-    title: "Natural Lip Balm",
-    description: "Moisturizing lip balm with shea butter",
-    image: "/recipes/lip-balm.jpg",
-    difficulty: "Medium",
-    time: "20 mins"
+async function getRecipes(): Promise<Recipe[]> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proxy/recipes`, {
+      next: { tags: [Tags.recipes] }
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch recipes');
+    }
+    return response.json();
+  } catch (error) {
+    console.error('Error fetching recipes:', error);
+    return [];
   }
-];
+}
 
-export default function RecipesPage() {
+export default async function RecipesPage() {
+  const recipes = await getRecipes();
+
   return (
     <div className="container py-12">
       <div className="max-w-2xl mx-auto text-center mb-12">
@@ -55,22 +39,26 @@ export default function RecipesPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {recipes.map((recipe) => (
+        {recipes.map((recipe: Recipe) => (
           <Card key={recipe.id} className="overflow-hidden">
             <div className="relative aspect-square">
               <Image
-                src={recipe.image}
-                alt={recipe.title}
+                src={recipe.image_url || "/fallback.png"}
+                alt={recipe.name}
                 fill
                 className="object-cover"
               />
             </div>
             <CardContent className="p-4">
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium">{recipe.difficulty}</span>
-                <span className="text-sm text-muted-foreground">{recipe.time}</span>
+                <span className="text-sm font-medium">
+                  {recipe.difficulty_level ? `Level ${recipe.difficulty_level}` : 'Easy'}
+                </span>
+                <span className="text-sm text-muted-foreground">
+                  {recipe.preparation_time ? `${recipe.preparation_time} mins` : '15 mins'}
+                </span>
               </div>
-              <h2 className="text-xl font-semibold mb-2">{recipe.title}</h2>
+              <h2 className="text-xl font-semibold mb-2">{recipe.name}</h2>
               <p className="text-sm text-muted-foreground mb-4">
                 {recipe.description}
               </p>

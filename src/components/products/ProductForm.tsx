@@ -18,6 +18,7 @@ export function ProductForm({ product }: ProductFormProps) {
     name: product.name,
     description: product.description || "",
     barcode: product.barcode || "",
+    image_url: product.image_url || "",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -78,6 +79,17 @@ export function ProductForm({ product }: ProductFormProps) {
           value={formData.barcode}
           onChange={(e) =>
             setFormData((prev) => ({ ...prev, barcode: e.target.value }))
+          }
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="image_url">Image URL</Label>
+        <Input
+          id="image_url"
+          value={formData.image_url}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, image_url: e.target.value }))
           }
         />
       </div>

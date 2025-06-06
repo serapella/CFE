@@ -8,7 +8,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { LoadingGrid } from "@/components/ui/loading";
 import Link from "next/link";
 import { useFormState } from "react-dom";
-import { createProduct, ProductFormState } from "@/actions/productActions";
+import { handleAddProduct } from "@/action";
+import type { Message } from "@/action";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -18,11 +19,9 @@ interface ProductListProps {
   initialProducts: Product[];
 }
 
-const initialState: ProductFormState = {
-  success: undefined,
-  message: undefined,
-  errors: undefined,
-  data: undefined,
+const initialState: Message = {
+  type: undefined,
+  message: undefined
 };
 
 export function ProductList({ initialProducts }: ProductListProps) {
@@ -31,11 +30,13 @@ export function ProductList({ initialProducts }: ProductListProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [favorites, setFavorites] = useState<number[]>([]);
 
-  const [createState, createAction] = useFormState(createProduct, initialState);
+  const [createState, createAction] = useFormState(
+    (prevState: Message, formData: FormData) => handleAddProduct(formData),
+    initialState
+  );
 
   // Update products list when a new product is created
-  if (createState.success && createState.data) {
-    setProducts([...products, createState.data]);
+  if (createState.type === "success") {
     setIsDialogOpen(false);
   }
 
@@ -66,33 +67,21 @@ export function ProductList({ initialProducts }: ProductListProps) {
                   id="name"
                   name="name"
                   required
-                  className={createState.errors?.name ? "border-red-500" : ""}
                 />
-                {createState.errors?.name && (
-                  <p className="text-sm text-red-500">{createState.errors.name}</p>
-                )}
               </div>
               <div>
                 <Label htmlFor="description">Description</Label>
                 <Input
                   id="description"
                   name="description"
-                  className={createState.errors?.description ? "border-red-500" : ""}
                 />
-                {createState.errors?.description && (
-                  <p className="text-sm text-red-500">{createState.errors.description}</p>
-                )}
               </div>
               <div>
                 <Label htmlFor="barcode">Barcode</Label>
                 <Input
                   id="barcode"
                   name="barcode"
-                  className={createState.errors?.barcode ? "border-red-500" : ""}
                 />
-                {createState.errors?.barcode && (
-                  <p className="text-sm text-red-500">{createState.errors.barcode}</p>
-                )}
               </div>
               <Button type="submit" className="w-full">
                 Create Product
@@ -103,7 +92,7 @@ export function ProductList({ initialProducts }: ProductListProps) {
       </div>
 
       {createState.message && (
-        <Alert variant={createState.success ? "default" : "destructive"}>
+        <Alert variant={createState.type === "success" ? "default" : "destructive"}>
           <AlertDescription>{createState.message}</AlertDescription>
         </Alert>
       )}

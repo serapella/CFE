@@ -4,12 +4,13 @@
 // SEO-kritieke content
 // Statische data
 import { Product, Review, Ingredient } from '@/types/models';
+import { Tags } from '@/action';
 
 // Server-side fetch functions for Next.js pages
 export const productQueries = {
   getAll: async () => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proxy/products`, {
-      cache: 'force-cache', // Default caching
+      next: { tags: [Tags.products] }
     });
     if (!response.ok) {
       throw new Error('Failed to fetch products');
@@ -19,7 +20,7 @@ export const productQueries = {
 
   getById: async (id: number): Promise<Product> => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proxy/products/${id}`, {
-      cache: 'force-cache',
+      next: { tags: [`${Tags.productDetail}-${id}`] }
     });
     if (!response.ok) {
       throw new Error('Failed to fetch product');
@@ -29,7 +30,7 @@ export const productQueries = {
 
   getReviews: async (id: number): Promise<Review[]> => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proxy/products/${id}/reviews`, {
-      cache: 'force-cache',
+      next: { tags: [`${Tags.productDetail}-${id}`] }
     });
     if (!response.ok) {
       throw new Error('Failed to fetch reviews');
@@ -39,7 +40,7 @@ export const productQueries = {
 
   getAlternatives: async (id: number): Promise<Product[]> => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proxy/products/${id}/alternatives`, {
-      cache: 'force-cache',
+      next: { tags: [`${Tags.productDetail}-${id}`] }
     });
     if (!response.ok) {
       throw new Error('Failed to fetch alternatives');
@@ -49,7 +50,7 @@ export const productQueries = {
 
   getByBarcode: async (barcode: string): Promise<Product> => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proxy/products/barcode/${barcode}`, {
-      cache: 'force-cache',
+      next: { tags: [Tags.products] }
     });
     if (!response.ok) {
       throw new Error('Failed to fetch product by barcode');
@@ -59,7 +60,7 @@ export const productQueries = {
 
   getIngredients: async (id: number): Promise<Ingredient[]> => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proxy/products/${id}/ingredients`, {
-      cache: 'force-cache',
+      next: { tags: [`${Tags.productDetail}-${id}`] }
     });
     if (!response.ok) {
       throw new Error('Failed to fetch ingredients');

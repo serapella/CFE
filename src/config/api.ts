@@ -1,23 +1,25 @@
-//VOOR CLIENT SIDE COMPONENTEN, interactieve features, form submittions. 
+//VOOR CLIENT SIDE COMPONENTEN, interactieve features, form submittions.
 // Client Components
 // Form submissions
 // Real-time interacties
 // User actions (like, share, etc.)
 // Authenticated requests
 
-import axios from 'axios';
+import axios from "axios";
 
 // AXIOS
 export const api = axios.create({
   withCredentials: true,
-  xsrfCookieName: 'XSRF-TOKEN',
-  xsrfHeaderName: 'X-XSRF-TOKEN',
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://bodymattersadmin-8brl4.ondigitalocean.app',
+  xsrfCookieName: "XSRF-TOKEN",
+  xsrfHeaderName: "X-XSRF-TOKEN",
+  baseURL:
+    process.env.NEXT_PUBLIC_API_URL ||
+    "https://bodymattersadmin-8brl4.ondigitalocean.app",
 });
 
 // CSRF aanwezig zonder in te loggen
 async function ensureCsrfCookie() {
-  await api.get('/sanctum/csrf-cookie');
+  await api.get("/sanctum/csrf-cookie");
 }
 
 export interface ApiResponse<T = unknown> {
@@ -35,20 +37,21 @@ export interface AuthResponse {
   token?: string;
 }
 
-// API config
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://laravel.ddev.site/api';
+// API configureren (laravel)
+export const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://laravel.ddev.site/api";
 
 export const API_ENDPOINTS = {
   auth: {
-    login: '/proxy/auth/login',
-    register: '/proxy/auth/register',
-    logout: '/proxy/auth/logout',
-    me: '/proxy/auth/me',
-    check: '/proxy/auth/check',
+    login: "/proxy/auth/login",
+    register: "/proxy/auth/register",
+    logout: "/proxy/auth/logout",
+    me: "/proxy/auth/me",
+    check: "/proxy/auth/check",
   },
   products: {
-    list: '/proxy/products',
-    create: '/proxy/products',
+    list: "/proxy/products",
+    create: "/proxy/products",
     getById: (id: string) => `/proxy/products/${id}`,
     update: (id: string) => `/proxy/products/${id}`,
     delete: (id: string) => `/proxy/products/${id}`,
@@ -58,16 +61,16 @@ export const API_ENDPOINTS = {
     ingredients: (id: string) => `/proxy/products/${id}/ingredients`,
   },
   categories: {
-    list: '/proxy/categories',
-    create: '/proxy/categories',
+    list: "/proxy/categories",
+    create: "/proxy/categories",
     getById: (id: string) => `/proxy/categories/${id}`,
     update: (id: string) => `/proxy/categories/${id}`,
     delete: (id: string) => `/proxy/categories/${id}`,
     products: (id: string) => `/proxy/categories/${id}/products`,
   },
   ingredients: {
-    list: '/proxy/ingredients',
-    create: '/proxy/ingredients',
+    list: "/proxy/ingredients",
+    create: "/proxy/ingredients",
     getById: (id: string) => `/proxy/ingredients/${id}`,
     update: (id: string) => `/proxy/ingredients/${id}`,
     delete: (id: string) => `/proxy/ingredients/${id}`,
@@ -80,7 +83,12 @@ export const ApiService = {
     await ensureCsrfCookie();
     return api.post(API_ENDPOINTS.auth.login, { email, password });
   },
-  async register(data: { name: string; email: string; password: string; password_confirmation: string }) {
+  async register(data: {
+    name: string;
+    email: string;
+    password: string;
+    password_confirmation: string;
+  }) {
     await ensureCsrfCookie();
     return api.post(API_ENDPOINTS.auth.register, data);
   },
@@ -127,4 +135,4 @@ export const ApiService = {
   async getIngredientById(id: string) {
     return api.get(API_ENDPOINTS.ingredients.getById(id));
   },
-}; 
+};

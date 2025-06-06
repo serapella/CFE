@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import Image from "next/image";
 import { productQueries } from "@/queries/productQueries";
@@ -34,11 +33,6 @@ export default async function ProductsPage() {
                 fill
                 className="object-cover"
               />
-              {product.score && (
-                <Badge className="absolute top-4 left-4">
-                  Score: {product.score}
-                </Badge>
-              )}
             </div>
             <CardContent className="p-4">
               <h2 className="text-xl font-semibold mb-2">{product.name}</h2>

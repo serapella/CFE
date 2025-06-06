@@ -85,12 +85,6 @@ export default async function ProductPage({ params }: PageProps) {
                     Barcode: {product.barcode}
                   </div>
                 )}
-                {typeof product.score === "number" && (
-                  <div className="mb-4">
-                    <span className="font-medium">Score: </span>
-                    <span className="font-medium">{product.score}</span>
-                  </div>
-                )}
               </div>
               <div className="flex gap-2">
                 <Button variant="outline" size="icon">
@@ -221,7 +215,6 @@ export default async function ProductPage({ params }: PageProps) {
                     fill
                     className="object-cover"
                   />
-                  <Badge className="absolute top-4 left-4">A Rating</Badge>
                 </div>
                 <div className="p-4">
                   <h3 className="font-semibold mb-1">Product Name</h3>
