@@ -3,10 +3,11 @@ import { reviewQueries } from "@/queries/reviewQueries";
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
-    const review = await reviewQueries.getById(Number(params.id));
+    const { id } = context.params;
+    const review = await reviewQueries.getById(Number(id));
     return NextResponse.json(review);
   } catch (e) {
     console.error(e);

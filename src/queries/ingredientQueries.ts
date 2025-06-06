@@ -3,7 +3,8 @@ import { Ingredient } from '@/types/models';
 export const ingredientQueries = {
   getAll: async (): Promise<Ingredient[]> => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proxy/ingredients`, {
-      next: { tags: ["ingredients"] }
+      next: { tags: ["ingredients"] },
+      credentials: 'include',
     });
     if (!response.ok) {
       throw new Error('Failed to fetch ingredients');
@@ -13,7 +14,8 @@ export const ingredientQueries = {
 
   getById: async (id: number): Promise<Ingredient> => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proxy/ingredients/${id}`, {
-      next: { tags: [`ingredient-${id}`] }
+      next: { tags: [`ingredient-${id}`] },
+      credentials: 'include',
     });
     if (!response.ok) {
       throw new Error('Failed to fetch ingredient');

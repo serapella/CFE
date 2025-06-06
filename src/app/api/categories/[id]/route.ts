@@ -3,10 +3,11 @@ import { categoryQueries } from "@/queries/categoryQueries";
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
-    const category = await categoryQueries.getById(Number(params.id));
+    const { id } = context.params;
+    const category = await categoryQueries.getById(Number(id));
     return NextResponse.json(category);
   } catch (e) {
     console.error(e);

@@ -3,10 +3,11 @@ import { recipeQueries } from "@/queries/recipeQueries";
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
-    const recipe = await recipeQueries.getById(Number(params.id));
+    const { id } = context.params;
+    const recipe = await recipeQueries.getById(Number(id));
     return NextResponse.json(recipe);
   } catch (e) {
     console.error(e);

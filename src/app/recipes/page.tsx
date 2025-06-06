@@ -4,30 +4,15 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { Recipe } from "@/types/models";
-import { Tags } from "@/action";
+import { recipeQueries } from "@/queries/recipeQueries";
 
 export const metadata: Metadata = {
   title: "Recipes | BODYMATTERS",
   description: "Discover natural beauty recipes and DIY solutions",
 };
 
-async function getRecipes(): Promise<Recipe[]> {
-  try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proxy/recipes`, {
-      next: { tags: [Tags.recipes] }
-    });
-    if (!response.ok) {
-      throw new Error('Failed to fetch recipes');
-    }
-    return response.json();
-  } catch (error) {
-    console.error('Error fetching recipes:', error);
-    return [];
-  }
-}
-
 export default async function RecipesPage() {
-  const recipes = await getRecipes();
+  const recipes = await recipeQueries.getAll();
 
   return (
     <div className="container py-12">

@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Heart, Search, Star, Trash2 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 // Mock data for favorites
@@ -18,7 +17,8 @@ const favorites = {
     {
       id: 1,
       name: "Natural Daily Moisturizer",
-      image: "https://images.pexels.com/photos/3685530/pexels-photo-3685530.jpeg",
+      image:
+        "https://images.pexels.com/photos/3685530/pexels-photo-3685530.jpeg",
       brand: "Pure Essentials",
       category: "Moisturizer",
       dangerScore: 12,
@@ -29,37 +29,40 @@ const favorites = {
     {
       id: 2,
       name: "Hydrating Face Cream",
-      image: "https://images.pexels.com/photos/3786215/pexels-photo-3786215.jpeg",
+      image:
+        "https://images.pexels.com/photos/3786215/pexels-photo-3786215.jpeg",
       brand: "GlowBoost",
       category: "Face Cream",
       dangerScore: 35,
       rating: "B",
       keyIngredients: ["Hyaluronic Acid", "Ceramides", "Glycerin"],
       concerns: ["Contains fragrance"],
-    }
+    },
   ],
   recipes: [
     {
       id: 1,
       title: "Natural Face Mask",
-      image: "https://images.pexels.com/photos/6621462/pexels-photo-6621462.jpeg",
+      image:
+        "https://images.pexels.com/photos/6621462/pexels-photo-6621462.jpeg",
       time: "15 min",
       difficulty: "Easy",
       rating: 4.8,
       ingredients: 5,
-      category: "Face Care"
+      category: "Face Care",
     },
     {
       id: 2,
       title: "Herbal Hair Mask",
-      image: "https://images.pexels.com/photos/6621264/pexels-photo-6621264.jpeg",
+      image:
+        "https://images.pexels.com/photos/6621264/pexels-photo-6621264.jpeg",
       time: "30 min",
       difficulty: "Medium",
       rating: 4.5,
       ingredients: 6,
-      category: "Hair Care"
-    }
-  ]
+      category: "Hair Care",
+    },
+  ],
 };
 
 export default function FavoritesPage() {
@@ -117,34 +120,51 @@ export default function FavoritesPage() {
                   <Card className="overflow-hidden">
                     <div className="p-6">
                       <div className="flex gap-4 mb-4">
-                        <div className="relative h-24 w-24 rounded-md overflow-hidden flex-shrink-0">
-                          <Image 
-                            src={product.image} 
-                            alt={product.name}
-                            className="object-cover"
-                            fill
-                          />
-                        </div>
+                        <div className="relative h-24 w-24 rounded-md overflow-hidden flex-shrink-0"></div>
                         <div>
-                          <Badge variant={product.rating === "A" ? "outline" : product.rating === "B" ? "secondary" : "destructive"}>
+                          <Badge
+                            variant={
+                              product.rating === "A"
+                                ? "outline"
+                                : product.rating === "B"
+                                ? "secondary"
+                                : "destructive"
+                            }
+                          >
                             {product.rating} Rating
                           </Badge>
-                          <h3 className="font-semibold text-lg mt-1">{product.name}</h3>
-                          <p className="text-sm text-muted-foreground">{product.brand} • {product.category}</p>
+                          <h3 className="font-semibold text-lg mt-1">
+                            {product.name}
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            {product.brand} • {product.category}
+                          </p>
                         </div>
                       </div>
 
                       <div className="mb-4">
                         <div className="flex justify-between items-center mb-1">
-                          <span className="text-sm font-medium">Health Score</span>
-                          <span className="text-sm font-medium">{100 - product.dangerScore}%</span>
+                          <span className="text-sm font-medium">
+                            Health Score
+                          </span>
+                          <span className="text-sm font-medium">
+                            {100 - product.dangerScore}%
+                          </span>
                         </div>
-                        <Progress 
-                          value={100 - product.dangerScore} 
+                        <Progress
+                          value={100 - product.dangerScore}
                           className="h-2"
-                          style={{ 
-                            "--progress-background": `hsl(var(${product.dangerScore < 30 ? "--peacock" : product.dangerScore < 60 ? "--sunshine" : "--coral"}))`
-                          } as React.CSSProperties} 
+                          style={
+                            {
+                              "--progress-background": `hsl(var(${
+                                product.dangerScore < 30
+                                  ? "--peacock"
+                                  : product.dangerScore < 60
+                                  ? "--sunshine"
+                                  : "--coral"
+                              }))`,
+                            } as React.CSSProperties
+                          }
                         />
                       </div>
 
@@ -152,7 +172,11 @@ export default function FavoritesPage() {
                         <Link href={`/products/${product.id}`}>
                           <Button variant="outline">View Details</Button>
                         </Link>
-                        <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-destructive hover:text-destructive"
+                        >
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
@@ -174,22 +198,20 @@ export default function FavoritesPage() {
                 >
                   <Card className="overflow-hidden">
                     <div className="relative aspect-[4/3]">
-                      <Image 
-                        src={recipe.image} 
-                        alt={recipe.title}
-                        fill
-                        className="object-cover"
-                      />
                       <Badge className="absolute top-4 left-4 bg-background/80 backdrop-blur-sm">
                         {recipe.category}
                       </Badge>
                     </div>
                     <div className="p-6">
                       <div className="flex items-center justify-between mb-2">
-                        <h3 className="font-semibold text-lg">{recipe.title}</h3>
+                        <h3 className="font-semibold text-lg">
+                          {recipe.title}
+                        </h3>
                         <div className="flex items-center gap-1">
                           <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
-                          <span className="text-sm font-medium">{recipe.rating}</span>
+                          <span className="text-sm font-medium">
+                            {recipe.rating}
+                          </span>
                         </div>
                       </div>
                       <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
@@ -203,7 +225,11 @@ export default function FavoritesPage() {
                         <Link href={`/recipes/${recipe.id}`}>
                           <Button variant="outline">View Recipe</Button>
                         </Link>
-                        <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-destructive hover:text-destructive"
+                        >
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>

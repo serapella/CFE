@@ -5,6 +5,7 @@ import { ProductSpotlight } from "@/components/home/productSpotlight";
 import TrendingRecipes from "@/components/home/trendingRecipes";
 import { HowItWorks } from "@/components/home/howItWorks";
 import { Banner } from "@/components/home/banner";
+import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
   title: "Home | BODYMATTERS",
@@ -12,15 +13,20 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
+  const cookieStore = await cookies();
+  // Pas de cookie naam aan naar jouw auth-cookie, bijvoorbeeld 'token' of 'laravel_session'
+  const token = cookieStore.get("token");
+  const isLoggedIn = !!token;
+
   return (
     <div className="flex flex-col space-y-16">
       <Hero />
       <div className="space-y-16">
         <Features />
         <HowItWorks />
-        <TrendingRecipes />
+        {isLoggedIn && <TrendingRecipes />}
       </div>
-      <ProductSpotlight />
+      {isLoggedIn && <ProductSpotlight />}
       <Banner />
     </div>
   );
