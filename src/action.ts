@@ -77,23 +77,23 @@ export async function handleUpdateProduct(fd: FormData): Promise<Message> {
   }
 }
 
-export async function handleDeleteProduct(id: number): Promise<Message> {
-  try {
-    const res = await fetch(`${API_URL}/api/proxy/products/${id}`, {
-      method: "DELETE",
-    });
+// export async function handleDeleteProduct(id: number): Promise<Message> {
+//   try {
+//     const res = await fetch(`${API_URL}/api/proxy/products/${id}`, {
+//       method: "DELETE",
+//     });
 
-    if (!res.ok) {
-      return { type: "error", message: "Failed to delete product" };
-    }
+//     if (!res.ok) {
+//       return { type: "error", message: "Failed to delete product" };
+//     }
 
-    revalidateTag("products");
-    revalidateTag(`product-${id}`);
-    return { type: "success", message: "Product deleted successfully" };
-  } catch (error) {
-    return { type: "error", message: "An error occurred while deleting the product" };
-  }
-}
+//     revalidateTag("products");
+//     revalidateTag(`product-${id}`);
+//     return { type: "success", message: "Product deleted successfully" };
+//   } catch (error) {
+//     return { type: "error", message: "An error occurred while deleting the product" };
+//   }
+// }
 
 export async function handleAddRecipe(fd: FormData): Promise<Message> {
   const title = fd.get("title") as string | null;
