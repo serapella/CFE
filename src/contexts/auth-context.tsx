@@ -38,14 +38,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const getCsrfCookie = async () => {
+    await fetch('/sanctum/csrf-cookie', { credentials: 'include' });
+  };
+
   const login = async (email: string, password: string) => {
     try {
       setLoading(true);
       setError(null);
+      await getCsrfCookie();
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
+        credentials: 'include',
       });
       if (!response.ok) throw new Error('Login failed');
       const data = await response.json();
@@ -62,10 +68,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       setLoading(true);
       setError(null);
+      await getCsrfCookie();
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password }),
+        credentials: 'include',
       });
       if (!response.ok) throw new Error('Registration failed');
       const data = await response.json();
@@ -81,8 +89,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = async () => {
     try {
       setLoading(true);
+      await getCsrfCookie();
       const response = await fetch('/api/auth/logout', {
         method: 'POST',
+        credentials: 'include',
       });
       if (!response.ok) throw new Error('Logout failed');
       setUser(null);

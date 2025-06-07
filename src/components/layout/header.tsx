@@ -17,10 +17,11 @@ import {
 } from "@/components/ui/navigation-menu";
 import Image from "next/image";
 import { ApiService } from "@/config/api";
+import { useAuth } from '@/contexts/auth-context';
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { user, isAuthenticated, logout, isLoading } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,15 +30,6 @@ export function Header() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const checkLogin = () => {
-      setIsLoggedIn(typeof window !== 'undefined' && !!sessionStorage.getItem('token'));
-    };
-    checkLogin();
-    window.addEventListener('storage', checkLogin);
-    return () => window.removeEventListener('storage', checkLogin);
   }, []);
 
   const handleLogout = async () => {
@@ -182,9 +174,14 @@ export function Header() {
             <ModeToggle />
           </div>
 
-          <div className="hidden md:flex gap-2">
-            {isLoggedIn ? (
-              <Button variant="outline" onClick={handleLogout}>Logout</Button>
+          <div className="hidden md:flex gap-2 items-center">
+            {isLoading ? (
+              <span className="text-muted-foreground">Loading...</span>
+            ) : isAuthenticated && user ? (
+              <>
+                <span className="font-medium mr-2">{user.name}</span>
+                <Button variant="outline" onClick={logout}>Logout</Button>
+              </>
             ) : (
               <>
                 <Link href="/auth/login">
