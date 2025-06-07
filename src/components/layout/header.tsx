@@ -16,7 +16,6 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import Image from "next/image";
-import { ApiService } from "@/config/api";
 import { useAuth } from '@/contexts/auth-context';
 
 export function Header() {
@@ -35,7 +34,7 @@ export function Header() {
   const handleLogout = async () => {
     sessionStorage.removeItem('token');
     try {
-      await ApiService.logout();
+      await logout();
     } catch {
       // Handle error silently
     }

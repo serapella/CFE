@@ -21,7 +21,7 @@ export const productQueries = {
 
   getById: async (id: number): Promise<Product> => {
     const response = await fetch(
-      `/api/proxy/products/${id}`,
+      `/api/products/${id}`,
       {
         next: { tags: [`product-${id}`] },
         credentials: 'include',
@@ -35,7 +35,7 @@ export const productQueries = {
 
   getReviews: async (id: number): Promise<Review[]> => {
     const response = await fetch(
-      `/api/proxy/products/${id}/reviews`,
+      `/api/products/${id}/reviews`,
       {
         next: { tags: [`product-${id}`] },
         credentials: 'include',
@@ -49,7 +49,7 @@ export const productQueries = {
 
   getAlternatives: async (id: number): Promise<Product[]> => {
     const response = await fetch(
-      `/api/proxy/products/${id}/alternatives`,
+      `/api/products/${id}/alternatives`,
       {
         next: { tags: [`product-${id}`] },
         credentials: 'include',
@@ -63,7 +63,7 @@ export const productQueries = {
 
   getByBarcode: async (barcode: string): Promise<Product> => {
     const response = await fetch(
-      `/api/proxy/products/barcode/${barcode}`,
+      `/api/products/barcode/${barcode}`,
       {
         next: { tags: ["products"] },
         credentials: 'include',
@@ -77,7 +77,7 @@ export const productQueries = {
 
   getIngredients: async (id: number): Promise<Ingredient[]> => {
     const response = await fetch(
-      `/api/proxy/products/${id}/ingredients`,
+      `/api/products/${id}/ingredients`,
       {
         next: { tags: [`product-${id}`] },
         credentials: 'include',

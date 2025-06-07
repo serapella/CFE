@@ -3,7 +3,7 @@ import { Ingredient } from '@/types/models';
 export const ingredientQueries = {
   getAll: async (): Promise<Ingredient[]> => {
     console.time('ingredientsFetch');
-    const response = await fetch(`/api/proxy/ingredients`, {
+    const response = await fetch(`/api/ingredients`, {
       next: { tags: ["ingredients"] },
       credentials: 'include',
     });
@@ -15,7 +15,7 @@ export const ingredientQueries = {
   },
 
   getById: async (id: number): Promise<Ingredient> => {
-    const response = await fetch(`/api/proxy/ingredients/${id}`, {
+    const response = await fetch(`/api/ingredients/${id}`, {
       next: { tags: [`ingredient-${id}`] },
       credentials: 'include',
     });

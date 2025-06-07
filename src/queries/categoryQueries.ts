@@ -15,7 +15,7 @@ export const categoryQueries = {
   },
 
   getById: async (id: number): Promise<Category> => {
-    const response = await fetch(`/api/proxy/categories/${id}`, {
+    const response = await fetch(`/api/categories/${id}`, {
       next: { tags: [`category-${id}`] },
       credentials: 'include',
     });

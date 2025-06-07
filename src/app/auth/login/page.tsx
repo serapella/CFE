@@ -18,10 +18,11 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2, LogIn } from "lucide-react";
 import Link from "next/link";
 import { useFormAction } from "@/hooks/use-form-action";
-import { ApiService } from "@/config/api";
+import { useAuth } from '@/contexts/auth-context';
 
 export default function LoginPage() {
   const { toast } = useToast();
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
@@ -35,15 +36,9 @@ export default function LoginPage() {
     }
 
     try {
-      await ApiService.login(email, password);
-
-      const checkResponse = await ApiService.checkAuth();
-      if (checkResponse.data && checkResponse.data.user && checkResponse.data.user.id) {
-        toast("Welcome back! You have successfully logged in.");
-        window.location.href = "/";
-      } else {
-        toast("Login failed: could not fetch user info.");
-      }
+      await login(email, password);
+      toast("Welcome back! You have successfully logged in.");
+      window.location.href = "/";
     } catch (error) {
       toast(error instanceof Error ? error.message : "Login failed");
     }

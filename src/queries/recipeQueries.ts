@@ -3,7 +3,7 @@ import { Recipe } from '@/types/models';
 export const recipeQueries = {
   getAll: async (): Promise<Recipe[]> => {
     console.time('recipesFetch');
-    const response = await fetch(`/api/proxy/recipes`, {
+    const response = await fetch(`/api/recipes`, {
       next: { tags: ["recipes"] },
       credentials: 'include',
     });
@@ -15,7 +15,7 @@ export const recipeQueries = {
   },
 
   getById: async (id: number): Promise<Recipe> => {
-    const response = await fetch(`/api/proxy/recipes/${id}`, {
+    const response = await fetch(`/api/recipes/${id}`, {
       next: { tags: [`recipe-${id}`] },
       credentials: 'include',
     });

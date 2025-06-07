@@ -11,10 +11,11 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2, UserPlus } from "lucide-react";
 import Link from "next/link";
 import { useFormAction } from "@/hooks/use-form-action";
-import { ApiService } from "@/config/api";
+import { useAuth } from '@/contexts/auth-context';
 
 export default function RegisterPage() {
   const { toast } = useToast();
+  const { register } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   
@@ -40,12 +41,7 @@ export default function RegisterPage() {
     }
     
     try {
-      await ApiService.register({
-        name,
-        email,
-        password,
-        password_confirmation: confirmPassword
-      });
+      await register(name, email, password);
       toast("Your account has been created successfully.");
       window.location.href = "/";
     } catch (error) {
