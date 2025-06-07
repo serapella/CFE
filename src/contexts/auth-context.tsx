@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { createContext, useContext, useEffect, useState } from 'react';
-import { User } from '@/types/models';
+import { createContext, useContext, useEffect, useState } from "react";
+import { User } from "@/types/models";
 
 interface AuthContextType {
   user: User | null;
@@ -27,8 +27,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const checkAuth = async () => {
     try {
-      const response = await fetch('/api/auth/me');
-      if (!response.ok) throw new Error('Not authenticated');
+      const response = await fetch('/api/proxy/auth/check', {
+        credentials: 'include',
+      });
+      if (response.status === 401) {
+        setUser(null);
+        return;
+      }
+      if (!response.ok) throw new Error('Unexpected error');
       const data = await response.json();
       setUser(data.user);
     } catch (err) {
@@ -39,17 +45,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const getCsrfCookie = async () => {
-    await fetch('/sanctum/csrf-cookie', { credentials: 'include' });
+    await fetch('/api/proxy/sanctum/csrf-cookie', { credentials: 'include' });
   };
+
+  // Helper to get a cookie value by name
+  function getCookie(name: string) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(';').shift();
+    return undefined;
+  }
 
   const login = async (email: string, password: string) => {
     try {
       setLoading(true);
       setError(null);
       await getCsrfCookie();
-      const response = await fetch('/api/auth/login', {
+      const xsrfToken = getCookie('XSRF-TOKEN');
+      const response = await fetch('/api/proxy/auth/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(xsrfToken ? { 'X-XSRF-TOKEN': xsrfToken } : {}),
+        },
         body: JSON.stringify({ email, password }),
         credentials: 'include',
       });
@@ -69,9 +87,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setLoading(true);
       setError(null);
       await getCsrfCookie();
-      const response = await fetch('/api/auth/register', {
+      const xsrfToken = getCookie('XSRF-TOKEN');
+      const response = await fetch('/api/proxy/auth/register', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(xsrfToken ? { 'X-XSRF-TOKEN': xsrfToken } : {}),
+        },
         body: JSON.stringify({ name, email, password }),
         credentials: 'include',
       });
@@ -90,7 +112,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       setLoading(true);
       await getCsrfCookie();
-      const response = await fetch('/api/auth/logout', {
+      const response = await fetch('/api/proxy/auth/logout', {
         method: 'POST',
         credentials: 'include',
       });
@@ -105,7 +127,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, error, login, register, logout, isAuthenticated: !!user, isLoading: loading }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        error,
+        login,
+        register,
+        logout,
+        isAuthenticated: !!user,
+        isLoading: loading,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -114,7 +147,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
-} 
+}

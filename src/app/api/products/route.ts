@@ -1,12 +1,20 @@
-import { NextResponse } from "next/server";
-import { productQueries } from "@/queries/productQueries";
+import { NextRequest } from 'next/server';
 
-export async function GET() {
-  try {
-    const products = await productQueries.getAll();
-    return NextResponse.json(products);
-  } catch (e) {
-    console.error(e);
-    return NextResponse.json({ error: e }, { status: 500 });
-  }
-} 
+export async function GET(req: NextRequest) {
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '')}/api/proxy/products`;
+  const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+
+  const response = await fetch(apiUrl, {
+    headers: {
+      'CBE-API-KEY': apiKey || '',
+    },
+  });
+
+  const data = await response.json();
+  return new Response(JSON.stringify(data), {
+    status: response.status,
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
+
+// Verwijder of blokkeer alle andere methodes. 

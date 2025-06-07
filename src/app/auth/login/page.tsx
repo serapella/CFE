@@ -2,7 +2,14 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -17,21 +24,21 @@ export default function LoginPage() {
   const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  
+
   const { pending, execute } = useFormAction(async (formData: FormData) => {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-    
+
     if (!email || !password) {
       toast("Please enter both email and password.");
       return;
     }
-    
+
     try {
       await ApiService.login(email, password);
-   
-      const meResponse = await ApiService.getCurrentUser();
-      if (meResponse.data && meResponse.data.id) {
+
+      const checkResponse = await ApiService.checkAuth();
+      if (checkResponse.data && checkResponse.data.user && checkResponse.data.user.id) {
         toast("Welcome back! You have successfully logged in.");
         window.location.href = "/";
       } else {
@@ -41,7 +48,7 @@ export default function LoginPage() {
       toast(error instanceof Error ? error.message : "Login failed");
     }
   });
-  
+
   return (
     <div className="container flex items-center justify-center min-h-screen py-8">
       <div className="w-full max-w-md">
@@ -54,16 +61,16 @@ export default function LoginPage() {
             <Link href="/" className="inline-block">
               <div className="flex items-center gap-2">
                 <div className="rounded-full bg-primary/10 p-2">
-                  <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    width="24" 
-                    height="24" 
-                    viewBox="0 0 24 24" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    strokeWidth="2" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     className="text-primary"
                   >
                     <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -74,7 +81,7 @@ export default function LoginPage() {
               </div>
             </Link>
           </div>
-          
+
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl">Welcome back</CardTitle>
@@ -83,35 +90,40 @@ export default function LoginPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form action={execute} className="space-y-4" autoComplete="off" onSubmit={() => {}}>
+              <form
+                action={execute}
+                className="space-y-4"
+                autoComplete="off"
+                onSubmit={() => {}}
+              >
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input 
-                    id="email" 
+                  <Input
+                    id="email"
                     name="email"
-                    type="email" 
-                    placeholder="you@example.com" 
+                    type="email"
+                    placeholder="you@example.com"
                     required
                     autoComplete="email"
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <Label htmlFor="password">Password</Label>
-                    <Link 
-                      href="/auth/forgot-password" 
+                    <Link
+                      href="/auth/forgot-password"
                       className="text-sm text-primary hover:underline"
                     >
                       Forgot password?
                     </Link>
                   </div>
                   <div className="relative">
-                    <Input 
-                      id="password" 
+                    <Input
+                      id="password"
                       name="password"
                       type={showPassword ? "text" : "password"}
-                      placeholder="••••••••" 
+                      placeholder="••••••••"
                       required
                       autoComplete="current-password"
                     />
@@ -119,20 +131,24 @@ export default function LoginPage() {
                       type="button"
                       className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
                       tabIndex={-1}
-                      aria-label={showPassword ? "Hide password" : "Show password"}
+                      aria-label={
+                        showPassword ? "Hide password" : "Show password"
+                      }
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? "Hide" : "Show"}
                     </button>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center space-x-2">
-                  <Checkbox 
-                    id="remember" 
+                  <Checkbox
+                    id="remember"
                     name="remember"
                     checked={rememberMe}
-                    onCheckedChange={(checked: boolean | 'indeterminate') => setRememberMe(!!checked)}
+                    onCheckedChange={(checked: boolean | "indeterminate") =>
+                      setRememberMe(!!checked)
+                    }
                   />
                   <label
                     htmlFor="remember"
@@ -141,7 +157,7 @@ export default function LoginPage() {
                     Remember me
                   </label>
                 </div>
-                
+
                 <Button
                   type="submit"
                   className="w-full transition-colors duration-150 cursor-pointer"
@@ -161,7 +177,7 @@ export default function LoginPage() {
                   )}
                 </Button>
               </form>
-              
+
               <div className="relative my-6">
                 <div className="absolute inset-0 flex items-center">
                   <span className="w-full border-t"></span>
@@ -172,7 +188,7 @@ export default function LoginPage() {
                   </span>
                 </div>
               </div>
-              
+
               <div className="flex gap-2">
                 <Button
                   variant="outline"
@@ -233,7 +249,10 @@ export default function LoginPage() {
             <CardFooter className="flex flex-col items-center justify-center space-y-2">
               <p className="text-sm text-muted-foreground">
                 Don&apos;t have an account?{" "}
-                <Link href="/auth/register" className="text-primary hover:underline">
+                <Link
+                  href="/auth/register"
+                  className="text-primary hover:underline"
+                >
                   Sign up
                 </Link>
               </p>

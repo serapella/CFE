@@ -2,10 +2,12 @@ import { Recipe } from '@/types/models';
 
 export const recipeQueries = {
   getAll: async (): Promise<Recipe[]> => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proxy/recipes`, {
+    console.time('recipesFetch');
+    const response = await fetch(`/api/proxy/recipes`, {
       next: { tags: ["recipes"] },
       credentials: 'include',
     });
+    console.timeEnd('recipesFetch');
     if (!response.ok) {
       throw new Error('Failed to fetch recipes');
     }
@@ -13,7 +15,7 @@ export const recipeQueries = {
   },
 
   getById: async (id: number): Promise<Recipe> => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proxy/recipes/${id}`, {
+    const response = await fetch(`/api/proxy/recipes/${id}`, {
       next: { tags: [`recipe-${id}`] },
       credentials: 'include',
     });

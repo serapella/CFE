@@ -2,7 +2,7 @@ import { Review } from '@/types/models';
 
 export const reviewQueries = {
   getAll: async (): Promise<Review[]> => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proxy/reviews`, {
+    const response = await fetch(`/api/proxy/reviews`, {
       next: { tags: ["reviews"] },
       credentials: 'include',
     });
@@ -13,7 +13,7 @@ export const reviewQueries = {
   },
 
   getById: async (id: number): Promise<Review> => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proxy/reviews/${id}`, {
+    const response = await fetch(`/api/proxy/reviews/${id}`, {
       next: { tags: [`review-${id}`] },
       credentials: 'include',
     });
